@@ -34,7 +34,6 @@ Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
   final url = Uri.parse(
     '$API_URL/${ott.url}post.php',
   ).replace(queryParameters: params);
-  log("getMovie: $url", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;
@@ -42,7 +41,5 @@ Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
     log("Error: ${res.body}", name: "http");
     throw Exception('http.get error: statusCode= $status');
   }
-  log("getMovie: ${res.body}", name: "http");
-
   return NmMovie.parse(jsonDecode(res.body), id, ott);
 }
