@@ -36,10 +36,9 @@ packages:
   better_player_plus:
     dependency: "direct main"
     description:
-      name: better_player_plus
-      sha256: fc8804f837b450b1b614d5e624a9312894d3089c9194330542ab04a4afa82127
-      url: "https://pub.dev"
-    source: hosted
+      path: better_player_plus
+      relative: true
+    source: path
     version: "1.0.8"
   boolean_selector:
     dependency: transitive

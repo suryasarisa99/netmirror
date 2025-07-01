@@ -8,7 +8,9 @@ environment:
 
 dependencies:
   android_intent_plus: ^5.3.0
-  better_player_plus: ^1.0.8
+  # better_player_plus: ^1.0.8
+  better_player_plus:
+    path: ./better_player_plus
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   collection: ^1.19.1
