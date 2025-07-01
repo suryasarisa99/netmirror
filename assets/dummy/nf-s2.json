@@ -1,0 +1,137 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Vincenzo",
+  "year": "2021",
+  "ua": "U/A 16+",
+  "match": "32% match",
+  "runtime": "1 Seasons",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "Kim Hee-won, Park Jae-beom",
+  "director": "",
+  "writer": "",
+  "short_cast": "Song Joong-ki, Jeon Yeo-been, Ok Taec-yeon, Yoo Jae-myung, Kim Yeo-jin, Kwak Dong-yeon, Cho Han-cheul",
+  "cast": "Song Joong-ki, Jeon Yeo-been, Ok Taec-yeon, Yoo Jae-myung, Kim Yeo-jin, Kwak Dong-yeon, Cho Han-cheul",
+  "genre": "TV Dramas, Korean, TV Comedies, Social Issue TV Dramas",
+  "thismovieis": "",
+  "m_desc": "Suitable for persons aged 16 and above and under parental guidance for people under age of 16",
+  "m_reason": "violence, substances, gore",
+  "desc": "During a visit to his motherland, a Korean-Italian mafia lawyer gives an unrivaled conglomerate a taste of its own medicine with a side of justice.",
+  "oin": "y",
+  "season": [{ "s": "1", "id": "81365088", "ep": "20", "sele": " selected" }],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "81406071",
+      "t": "Episode 1",
+      "s": "S1",
+      "ep": "E1",
+      "time": "84m"
+    },
+    {
+      "complate": "0",
+      "id": "81406072",
+      "t": "Episode 2",
+      "s": "S1",
+      "ep": "E2",
+      "time": "79m"
+    },
+    {
+      "complate": "0",
+      "id": "81406073",
+      "t": "Episode 3",
+      "s": "S1",
+      "ep": "E3",
+      "time": "83m"
+    },
+    {
+      "complate": "0",
+      "id": "81406074",
+      "t": "Episode 4",
+      "s": "S1",
+      "ep": "E4",
+      "time": "87m"
+    },
+    {
+      "complate": "0",
+      "id": "81406075",
+      "t": "Episode 5",
+      "s": "S1",
+      "ep": "E5",
+      "time": "79m"
+    },
+    {
+      "complate": "0",
+      "id": "81406076",
+      "t": "Episode 6",
+      "s": "S1",
+      "ep": "E6",
+      "time": "82m"
+    },
+    {
+      "complate": "0",
+      "id": "81406077",
+      "t": "Episode 7",
+      "s": "S1",
+      "ep": "E7",
+      "time": "81m"
+    },
+    {
+      "complate": "0",
+      "id": "81406078",
+      "t": "Episode 8",
+      "s": "S1",
+      "ep": "E8",
+      "time": "83m"
+    },
+    {
+      "complate": "0",
+      "id": "81406079",
+      "t": "Episode 9",
+      "s": "S1",
+      "ep": "E9",
+      "time": "83m"
+    },
+    {
+      "complate": "0",
+      "id": "81406080",
+      "t": "Episode 10",
+      "s": "S1",
+      "ep": "E10",
+      "time": "83m"
+    }
+  ],
+  "nextPageShow": 1,
+  "nextPage": 2,
+  "nextPageSeason": "81365088",
+  "lang": [
+    { "l": "German", "s": "deu" },
+    { "l": "English", "s": "eng" },
+    { "l": "Spanish", "s": "spa" },
+    { "l": "French", "s": "fra" },
+    { "l": "Hindi", "s": "hin" },
+    { "l": "Italian", "s": "ita" },
+    { "l": "Japanese", "s": "jpn" },
+    { "l": "Korean", "s": "kor" },
+    { "l": "Portuguese", "s": "por" },
+    { "l": "Thai", "s": "tha" }
+  ],
+  "last_ep": "81406071",
+  "resume": "",
+  "suggest": [
+    { "id": "81690671" },
+    { "id": "80123798" },
+    { "id": "81509440" },
+    { "id": "81243992" },
+    { "id": "81095101" },
+    { "id": "81707950" },
+    { "id": "81519223" },
+    { "id": "81616524" },
+    { "id": "81260283" },
+    { "id": "81159258" },
+    { "id": "81716080" },
+    { "id": "81463556" }
+  ],
+  "error": null
+}

@@ -1,0 +1,153 @@
+{
+  "paths": [["filteredCategoriesList", "genre-34399"]],
+  "jsonGraph": {
+    "filteredCategoriesList": {
+      "genre-34399": {
+        "$type": "atom",
+        "value": [
+          {
+            "genreName": "Available for Download",
+            "genreId": "downloadable-34399",
+            "unifiedEntityId": "Collection:1647397"
+          },
+          {
+            "genreName": "Hindi",
+            "genreId": "genre-58806",
+            "unifiedEntityId": "Collection:58806"
+          },
+          {
+            "genreName": "Tamil",
+            "genreId": "genre-61904",
+            "unifiedEntityId": "Collection:61904"
+          },
+          {
+            "genreName": "Telugu",
+            "genreId": "genre-63676",
+            "unifiedEntityId": "Collection:63676"
+          },
+          {
+            "genreName": "Malayalam",
+            "genreId": "genre-59849",
+            "unifiedEntityId": "Collection:59849"
+          },
+          {
+            "genreName": "Marathi",
+            "genreId": "genre-2190064",
+            "unifiedEntityId": "Collection:2190064"
+          },
+          {
+            "genreName": "English",
+            "genreId": "genre-2913045",
+            "unifiedEntityId": "Collection:2913045"
+          },
+          {
+            "genreName": "International",
+            "genreId": "genre-78367",
+            "unifiedEntityId": "Collection:78367"
+          },
+          {
+            "genreName": "Independent",
+            "genreId": "genre-7077",
+            "unifiedEntityId": "Collection:7077"
+          },
+          {
+            "genreName": "Comedies",
+            "genreId": "genre-6548",
+            "unifiedEntityId": "Collection:6548"
+          },
+          {
+            "genreName": "Action",
+            "genreId": "genre-1365",
+            "unifiedEntityId": "Collection:1365"
+          },
+          {
+            "genreName": "Romance",
+            "genreId": "genre-8883",
+            "unifiedEntityId": "Collection:8883"
+          },
+          {
+            "genreName": "Dramas",
+            "genreId": "genre-5763",
+            "unifiedEntityId": "Collection:5763"
+          },
+          {
+            "genreName": "Thriller",
+            "genreId": "genre-8933",
+            "unifiedEntityId": "Collection:8933"
+          },
+          {
+            "genreName": "Horror",
+            "genreId": "genre-8711",
+            "unifiedEntityId": "Collection:8711"
+          },
+          {
+            "genreName": "Sci-Fi",
+            "genreId": "genre-3276033",
+            "unifiedEntityId": "Collection:3276033"
+          },
+          {
+            "genreName": "Crime",
+            "genreId": "genre-5824",
+            "unifiedEntityId": "Collection:5824"
+          },
+          {
+            "genreName": "Fantasy",
+            "genreId": "genre-9744",
+            "unifiedEntityId": "Collection:9744"
+          },
+          {
+            "genreName": "Bollywood",
+            "genreId": "genre-5480",
+            "unifiedEntityId": "Collection:5480"
+          },
+          {
+            "genreName": "Hollywood",
+            "genreId": "genre-2298875",
+            "unifiedEntityId": "Collection:2298875"
+          },
+          {
+            "genreName": "Children & Family",
+            "genreId": "genre-783",
+            "unifiedEntityId": "Collection:783"
+          },
+          {
+            "genreName": "Sports",
+            "genreId": "genre-4370",
+            "unifiedEntityId": "Collection:4370"
+          },
+          {
+            "genreName": "Award-Winning",
+            "genreId": "genre-89844",
+            "unifiedEntityId": "Collection:89844"
+          },
+          {
+            "genreName": "Documentaries",
+            "genreId": "genre-2243108",
+            "unifiedEntityId": "Collection:2243108"
+          },
+          {
+            "genreName": "Shorts",
+            "genreId": "genre-3345391",
+            "unifiedEntityId": "Collection:3345391"
+          },
+          {
+            "genreName": "Stand-Up Comedy",
+            "genreId": "genre-11559",
+            "unifiedEntityId": "Collection:11559"
+          },
+          {
+            "genreName": "Anime",
+            "genreId": "genre-3063",
+            "unifiedEntityId": "Collection:3063"
+          },
+          {
+            "genreName": "Audio Description in English",
+            "genreId": "assistiveAudio-34399",
+            "unifiedEntityId": "Collection:81662944"
+          }
+        ],
+        "$expires": 1727809126661
+      }
+    }
+  }
+}

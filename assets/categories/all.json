@@ -1,0 +1,175 @@
+{
+  "paths": [["filteredCategoriesList", "genre-81291764"]],
+  "jsonGraph": {
+    "filteredCategoriesList": {
+      "genre-81291764": {
+        "$type": "atom",
+        "value": [
+          {
+            "genreName": "My List",
+            "genreId": "queue",
+            "unifiedEntityId": "Collection:81392577",
+            "genreType": "GALLERY",
+            "trackId": 257181073
+          },
+          {
+            "genreName": "Available for Download",
+            "genreId": "downloadable",
+            "unifiedEntityId": "Collection:1647397"
+          },
+          {
+            "genreName": "Hindi",
+            "genreId": "genre-107461",
+            "unifiedEntityId": "Collection:107461"
+          },
+          {
+            "genreName": "Tamil",
+            "genreId": "genre-61904",
+            "unifiedEntityId": "Collection:61904"
+          },
+          {
+            "genreName": "Telugu",
+            "genreId": "genre-107470",
+            "unifiedEntityId": "Collection:107470"
+          },
+          {
+            "genreName": "Malayalam",
+            "genreId": "genre-59849",
+            "unifiedEntityId": "Collection:59849"
+          },
+          {
+            "genreName": "Marathi",
+            "genreId": "genre-2190064",
+            "unifiedEntityId": "Collection:2190064"
+          },
+          {
+            "genreName": "English",
+            "genreId": "genre-107548",
+            "unifiedEntityId": "Collection:107548"
+          },
+          {
+            "genreName": "Action",
+            "genreId": "genre-81246427",
+            "unifiedEntityId": "Collection:81246427"
+          },
+          {
+            "genreName": "Sports",
+            "genreId": "genre-81906488",
+            "unifiedEntityId": "Collection:81906488"
+          },
+          {
+            "genreName": "Anime",
+            "genreId": "genre-100173",
+            "unifiedEntityId": "Collection:100173"
+          },
+          {
+            "genreName": "Award Winners",
+            "genreId": "genre-109179",
+            "unifiedEntityId": "Collection:109179"
+          },
+          {
+            "genreName": "Biographical",
+            "genreId": "genre-100417",
+            "unifiedEntityId": "Collection:100417"
+          },
+          {
+            "genreName": "Blockbusters",
+            "genreId": "genre-90139",
+            "unifiedEntityId": "Collection:90139"
+          },
+          {
+            "genreName": "Bollywood",
+            "genreId": "genre-100086",
+            "unifiedEntityId": "Collection:100086"
+          },
+          {
+            "genreName": "Kids & Family",
+            "genreId": "genre-2929193",
+            "unifiedEntityId": "Collection:2929193"
+          },
+          {
+            "genreName": "Comedies",
+            "genreId": "genre-1305630",
+            "unifiedEntityId": "Collection:1305630"
+          },
+          {
+            "genreName": "Documentaries",
+            "genreId": "genre-100148",
+            "unifiedEntityId": "Collection:100148"
+          },
+          {
+            "genreName": "Dramas",
+            "genreId": "genre-1307182",
+            "unifiedEntityId": "Collection:1307182"
+          },
+          {
+            "genreName": "Fantasy",
+            "genreId": "genre-81246426",
+            "unifiedEntityId": "Collection:81246426"
+          },
+          {
+            "genreName": "Hollywood",
+            "genreId": "genre-2298875",
+            "unifiedEntityId": "Collection:2298875"
+          },
+          {
+            "genreName": "Horror",
+            "genreId": "genre-2798234",
+            "unifiedEntityId": "Collection:2798234"
+          },
+          {
+            "genreName": "International",
+            "genreId": "genre-108681",
+            "unifiedEntityId": "Collection:108681"
+          },
+          {
+            "genreName": "Indian",
+            "genreId": "genre-100381",
+            "unifiedEntityId": "Collection:100381"
+          },
+          {
+            "genreName": "Music & Musicals",
+            "genreId": "genre-107449",
+            "unifiedEntityId": "Collection:107449"
+          },
+          {
+            "genreName": "Reality & Talk",
+            "genreId": "genre-2070390",
+            "unifiedEntityId": "Collection:2070390"
+          },
+          {
+            "genreName": "Romance",
+            "genreId": "genre-2797939",
+            "unifiedEntityId": "Collection:2797939"
+          },
+          {
+            "genreName": "Sci-Fi",
+            "genreId": "genre-81246425",
+            "unifiedEntityId": "Collection:81246425"
+          },
+          {
+            "genreName": "Stand-Up",
+            "genreId": "genre-100147",
+            "unifiedEntityId": "Collection:100147"
+          },
+          {
+            "genreName": "Thrillers",
+            "genreId": "genre-81246423",
+            "unifiedEntityId": "Collection:81246423"
+          },
+          {
+            "genreName": "United States",
+            "genreId": "genre-1163609",
+            "unifiedEntityId": "Collection:1163609"
+          },
+          {
+            "genreName": "Audio Description in English",
+            "genreId": "assistiveAudio",
+            "unifiedEntityId": "Collection:81662944"
+          }
+        ],
+        "$expires": 1726822051141
+      }
+    }
+  }
+}

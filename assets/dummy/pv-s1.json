@@ -1,0 +1,170 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "The Flash",
+  "year": "2015",
+  "ua": "U/A 13+",
+  "match": "IMDb 7.1",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "",
+  "director": "Mario Azzopardi, Bruce Bilson, Danny Bilson, Gus Trikonis, Robert Iscove, Aaron Lipstadt, Jonathan Sanger, James A. Contner, William A. Fraker, Christopher Leitch",
+  "writer": "",
+  "short_cast": "Grant Gustin, Candice Patton, Danielle Panabaker, Carlos Valdes",
+  "cast": "Grant Gustin, Candice Patton, Danielle Panabaker, Carlos Valdes",
+  "genre": "Action, Fantasy, Science Fiction, Adventure",
+  "thismovieis": "",
+  "m_desc": "Suitable for ages 13+",
+  "m_reason": "alcohol use, foul language, sexual content, violence",
+  "desc": "This fast-paced superhero drama follows the high-speed adventures of Barry Allen, an everyday guy with the desire to help others. When an unexpected particle accelerator accident strikes Barry, he finds himself suddenly charged with the incredible power to move at super speeds. While Barry has always been a hero in his soul, his newfound powers have finally given him the ability to act like one.",
+  "oin": null,
+  "season": [
+    {
+      "s": "1",
+      "id": "0FMT1CQKUUZKQ9KVDEIS6I9V7S",
+      "ep": "23",
+      "sele": " selected"
+    },
+    {
+      "s": "2",
+      "id": "0TO718B01VBLXQLH2WVUA8G83X",
+      "ep": "23",
+      "sele": " selected"
+    },
+    {
+      "s": "3",
+      "id": "0F83ZVZOZXZJ9HNBBTGEUU1UBF",
+      "ep": "23",
+      "sele": " selected"
+    },
+    {
+      "s": "4",
+      "id": "0LK801CIYY0MHVRU6Z865YOMR9",
+      "ep": "23",
+      "sele": " selected"
+    },
+    {
+      "s": "5",
+      "id": "0MU79DI3PMRSE23LMCNYWGBLF6",
+      "ep": "22",
+      "sele": " selected"
+    },
+    {
+      "s": "6",
+      "id": "0KE60DFUKB5W9SO90ILGHGTD9K",
+      "ep": "19",
+      "sele": " selected"
+    },
+    {
+      "s": "7",
+      "id": "0MYH5OBZMY33WO3EYL6Y8DOZWI",
+      "ep": "18",
+      "sele": " selected"
+    },
+    {
+      "s": "8",
+      "id": "0IVKWE4OPJ3TXRGOEJMQG055OQ",
+      "ep": "20",
+      "sele": " selected"
+    },
+    {
+      "s": "9",
+      "id": "0MALVDD8GF86V51MQ75WO2I9BK",
+      "ep": "13",
+      "sele": " selected"
+    }
+  ],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "0LJODE2YJXWRGF9JJWF2GFXY1S",
+      "t": "Wednesday Ever After",
+      "s": "S9",
+      "ep": "E1",
+      "time": "41m"
+    },
+    {
+      "complate": "0",
+      "id": "0LK7XFCPVQEQ256EZD68R9N5WJ",
+      "t": "Hear No Evil",
+      "s": "S9",
+      "ep": "E2",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0P42IEABZEHZ1NI0LB4QZ6AXLN",
+      "t": "Rouges of War",
+      "s": "S9",
+      "ep": "E3",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0O5TGE4EVWVHNYKIYV69DGS6ZQ",
+      "t": "The Mask of the Red Death, Part One",
+      "s": "S9",
+      "ep": "E4",
+      "time": "41m"
+    },
+    {
+      "complate": "0",
+      "id": "0HKUTM3E03N0IUE0CG32MW68AI",
+      "t": "The Mask of the Red Death, Part Two",
+      "s": "S9",
+      "ep": "E5",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0JZ4L1EU1D408MK3MXZU7OIXVK",
+      "t": "The Good, The Bad, And The Lucky",
+      "s": "S9",
+      "ep": "E6",
+      "time": "41m"
+    },
+    {
+      "complate": "0",
+      "id": "0LC9QBJITWBGXIZKAKI1AHXOY8",
+      "t": "Wildest Dreams",
+      "s": "S9",
+      "ep": "E7",
+      "time": "41m"
+    },
+    {
+      "complate": "0",
+      "id": "0O9RU2SK905JTH9KHFDM59SI7K",
+      "t": "Partners in Time",
+      "s": "S9",
+      "ep": "E8",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0QCDZ3Y2FKDFJQ3ICP3JBP8G4X",
+      "t": "It&#39;s My Party And I&#39;ll Die If I Want To",
+      "s": "S9",
+      "ep": "E9",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0I76T5IZ07Z4XXEC0BJSJVUQ1R",
+      "t": "A New World, Part One",
+      "s": "S9",
+      "ep": "E10",
+      "time": "42m"
+    }
+  ],
+  "nextPageShow": 1,
+  "nextPage": 2,
+  "nextPageSeason": "0MALVDD8GF86V51MQ75WO2I9BK",
+  "lang": [
+    { "l": "English", "s": "eng" },
+    { "l": "Italian", "s": "ita" }
+  ],
+  "last_ep": "0LJODE2YJXWRGF9JJWF2GFXY1S",
+  "resume": "",
+  "suggest": "",
+  "error": null
+}

@@ -1,0 +1,3519 @@
+{
+  "data": {
+    "pinotPreQuerySearchPage": {
+      "__typename": "PinotDefaultPreQuerySearchPage",
+      "id": "a3c600b4-a02c-4f17-b4be-3dbd4b8e902e/3///0/0",
+      "sessionId": "a3c600b4-a02c-4f17-b4be-3dbd4b8e902e",
+      "expires": "2024-09-15T12:10:03.245Z",
+      "trackingInfo": {
+        "__typename": "PinotPreQuerySearchPageTrackingInfo",
+        "requestId": "crj9cmpoud8i71smh1k0"
+      },
+      "sections": {
+        "__typename": "PinotSectionConnection",
+        "totalCount": 2,
+        "edges": [
+          {
+            "__typename": "PinotSectionEdge",
+            "id": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMSJ9",
+            "cursor": "eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsInNlY3Rpb25JZCI6Ij1leUp3WVdkbFNXUWlPaUpoTTJNMk1EQmlOQzFoTURKakxUUm1NVGN0WWpSaVpTMHpaR0prTkdJNFpUa3dNbVV2TXk4dkx6QXZNQ0lzSW14dlkyRnNVMlZqZEdsdmJrbGtJam9pTVNKOSIsImlkeCI6MH0=",
+            "node": {
+              "__typename": "PinotCarouselSection",
+              "trackId": 260452134,
+              "feature": "PopularSearches",
+              "id": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMSJ9",
+              "displayString": "Recommended Mobile Games",
+              "entities": {
+                "__typename": "PinotEntityConnection",
+                "totalCount": 19,
+                "edges": [
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MA==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|053992f0-511f-11ef-8365-12b8cbc69c75|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABZkTg6SC5Mp02vMPX8OItcO6XBTHNgxBB9VqS6dGXh-LPJ1gaO8ZPzubWqvpVtS6mNXcI9EqsCHSJwKnmUVCh_3gwU9uA9_zp52G6iULFIMxen1brujWJ8DHttDufDJrqBsR8w.png?r=f88"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81774710",
+                        "gameId": 81774710,
+                        "title": "Emily in Paris",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9297,
+                              "text": "sex"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": {
+                          "__typename": "SubGame",
+                          "universalLinkUri": "https://deeplink.netflix.com/com.netflix.ngp.netflixstories/game/emilyinparis?action=ShowDetailsPage&listing=emilyinparisnetflixstories&utm_source=netflix_android&utm_medium=app&utm_campaign=custom_product_pages",
+                          "displaySubtitle": "Netflix Stories"
+                        }
+                      },
+                      "displayString": "Emily in Paris"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MQ==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|4a947d70-99e5-11ee-8d4e-0e8fe8d3877d|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABX7raMU7Y6Hj8JbjME2f3KlRrKCMFnNRCQcB8jwWEepRM5T-xGH1OA_9IU1-9C27q5DV6ymwYnbZ1OY9d-OcTW1e1ZnIdJbn-ytNxCbvJJK_hVvsUgLywA9ozl4ofPIoxxhfSQ.png?r=ee1"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81697077",
+                        "gameId": 81697077,
+                        "title": "GTA: San Andreas - The Definitive Edition",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Action"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Adventure"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "18+",
+                          "certificationRatingId": 9269,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 18+",
+                          "maturityLevel": 1000,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9291,
+                              "text": "extreme violence"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9257,
+                              "text": "simulated gambling"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "18+",
+                          "shortDescription": "18+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "GTA: San Andreas - The Definitive Edition"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mg==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|b6ca0060-b0cd-11ee-978d-12b3991de025|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABfMYjKvKv0R2ywDI2qdRBvuoc5cLL460GNoPHOG4wvHciSk2AWvjG9wmhAnB2cpfZ4KMy_E3eTWj1gHxMA4ZAWTv1L951Llfd3MGPQyEcKLyoch2rxmICN6BTzsYNonY1BGHLg.png?r=4dc"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81665065",
+                        "gameId": 81665065,
+                        "title": "Pinball Masters",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          { "__typename": "EntityTag", "displayName": "Arcade" }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "7+",
+                          "certificationRatingId": 9270,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 7+",
+                          "maturityLevel": 41,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9287,
+                              "text": "mild violence"
+                            }
+                          ],
+                          "maturityDescription": "7+",
+                          "shortDescription": "7+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Pinball Masters"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mw==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|44119eb0-99e5-11ee-b3b7-0ef62ae1b2f9|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABRrMwwrB8tStCOOvbhKWcaaTMfe-jrU_NmiHEplU2f9V0WNqnaw0n4DNwrrRPIoXavc8wJ7B4kdMjq-qXEXuN6oniw3irhA6CT-wjZE2M8V6zklSKr0oO8CwkkJjpHif0KrlRg.png?r=0ff"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81697078",
+                        "gameId": 81697078,
+                        "title": "GTA: Vice City - The Definitive Edition",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Action"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Adventure"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "18+",
+                          "certificationRatingId": 9269,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 18+",
+                          "maturityLevel": 1000,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9291,
+                              "text": "extreme violence"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "18+",
+                          "shortDescription": "18+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "GTA: Vice City - The Definitive Edition"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NA==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|abb21730-493e-11ef-9e4f-12a2833a53f5|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABd8QYbXEc7Cekg0SGm9b_P1db52Z7oYk3TQlnQjcZzv1vL_XtXTRM1EI4TDStq-kk2ogQ6tIjM6h3ur9x6Vw7UaCZtWMBobdCSaXXzUm4Dep7mwbJ1CD_VjimWrS3wXAqUUBZ5Zupcd7wJhjMdbdGDm8kw_g8sWhJYz_y03R7DxXzGb4pUGPLEhsDTKGxcX0TXrjJGWCxaOuu-IgfiHQJnMsIZtyk_pO8CXMpuV9Ls93xzRun3BGDzrJeKqotfJaqz4hE-KeIPQwixiedyiURXvoBebFLuUdTSzJkwZBPP9SanckJF-FWdmYAg.png?r=f84"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81720311",
+                        "gameId": 81720311,
+                        "title": "Snake.io",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          { "__typename": "EntityTag", "displayName": "Arcade" }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Snake.io"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NQ==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|584996a0-4861-11ef-9e4f-12a2833a53f5|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABXRacFqE1S60DujKA7lpMUtalz-0WmORG2BOSbuzWFYg_9UhYyT6oMeDZUsyJc8TXVtMx72hW1butdEma1KupHSZmCBGQTU2lFKBIT3nkrKiF1Oip66_b5KminXlrS8KTn_GtA.png?r=17d"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81754209",
+                        "gameId": 81754209,
+                        "title": "Too Hot To Handle 3",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9297,
+                              "text": "sex"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Too Hot To Handle 3"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Ng==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|f568a9a0-238e-11ef-b601-0afff764f1f1|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABRl_1eqmhZnxPjfULVqbG6avNBqSOrM4rTC_bxUUSSN2Cif7EVPUgcP_WnxsROdd8YuyF-iYeKrTAH5_kNPeR5B6TlA1QB0astjlKZd4SBVSs2TYv2O7Jyp5qMcmOG4HmQPhew.png?r=d14"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81716679",
+                        "gameId": 81716679,
+                        "title": "Ludo King",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Tabletop"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9259,
+                              "text": "users interact"
+                            }
+                          ],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Ludo King"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Nw==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|1347c400-2462-11ef-9cec-0afff49032cd|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABS2JYdmuByeEeNI2yE2WLSrTe4P8l3DLFO46lYpb6XjslgPFAG7Fz3saT6HcoQxmCxlafufOUrMeOsENjfAjPDucNYMyWQi9wLyLe9avUBrTz633ieA_oo3Rt5-sjwUHEchvOw.png?r=3cd"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81906329",
+                        "gameId": 81906329,
+                        "title": "Hearts",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Card Game"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Tabletop"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Hearts"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "OA==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|024b62a0-ce6f-11ed-b988-12b33273a955|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABd5zPUwM2PAGH0OLsIhfIxRvkZY-2FUW-pk-TBYgR45vSx9l1gXBmze0Xy4yRD-oi0HuWGoP_zj69gHiGNgfX3NCiUffznKZ9XkzT_a43dKDEhphum7Kf5CbVeY0m0XhdFLiHA.png?r=750"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81569945",
+                        "gameId": 81569945,
+                        "title": "Raji: An Ancient Epic",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Action"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Adventure"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "12+",
+                          "certificationRatingId": 9271,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 12+",
+                          "maturityLevel": 80,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9295,
+                              "text": "moderate violence"
+                            }
+                          ],
+                          "maturityDescription": "12+",
+                          "shortDescription": "12+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Raji: An Ancient Epic"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "OQ==",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|734cafb0-8ee3-11ee-97a2-0e0482b85b7b|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABb0ZEkwSRfQwTPwWLuNWEAikk6ajYgq7HBkKdtf_jc9w4kraXFoDDtJAYlTlbsQcr2DOGloiKIuHHPinC_emZ08I4x6ys9d8qVhx2iyh_RBQU0_lMtKFLm24vZ6hE8MP1N9Gag.png?r=fb2"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81665069",
+                        "gameId": 81665069,
+                        "title": "GTA III - The Definitive Edition",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Action"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Adventure"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "18+",
+                          "certificationRatingId": 9269,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 18+",
+                          "maturityLevel": 1000,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9291,
+                              "text": "extreme violence"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "18+",
+                          "shortDescription": "18+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "GTA III - The Definitive Edition"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTA=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|81ef56d0-be0a-11ed-8aa2-0aeed301fc6f|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABbrjabeFvn9Z0-0ALoKVTXTP7nNcQe_kzCOUnZwViIgg06QgLjHys6LueBh4OEpfkTaMZpHe4t2H_lie3IIsLbtSYkDHmJQYsOiG9Wa7sjm05h9nPq5njRMU0n_rUcwNwyrX0g.png?r=275"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81518693",
+                        "gameId": 81518693,
+                        "title": "Wild Things: Animal Adventures",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          { "__typename": "EntityTag", "displayName": "Puzzle" }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Wild Things: Animal Adventures"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTE=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|235f6f00-621b-11ee-9e4b-12da0d05e2e5|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABbQyQ5hlT4mcUiJwa4XUBQMpv_3Z559EwTSARIUfLaxtTHwFOXY6Wf_trnu6TBEpJhVrAcHclhUfGgMTRh_gw0DPv1VfFFOzUEc6ld4tZSYkrIeDyIjVLWk94L71rC1v4yhJXw.png?r=06a"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81636736",
+                        "gameId": 81636736,
+                        "title": "Farming Simulator 23",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Simulation"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Farming Simulator 23"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTI=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|f4cbbd80-cf5b-11ed-bef4-121e308a72c1|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABaHUao2IzycXWsSL6V5zocgZU4isiekIuEAsbJZIvPRIpwXGiw9aF9c5tnUJK1jMoqUqmYbTwBkDW6QMaW83ucD2StQRZX3mSpHAeVateJBSBP3YUUb6qUYO96BjFBT-yCVojA.png?r=2a8"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81572158",
+                        "gameId": 81572158,
+                        "title": "Too Hot to Handle: Love Is a Game",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9297,
+                              "text": "sex"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Too Hot to Handle: Love Is a Game"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTM=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|ac92ad90-cf5f-11ed-bc63-12b9130bfca3|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABabkjtla02LyUd-1L0R5_dwxQVR6x9LMDh-TlYExbflsx_jT-Xo_4M7pxSunN0Yy1mSPEWLbq6Gpz0L30zbuiE7U4OcaIaCSDEyHIAJwk2Bug5wrNjeIPF4oknPfDVuwddAOJQ.png?r=745"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81616792",
+                        "gameId": 81616792,
+                        "title": "Narcos: Cartel Wars Unlimited",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Strategy"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "12+",
+                          "certificationRatingId": 9271,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 12+",
+                          "maturityLevel": 80,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9295,
+                              "text": "moderate violence"
+                            }
+                          ],
+                          "maturityDescription": "12+",
+                          "shortDescription": "12+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Narcos: Cartel Wars Unlimited"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTQ=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|0827e960-202b-11ee-9ce8-0efc9484da97|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABVtZW5iz8rW5OGOtmSseVPej3nlcVsCsak1-l2mCiZDVq_ZABK3KeSQkgDlnivVf-ELuaQVUza89Rf6mfz5p_GFdIYUjW1yypH8OmbT45wg88mOeQ0gZQcJuUsCmgVp_sBimrw.png?r=bc4"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81685715",
+                        "gameId": 81685715,
+                        "title": "Too Hot To Handle 2",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9297,
+                              "text": "sex"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9301,
+                              "text": "use of alcohol/tobacco"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Too Hot To Handle 2"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTU=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|4704ee60-8289-11ee-b50d-0e9fbc23c17b|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABQK_C4iXplhg8L5Bi9Hsd2YO27bQFNRxz2QrZPQr51b83jSJ8uTGN7yc47Ovq95sjUNW20FI_RCtOXh6HnzUM17HiMFMPwoqh452PAArmtNEOAMfZl7zF3eD6jG9DQjMmQ_zng.png?r=644"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81738613",
+                        "gameId": 81738613,
+                        "title": "Money Heist: Ultimate Choice",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Money Heist: Ultimate Choice"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTY=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|2d0c4d30-801a-11ee-899f-0e7773e4651b|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABb2vZGHruGXh4_h6YcB83L0ABH9BtTjwl_ow2R7BnxKPkFI5Mnv1LM01CeA6J2yZsFZsKiZgsd_f_lAso-hMF9qecS-3Fyz_YoUjkpGj3vwE3Y7a9pgOwoWiYqj-yBRCaCFKSg.png?r=c2f"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81629644",
+                        "gameId": 81629644,
+                        "title": "Football Manager 2024 Mobile",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          { "__typename": "EntityTag", "displayName": "Sports" }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "3+",
+                          "certificationRatingId": 9268,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 3+",
+                          "maturityLevel": 35,
+                          "reasons": [],
+                          "maturityDescription": "3+",
+                          "shortDescription": "3+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Football Manager 2024 Mobile"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTc=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|195091d0-8271-11ee-b9ea-0ab921b4aaaf|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABcJJNCpt3l7fdF9VGDuoaZ4PB7Uac1C9iD8c66RuXl59R4XJ0K7miKmRlaDaL4ZyWHobcyv9io2Ie1eETxwhO-DK4RQPcOo4iMW5zBD--qr9Bl9r240rJ6neQdeBMxpypmk5HQ.png?r=261"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81569948",
+                        "gameId": 81569948,
+                        "title": "Storyteller",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Puzzle"
+                          },
+                          {
+                            "__typename": "EntityTag",
+                            "displayName": "Interactive Story"
+                          }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "16+",
+                          "certificationRatingId": 9267,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 16+",
+                          "maturityLevel": 110,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9292,
+                              "text": "strong violence"
+                            }
+                          ],
+                          "maturityDescription": "16+",
+                          "shortDescription": "16+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Storyteller"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTg=",
+                    "node": {
+                      "__typename": "PinotAppIconEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "APP_ICON|1e8a6871-7d7b-11ed-9623-124c3d6e8225|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/3tIzRwkAb2_dHzsJGJdnVhUXiGQ/AAAABSMBE5MY1C3Tmn_VNGMbYQSp70f8BcYbQ-EGIhdTarwDwb3XB26S1fKGxJkNQA3mrJK6yI76xVkPxWuMK6m5Q_YJFuH7hYFOxZLV23-grsE4wymR-RftBOeMVQK8u8LhFyEUMg.png?r=0f7"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Game",
+                        "unifiedEntityId": "Game:81557928",
+                        "gameId": 81557928,
+                        "title": "Into the Dead 2: Unleashed",
+                        "releaseState": "RELEASED",
+                        "taglineMessage": {
+                          "__typename": "TaglineMessage",
+                          "tagline": ""
+                        },
+                        "tags": [
+                          { "__typename": "EntityTag", "displayName": "Action" }
+                        ],
+                        "contentAdvisory": {
+                          "__typename": "ContentAdvisory",
+                          "certificationValue": "18+",
+                          "certificationRatingId": 9269,
+                          "boardId": 9146,
+                          "boardName": "GAMES-IARC",
+                          "i18nRating": "RATED 18+",
+                          "maturityLevel": 1000,
+                          "reasons": [
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9291,
+                              "text": "extreme violence"
+                            },
+                            {
+                              "__typename": "ContentAdvisoryReason",
+                              "iconId": 9289,
+                              "text": "strong language"
+                            }
+                          ],
+                          "maturityDescription": "18+",
+                          "shortDescription": "18+"
+                        },
+                        "subGame": null
+                      },
+                      "displayString": "Into the Dead 2: Unleashed"
+                    }
+                  }
+                ]
+              },
+              "sectionId": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMSJ9",
+              "sectionTreatment": {
+                "__typename": "PinotStandardSectionTreatment"
+              }
+            }
+          },
+          {
+            "__typename": "PinotSectionEdge",
+            "id": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMiJ9",
+            "cursor": "eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsInNlY3Rpb25JZCI6Ij1leUp3WVdkbFNXUWlPaUpoTTJNMk1EQmlOQzFoTURKakxUUm1NVGN0WWpSaVpTMHpaR0prTkdJNFpUa3dNbVV2TXk4dkx6QXZNQ0lzSW14dlkyRnNVMlZqZEdsdmJrbGtJam9pTWlKOSIsImlkeCI6MX0=",
+            "node": {
+              "__typename": "PinotListSection",
+              "trackId": 255639042,
+              "feature": "PopularSearches",
+              "id": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMiJ9",
+              "displayString": "Recommended TV Shows & Movies",
+              "entities": {
+                "__typename": "PinotEntityConnection",
+                "totalCount": 44,
+                "edges": [
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MA==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|9dc2bad0-4ba0-11ef-a1a1-1283bc7bc5d7|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd1Udz9s8LemkbW4xI2bfR7m9bZn6T3Li1ynmK15TneBtG9zK3Cg2z0f-1iN_yKHVk196jaana1VrJmhDXSmN4Em5M5E7UtRToD1p1s04yIEqhpHdTwSG0ISgCOp1G9j1B4ofdT6lPZCy-sIvz_cSxVCP92qnT658LI.webp?r=d42"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81073022",
+                        "videoId": 81073022,
+                        "title": "Fast & Furious Presents: Hobbs & Shaw",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-08T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 8160,
+                        "runtime": 8160,
+                        "logicalEndOffset": 8152,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Fast & Furious Presents: Hobbs & Shaw"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MQ==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|48702560-693f-11ef-8084-12dd8872e44b|en,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdwy07Js6h229-NAhibC3B-C7Nt-dc74etHaRSsq2w3wCJF6pObzEIgBrV_DIfTgkK2lbR8APV4utPJ7asfxzH8smPai-JM9lWGuFcjV2VB1P8xu7CFAmFHyGMYYAQcOLJirIUgC0MfjX8d1rogvZxP5aJkyV94es7RUOgfahobpKDnvQwbG7_puthA5DyQ5zo0JdneBco4BpfRFJnLqkArXTZE0kXsKLg628UVuGOhQQjrmDTM-iFZB2iphK9ZVsapAmThiOQufKGSEOYxTw5geQVfc2YAt3LBNRr2qZLYCXumPSHxcFelhYdrrB5S5QayZLrZV51weFtDqDr0vekDyTTnMJNbrjHAiZGkND1om3bX2hF8.webp?r=78e"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81777258",
+                        "videoId": 81777258,
+                        "title": "Sector 36",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-13T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 7440,
+                        "runtime": 7440,
+                        "logicalEndOffset": 7034,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Sector 36"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mg==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|9740e2f0-ca3a-11ee-811b-0a18168d3437|en|msr|81707951",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd5rrMIceQLjpchDvlGEBRp0aVehSMKjRue-WY0cNQA7QmMIrXHARxLWwESRAUXbqH_X9SQ5bR8r9yuFL36h-ODr2lX_UZtogzZfMjd7tRehUxzOgElDqs8dbVF4I0gqXT2r.webp?r=3e4"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81707950",
+                        "videoId": 81707950,
+                        "title": "Queen of Tears",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81726576,
+                          "unifiedEntityId": "Video:81726576",
+                          "title": "Episode 1",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-03-09T14:20:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 4653,
+                          "runtime": 4653,
+                          "logicalEndOffset": 4591,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81707950,
+                            "title": "Queen of Tears"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81707951,
+                            "number": 1,
+                            "numberLabelV2": "",
+                            "longNumberLabel": "",
+                            "title": "Limited Series"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-03-09T14:20:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Queen of Tears"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mw==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|fa395450-252a-11ef-a229-0e625c17d325|en|msr|81728544",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXGTNAXaAoJypIdc3xVTNV374mLWMx8gV2sbgkx5xfBF9MD9yEqH2takG0QI3jbQSktrqqIRVeoYZ8klG9Y9vQbz_ICR0Kcr8DLS90OyMuoyQGpcn_ZJiNMzBTFkgwXH84hi.webp?r=a61"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:80232398",
+                        "videoId": 80232398,
+                        "title": "Bridgerton",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 80232920,
+                          "unifiedEntityId": "Video:80232920",
+                          "title": "Diamond of the First Water",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2020-12-25T08:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3513,
+                          "runtime": 3513,
+                          "logicalEndOffset": 3270,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 80232398,
+                            "title": "Bridgerton"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 80233012,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2020-12-25T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Bridgerton"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NA==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|65d25ce0-e181-11ee-b4db-12fc17339c49|en|msr|81404196",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABcWhQOeIL1rRUahtqxOwr8efAVy_pJ_0NpxT-k3HDJMb81rh-aL2UTaG-mk247I8glu_KW_KfsTuNYvYr8yzc8KG-J6av8hOWcLK-9QM32d0kIpsGsYJYlH5GR8vCK9OGdS1.webp?r=662"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81279322",
+                        "videoId": 81279322,
+                        "title": "Unicorn Academy",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81442667,
+                          "unifiedEntityId": "Video:81442667",
+                          "title": "Unicorn Academy",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2023-11-02T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 4523,
+                          "runtime": 4523,
+                          "logicalEndOffset": 4209,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81279322,
+                            "title": "Unicorn Academy"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81279323,
+                            "number": 1,
+                            "numberLabelV2": "C1",
+                            "longNumberLabel": "Chapter 1",
+                            "title": "Chapter 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2023-11-02T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Unicorn Academy"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NQ==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|45aeb640-a0c6-11ed-afe0-0a0b419ff857|en|msr|81277886",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABanp5VFC7vfh3VOjilZPxU_eHIC8u11nTn4R5Qn4N5zmsgzfrQgn_25tt4X1A9pO45UDHCCWw4_k1a85ayrOPawY2noSWhAnzya_uKD4oh-pWWlTOIU2Q-r_9qeDHm8AX2b5.webp?r=f95"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:80991848",
+                        "videoId": 80991848,
+                        "title": "Sex/Life",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81056389,
+                          "unifiedEntityId": "Video:81056389",
+                          "title": "The Wives Are in Connecticut",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2021-06-25T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 2764,
+                          "runtime": 2764,
+                          "logicalEndOffset": 2548,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 80991848,
+                            "title": "Sex/Life"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81001045,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2021-06-25T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Sex/Life"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Ng==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|639e0da0-3dcc-11ef-9070-0eff3b03067d|en-IN|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABeE45X9r4g9rBA-lVYBmXb_pMrVDCrsFI2j7LqAr5tdHa4lF-DCOEAFtHcszl7tqFkt1kNTBoSRgY5RlxB1Z-HtLukxITDK5Ulk.webp?r=44e"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81690671",
+                        "videoId": 81690671,
+                        "title": "Maharaja",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-07-11T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 8455,
+                        "runtime": 8455,
+                        "logicalEndOffset": 8310,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Maharaja"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Nw==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|fca21db0-58c1-11ef-9fec-0e7b42d6e287|en,BADGE|newcontent:new.episodes|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWj9gZ8Ab2aAmZgPYx3kNPdnuZHbN3TMQPJr56UohMi2AeFmm2hGow2JG85t7IAqT92VTYN_4qabJDz4bwPQsPT7Idcq96HVHUgI9Te1BuekoI6FuJTOyh4IhQGVwSu5OpdYXXh4fa5v8VXq5n2AnJT1RLBmhRd8-ZFQ5Z0dMTYF5XAqOmbg49PfT0iPlOR0dJM0c1VXHz4sBDm2-GmRLumzpiItjzBQaP03Ggpo3ac8OAfD50Is8JN3EOpfaKmHPMujwOZg5t2Z6rSmWHf0ckc2ym7jSllB39AhaGgwadERsSZDbWxZOu21N3dWuwOC6UKUWS6Gf_z9C4KNBNMyYkCOmnweZMK9TebTcCI5DkMADhZN.webp?r=4f9"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81037371",
+                        "videoId": 81037371,
+                        "title": "Emily in Paris",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81289281,
+                          "unifiedEntityId": "Video:81289281",
+                          "title": "Emily in Paris",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2020-10-02T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1825,
+                          "runtime": 1825,
+                          "logicalEndOffset": 1675,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81037371,
+                            "title": "Emily in Paris"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81275633,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2020-10-02T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Emily in Paris"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "OA==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|3ab7ff60-170f-11ef-81e3-0affd9b06565|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABT-v-SrzoshXcF3PwS6wXuqmJRy4nGgRzQx_XmFXc091gZZCIX_9qDceRiOJ5su_NKSH3tUl_L0yvCzy4HmV-kHKBsA25RAJO4s.webp?r=5b4"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81245964",
+                        "videoId": 81245964,
+                        "title": "365 Days",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2020-06-07T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6911,
+                        "runtime": 6911,
+                        "logicalEndOffset": 6585,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "365 Days"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "OQ==",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|28901600-1369-11ef-b3cf-0e1340e8a897|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdYbZfVBb5aMz9v-JYQ7EUZYq78EJT6UE64-7gIuGq1NOuhSgX5ZB0fa6ZPP1BazbCXyx5hvo7Q1J7Gt969zpcH3nvMkpeeZQ8w.webp?r=cbc"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81672746",
+                        "videoId": 81672746,
+                        "title": "Crew",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-05-23T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 7232,
+                        "runtime": 7232,
+                        "logicalEndOffset": 6671,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Crew"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTA=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|fb32cb40-d564-11ee-995a-0a39767e884f|en|msr|81265804,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABafkABP31HSY-qvdJgZYF_Behsb6luS_x-cWMRcXPBz5SRaSgEOaLuDfxCOt12OvY7heVEf8e1lz5O9rdmC0LCZqmYPEvRM19MjD0lkOnwBo2t2owbfOcLyUrYGRnKyeMvxm8IzdQCsZMY4MDzTwlqlk-WchI3Wr-CFI_I_U7LYLKmhd0u_w1tO4_5AnC2X6toL-MMjgcoSj9aUzMk1bpWoJbXXA4qMANnl1KxfeRD7M7IYaVfurNjLQqCbV7UrEwtAwAdFGkzp-j5yBXgzfQdoy6_1RKHoDhyLXnffWChsqUvRIIyoYzzxEbwvnWA8ljPzIeLPxmn_M0RFiTrAFNSMR3pot8uXCbk8yZKyLqVsS0otVNGw.webp?r=533"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81265803",
+                        "videoId": 81265803,
+                        "title": "IC 814: The Kandahar Hijack",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81307999,
+                          "unifiedEntityId": "Video:81307999",
+                          "title": "Episode 1",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-08-29T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 2340,
+                          "runtime": 2694,
+                          "logicalEndOffset": 2343,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81265803,
+                            "title": "IC 814: The Kandahar Hijack"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81265804,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Limited Series",
+                            "title": "Limited Series"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-08-29T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "IC 814: The Kandahar Hijack"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTE=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|72a99ab0-bc0c-11ec-9eb5-0e101569b8f3|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABYnyDu4LOci9MMrZDt9pz8RKb-GFCY3stPwjJkxpBjpgb7G5fA97cOiRAR4nXKdHmIwedeFDcB7HcjJq1FTh_RN3JNvGZcJNUlUWWocaH9p2_BVfVA9EBw5kJZmLmJkoXVUn.webp?r=37d"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81397576",
+                        "videoId": 81397576,
+                        "title": "365 Days: This Day",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-04-27T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6704,
+                        "runtime": 6704,
+                        "logicalEndOffset": 6390,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "365 Days: This Day"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTI=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|828b89a0-f6f4-11ee-b450-0affe7c1dab3|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTsGxXoq2LXdJZOVt5ZOdS7bFBl3C-ml4zw1KWAtwscw2NFXzZpqn2morXAmj8aJmJzfPM8vTpyJtJ5ZUqO6SDzwecFD7Gck_ko.webp?r=7a1"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81760391",
+                        "videoId": 81760391,
+                        "title": "Laapataa Ladies",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-04-25T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 7320,
+                        "runtime": 7421,
+                        "logicalEndOffset": 7077,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Laapataa Ladies"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTM=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|fd74fe10-f237-11ee-8ff1-126f30bd56b5|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABVZzUMbXv8K64STOGyWvI9psNopNMNLF0QzZzdbcW9z_X9dVM1Q8DwAfsRRlxq9SEO17Mvj7geW-HYMlIot8Pn6rX1saAWGZ6UQ.webp?r=c6f"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81607695",
+                        "videoId": 81607695,
+                        "title": "Barbie: A Touch of Magic",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81607697,
+                          "unifiedEntityId": "Video:81607697",
+                          "title": "When Barbie Met Peggy",
+                          "hasOriginalTreatment": false,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-03-31T18:30:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1394,
+                          "runtime": 1394,
+                          "logicalEndOffset": 1295,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81607695,
+                            "title": "Barbie: A Touch of Magic"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81607696,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-03-31T18:30:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Barbie: A Touch of Magic"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTQ=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|0c047240-17b9-11ed-b5a9-0a81af797af9|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXXJQZJDuWlViTyLMHoNzNeDgdRYvmFQlFjzFSC9pufz_4F3dEnfMRlNIgHfAwJkv1pWAQZy3HEFW9xpyE6rDG2IAW8tONic9cuqxiufqbPFkZm3KPidKnLsDzEvZ0dygz7y.webp?r=586"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81397579",
+                        "videoId": 81397579,
+                        "title": "The Next 365 Days",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-08-19T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6827,
+                        "runtime": 6827,
+                        "logicalEndOffset": 6512,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "The Next 365 Days"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTU=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|84d177d0-16fa-11ef-9393-0afffbd1ec27|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdhMCEtkjqHlOmasoeKucn0xyATVzmHUXlyRVAfXziAIGvrGSsQrDFDK7kH8nJhP_U-7miBRY9-AderRFQxGkDCqYwSAiJUAEhyfy2P0BTRmpbJEnP8iDtLZjbnQq0u7S76B.webp?r=cee"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81009946",
+                        "videoId": 81009946,
+                        "title": "Gabby's Dollhouse",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81688073,
+                          "unifiedEntityId": "Video:81688073",
+                          "title": "Happy Birthday, Gabby!",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-08-05T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1458,
+                          "runtime": 1458,
+                          "logicalEndOffset": 1364,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81009946,
+                            "title": "Gabby's Dollhouse"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81686558,
+                            "number": 10,
+                            "numberLabelV2": "S10",
+                            "longNumberLabel": "Season 10",
+                            "title": "Season 10"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2021-01-05T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Gabby's Dollhouse"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTY=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|5037e280-5e02-11ef-adab-1239d9c8991b|en|msr,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQGhM9toHctVBjm1pMQYEnYNPRjVOpL6TEC0Q6j8rp6p9psrPfQTDMx3KmtDrSDkdw1i2C4HneGSilHCYCTq-sGXWMy4m2elk2xh54kKAEAa02Xumf5pCL0uToLdnOkaBX7FVElav9cjsnhYH92Fw8M1Sp9Avv0mPqnLsDwVpJ57wyA3biCy_I1tzeLrQOmXeOLg8Bho_5-kdlrnADf__ipXdaRkjwW0OqKrFvC5T_ullLn7ON5DHctFYuiHhXcERm2SUt5p9T4m0hngNdTQL7zRuRLBWa61l1SnqZbnx0Uug47syXZfMEXiH3UGiDGsctvJhjY5Kru0fv7VjNynPpc.webp?r=22e"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81726031",
+                        "videoId": 81726031,
+                        "title": "Kalki 2898 AD (Hindi)",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-08-21T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 10560,
+                        "runtime": 10560,
+                        "logicalEndOffset": 10205,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Kalki 2898 AD (Hindi)"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTc=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|09b54310-f2c4-11ee-93d7-0e318ab8998f|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABYedep2S1qx1DocB05hKqDgy9zqKYyE1XVkMY8TwBIlHfu1NRH0VvX3l_Wk4jPPBxQV7Iw6HVlzIvRz68ewflOAhcjmHTRuGdDY.webp?r=fed"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:70153404",
+                        "videoId": 70153404,
+                        "title": "Friends",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 70273997,
+                          "unifiedEntityId": "Video:70273997",
+                          "title": "The One Where Monica Gets a Roommate (Pilot)",
+                          "hasOriginalTreatment": false,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2023-12-30T18:30:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1364,
+                          "runtime": 1364,
+                          "logicalEndOffset": 1359,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 70153404,
+                            "title": "Friends"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 60030455,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2023-12-30T18:30:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Friends"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTg=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|dd4bc1d0-2f0b-11ef-baba-12afc32f3609|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXc7sy5UJ_jWlkfVMoOzcgNOCDnFO6mOfevox0hCOjgOGy3ELRJcUbozH3Ulsp_GimitblVRepLd8tF2k2Ksx5cfU6dLdh_PELGeumQPkkRUtphKvhP--JNI5M-lLHkvGC9X.webp?r=7ed"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81730408",
+                        "videoId": 81730408,
+                        "title": "Wild Wild Punjab",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-07-10T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6645,
+                        "runtime": 6645,
+                        "logicalEndOffset": 6163,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Wild Wild Punjab"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MTk=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|794ae2b0-55e4-11ef-b07e-12aa97a24b89|en|msr,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQS28H8oPGxXahXESfMv7OkLaQzC7ep_BMkUPOUbumnUfdwhqpW-8y5Nz8b6g0nYK7DJyPxZBHXQ7LZMUvgyVCgjfqI2_PjVzRqxtlA0_xtjakTLPPt5IlifjuoUvqFoWYuu8GqkpeURIXFfZExCBPgMfbrtyS2tlIMzdjrsqCOg80XzenbthmQ4oZYYhAUi3hmstu9IgsGrjJHWrAOTdus34n4wYrDEPXuaxT-knqInPlW1-M1ZQyTDSZIyPm7axWxLRR_SM5-QqjjbJnWImLwq1i8LObZQZSpclRtusK5qlZLmt8YhO1BwoIcG5aGGLnXhhDRZpdE1ZfItWnqFXdU.webp?r=89b"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81762792",
+                        "videoId": 81762792,
+                        "title": "Bad Boys: Ride or Die",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-05T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6958,
+                        "runtime": 6958,
+                        "logicalEndOffset": 6954,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Bad Boys: Ride or Die"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjA=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|a2cbaa60-5c20-11ef-adab-1239d9c8991b|en|msr|81474159,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABbwwCsriXmuYClBvpZf0kyH4PcxY0Nj4Jwy8yR-d7zFdc8iHp44UkF6GY7jN4efC9DgkbrO4Q8ocsAISECkFzqeGNndzWcVg6V-s1Jvtjp7_9h8ko0TP1G0GItVAL_mIkKEyuUNgplqUtloWE5DJtjW68w_oa6XLmyadHGE0qWIHJEw3aFS_rQ4A2-arUCdLdUMvZHfcOQprv7WOrXH2FmyhIPu4ZtRY_K_LeqYRX7bu9MV0G9Eid98TEoXR4MYzd7H4cUFEf9lDk9eLBPo00W323YOa5QKFxpi4YvjzsQcl_uRmPb1BXOXS21LnLzp_XvtIP3bjvv0n0p7restCnBmQbLyCHikz3eQTarBGTk5Y0uzjhFo.webp?r=f23"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81474158",
+                        "videoId": 81474158,
+                        "title": "The Perfect Couple",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81572240,
+                          "unifiedEntityId": "Video:81572240",
+                          "title": "Happy Wedding Eve",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-09-05T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3190,
+                          "runtime": 3190,
+                          "logicalEndOffset": 2949,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81474158,
+                            "title": "The Perfect Couple"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81474159,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Limited Series",
+                            "title": "Limited Series"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-05T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "The Perfect Couple"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjE=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|33964210-66af-11ef-838e-0eaef43d7ad3|en,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABaE-nVYRiXWXtOPOGVXJ6_Q8Z5wE95XC74cGbAxIUMasngWsOVygqwZt-1tTPpt74JoQBs566qSQvx1s2h-4olIihdwWEApKJpwUP_JTw_ZryjmzumPpRltTX4j51kJ2-kfiLu3Gz1KERPThEuz23-EFPKzC0MV4eaRwEBiV3rT8HQoZ0JSU4glRtQYR3olZHDEPOOF98MPeG7g3ABBkKduyHFdcdZaSOja22x6muf1keqmGARb6UI_mBt3o0eaoSfmN0CfmfBb1kw2lk-jML1ovpejs-nDuDR9kmnSxJlhO3UXnLGbvmPkDH1l3nFa-FPwGwd_ldY6RmJBOqySUHvY.webp?r=e1c"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81707601",
+                        "videoId": 81707601,
+                        "title": "Adios Amigo",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-05T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 9373,
+                        "runtime": 9373,
+                        "logicalEndOffset": 9240,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Adios Amigo"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjI=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|47e50db0-6e74-11ef-af24-0e40106f98c5|en|msr,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTfEbF_286mS9bwnSDcEWvi60uzFD37p0haJushCkNzelibp9o9iQrJ-HFSFrWzCkEVB6LGjRGBB9qnDcnuR6hNb4Qvi7iWKlRNrftuEtHCuJHNLL9sl0xKW2h8EVVyYHvUGXI4IGPAFqNcZniGKuwicA5QvvM6IEoe4aYUckO7uLz94WMmPMh6Bel1wKf8k1l2xJsHntr4o8javzX9Av-kl_g_9avXmlTXY9AS09rgQFVGwtfIVxCRIXCAn1KCBabBuxyVJajipa3ZvoDAMV9dQafYIFMgxT--rrloPIN7fRIvC2WYUbARYwyU7qJ_1TCsfpHFEfaZfWgzrliusFkg.webp?r=b7f"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81918754",
+                        "videoId": 81918754,
+                        "title": "Mr. Bachchan",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-11T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 8980,
+                        "runtime": 8980,
+                        "logicalEndOffset": 8980,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Mr. Bachchan"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjM=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|49fc6690-353d-11ef-b342-128eff6e8f0f|en,BADGE|new.season.coming.soon|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABV3UV1Vt5Kl1YlbTaq_PAqUs0XLDctL5n-lcUnassu3KiiK2wAakdp9zV3dLUDdNovaODEcrBgUwpJcFylN4sfUhq9lN_tprdUtels8waE3uq6_PmCEq_eWRuj4hnx24EUeq-S5XhGmuj9m6K3_3RPNEwdp0n7qCrJC42YoOkVgZGWBL_r8W-cjP0mjNEj9JSXA6ZA9bH_hJSU_e0iqRb_f3tzNoCMFLDI8d4du-kOzz9-Z83bqjtBptBLc-lBwqybeure1uOsUQE5eslS-VmyDH7nvjp_NiZQ8AhUgWPT3NTHmUBH_DwbCgK58sQ_AJDY9Ro95eOIxgh9RXbkW_DCHcTtx8UXlMu--qFvBc__HlqPaSuDTThCTccxm561q_2k_UeV81v0LtmEwC89YQyZVh_tm2K-m5-8SeMbqy32x9lmaZY4Wv9xqTGxvAfzR0XGMQBKQYdA.webp?r=92b"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81737430",
+                        "videoId": 81737430,
+                        "title": "The Great Indian Kapil Show",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81742966,
+                          "unifiedEntityId": "Video:81742966",
+                          "title": "Kartik Aaryan and Khandaan",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-06-22T14:30:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3966,
+                          "runtime": 3966,
+                          "logicalEndOffset": 3899,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": true,
+                          "number": 13,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81737430,
+                            "title": "The Great Indian Kapil Show"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81737431,
+                            "number": 1,
+                            "numberLabelV2": "",
+                            "longNumberLabel": "",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-03-30T14:30:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "The Great Indian Kapil Show"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjQ=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|6447a6d0-533a-11ee-b656-0ebeb11653af|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABYzSBkYA0yy2xAA8CTM9aS_HoBtm7NTlG73CDu5Zm5S82yeg_FDp0rHT_F7yD_GmA7L-TNuCdhkeTZlwHt1NL8-xekGhBhbNDdYQcs1rBOCvBxbcrIoGl2KT6_cs59Kg78S4.webp?r=b86"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81446391",
+                        "videoId": 81446391,
+                        "title": "Burning Betrayal",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2023-10-25T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 5880,
+                        "runtime": 5957,
+                        "logicalEndOffset": 5496,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Burning Betrayal"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjU=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|ad665650-9480-11e8-a6dc-12a2ca192798|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABUCpK0NXi10NCtEq1gYrYkNavyMMEqEEzpzGottiYhj6AoOZu4t9U_fdiakYfMeTgPEZvBG5GFuwwdjhD1cyfGmTg7oU3fKFf7Q.webp?r=4a8"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:70052249",
+                        "videoId": 70052249,
+                        "title": "Chup Chup Ke",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-10-31T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 9459,
+                        "runtime": 9459,
+                        "logicalEndOffset": 9346,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Chup Chup Ke"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MjY=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|5ff515e0-65b8-11ef-a580-1223906cfb4d|en|msr,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABQoBhr4jCHRsMWWCMU7EQfoDLtXdiOPeg59Ux0WohUg5VRg8sTkXy0MuNnWQJFGf6AtvW8gedmCws699FTjSb_yeo_gMhZDaufcCUXx5FYrBWNmFTMZ9OhigEH8IvzTtQ7aid_9kMlpKsuua_VgyhH9X6pXSug4B18DrisxTD42wCYTXW2d-VLgtRLcLtjI1jHP-pEGDXyl6wY10H8Fo2_ua61QSCi5v_hA4-q-L0B4fsgKc5dQiuFU2qO-epbgg027iYedvB_pQk6WcxlBlTcWi4PFriPEy1YrMuRI2wIsIhgZk0wa-tdE0.webp?r=6f4"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81387841",
+                        "videoId": 81387841,
+                        "title": "Technoboys",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-11T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6609,
+                        "runtime": 6609,
+                        "logicalEndOffset": 6202,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Technoboys"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mjc=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|74cc63d0-5875-11e8-b955-12bb481af06c|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABRSbHdP_Zn78tF7OvK74hBz7dpTLkc_ZfjLClaMTFpLt3Eb3J0WlismKjPgExiacNSvSqO0RyTWyDzVh1xMeYkWzbyAnofaV8gI.webp?r=5df"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:70294663",
+                        "videoId": 70294663,
+                        "title": "Addicted",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-06-30T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6352,
+                        "runtime": 6352,
+                        "logicalEndOffset": 6051,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Addicted"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mjg=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|8f01b260-fd78-11ee-ae84-0affd9b56b8d|en-IN|msr|81122199",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABSPu_5BRDNBLoHrgJm6bdgfRWj5FR-9I3IWnAUt7EisS_GAdLJnVZkloq_8UKPm5a4FNlvh_1hR1lxEb63rWGQwcGrmPb0thhABsunGNkDgXOQW98YSi7xPrQY2lMhebBphtjfAFpJHsGEquKmJKlXAhJ4j9ozhG2Ehh5FfubFreIdIAWHBh_96Wvway-Wc.webp?r=02e"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81122198",
+                        "videoId": 81122198,
+                        "title": "Heeramandi: The Diamond Bazaar",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81171277,
+                          "unifiedEntityId": "Video:81171277",
+                          "title": "Mallikajaan - The Queen of Heeramandi",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-05-01T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 4095,
+                          "runtime": 4095,
+                          "logicalEndOffset": 3619,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81122198,
+                            "title": "Heeramandi: The Diamond Bazaar"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81122199,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-05-01T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Heeramandi: The Diamond Bazaar"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mjk=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|0f35d940-386e-11ef-b329-123d620f9359|en-IN|msr|81285618",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTFYSPn1Pvs4jlShbArHX64SbkAPZ6jfcaYsUUL8w-SecYXzEj7xvU4lobIbQyE7aj4pvrNgY8W09eifdspbZNz5XNB0oPDaOjOsZLIaqBi-8ns-1kiJA_LGqDxFBAE42NwE8kRL46WFWgml98lyKIgACyBCFAXoCkKW6R2H7vUNVWeU5FZMSxrOG85gbxg.webp?r=5b9"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81285617",
+                        "videoId": 81285617,
+                        "title": "Tribhuvan Mishra CA Topper",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81285624,
+                          "unifiedEntityId": "Video:81285624",
+                          "title": "Romance Bhi, Action Bhi, Drama Bhi",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-07-18T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3711,
+                          "runtime": 3711,
+                          "logicalEndOffset": 3453,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81285617,
+                            "title": "Tribhuvan Mishra CA Topper"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81285618,
+                            "number": 1,
+                            "numberLabelV2": "",
+                            "longNumberLabel": "",
+                            "title": "Tribhuvan Mishra CA Topper"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-07-18T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Tribhuvan Mishra CA Topper"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzA=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|93a65e90-42c1-11ef-afba-0affeea86331|en|msr|81630935,BADGE|newcontent:new.season|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXZi92No_3cgNck8pIl6RzjUZQtlztq6HWEIiAxTyc52_izY6nX0ZE55jGnYHpJ03knkd_v-y5wsHSJfmvsqfz4n5pRhJE1juR8ukki4lduXjMDgGxQx2beinRD_JWH6Qu92uX9_0jfVmErNMWvvKzM5IbGVFaXIgNXKYQPyC-s8-zM82TLFTJS8p8TdJRFPeA6jF1zWiz7h9sKvLZOrmgo1qU8FQwogN26ZTKR_ZJBn9U0L0IUdd8zByZqur8vHkgfNImtGqPH7tQgv14aNw0n35iW0ZrJ_WThsupeoEfYqcR169aY.webp?r=3c7"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:80223108",
+                        "videoId": 80223108,
+                        "title": "Selling Sunset",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81705129,
+                          "unifiedEntityId": "Video:81705129",
+                          "title": "The Girls Are Back In Town",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-09-06T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 2090,
+                          "runtime": 2090,
+                          "logicalEndOffset": 1996,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 80223108,
+                            "title": "Selling Sunset"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81630935,
+                            "number": 8,
+                            "numberLabelV2": "S8",
+                            "longNumberLabel": "Season 8",
+                            "title": "Season 8"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2019-03-22T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Selling Sunset"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzE=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|5a770210-6b4c-11ef-8ca4-0e4448e639e5|en,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABeKiwM2Xr-4PQvsFe4-eXxfdIXyYTt3yQcscDN8p364riVRxcVeBugUP1UHTtxFdRfTSxnDFXFa0BHsXwWEhBqCEjVFKGw5typa2Yi-22q1rbo75WuhVm_g3NWGF6HCaMy-CZLibaQgYO3a0xmr2FHsjrD8Q-XRcjzlA5adp4B1WgM0qsSPQpt7tTGTsP1tkj52HoXK59zuzroM4UFqPlMeNrlv9Su7uUALzjklUOaixbaMQRDlKRuORkt29uJx_q6uFEnFfrZBipmoIdssHge33ls9muVE48u9T-KQva-VxB-fT9PkMfMqRWT0j5Okw5NBCoyJJsdPjdAjRw-S1Wss.webp?r=c7d"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81758615",
+                        "videoId": 81758615,
+                        "title": "Aay",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-11T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 8376,
+                        "runtime": 8376,
+                        "logicalEndOffset": 8078,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Aay"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzI=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|d0659930-baaa-11ee-a9d5-121fa7f69089|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWQ2MPqakWLwximZWkiRh1rwWD8wcmXpGFUtyu1YyPHh5D859jwd5-nvqX2OK8VqVhds4-8ldLT-8XsM5Poa3cSspK1EVS6KE9I.webp?r=800"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81436990",
+                        "videoId": 81436990,
+                        "title": "Animal",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-01-25T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 12240,
+                        "runtime": 12090,
+                        "logicalEndOffset": 12072,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Animal"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzM=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|22460450-4fdf-11ef-b7c1-12490cc570ed|en,BADGE|recently.added|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd2nnf2eMI30THoixqud6AHLQ9ojd6mGdgqW9fOlb___AiLyyIrpvWOYjCp3PyHSjSMmP8us6FlrOEOCQ0HS3pTMTm9r90YWr_byVnQyc2PLsajtaQbcqbsnTmoSxueVQVu2yaAq4NcdY8V2UvLaGnqicm3ths3y5bFepydOt1wXNPWBC3Gi6F716bFfMA3Gusly_c9MoHyWD8XVtZ0IjhkD7T4toLAaTlFYG_Y8SIdIrXD_AeBbudNFOeQdqQnsjyZybmTPFRzM-I_klC5QosS5MqhgjrsSJXGMlMpa7L3TVdqgK4sjgDCR.webp?r=7fb"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81689477",
+                        "videoId": 81689477,
+                        "title": "Ángel Di María: Breaking Down the Wall",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81727995,
+                          "unifiedEntityId": "Video:81727995",
+                          "title": "26 Footballs",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-09-12T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3276,
+                          "runtime": 3276,
+                          "logicalEndOffset": 3111,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81689477,
+                            "title": "Ángel Di María: Breaking Down the Wall"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81689478,
+                            "number": 1,
+                            "numberLabelV2": "",
+                            "longNumberLabel": "",
+                            "title": "Ángel Di María: Breaking Down the Wall"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-09-12T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Ángel Di María: Breaking Down the Wall"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzQ=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|4d46d630-3346-11ef-b7f7-0ebcaf51be8b|en|msr|81220004",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABeN2GnEpaED9zWUjmsPe9MdgoTXHKSk8QLHv2VALxW0EURY5E9tlW7sv1vvX4a4U3EFZUSYNwZIoOyot2FllX0sGoFPXOEiL00lm9fclEWfDmFDjNkOojp39RDRrn41NlRU9.webp?r=3be"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81149450",
+                        "videoId": 81149450,
+                        "title": "Vikings: Valhalla",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81219994,
+                          "unifiedEntityId": "Video:81219994",
+                          "title": "The Greenlanders",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2022-02-25T08:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3391,
+                          "runtime": 3391,
+                          "logicalEndOffset": 3191,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81149450,
+                            "title": "Vikings: Valhalla"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81216646,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-02-25T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Vikings: Valhalla"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzU=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|56230c50-39eb-11ef-94f0-0e869fdb384d|en|msr|81592017",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABRuS2HOiJrtqYH3hHGdQuk9Yy8s-vw5csJuzq9kWO7GJGKu2FZ2XTBayrA153UjAfeb5gN4EusNs1OASL0KwfDXaOBzCtlcWcxSb9VHXVdhqPlonLt1QnsFaFY7nZdd68QfO.webp?r=f61"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81061734",
+                        "videoId": 81061734,
+                        "title": "Sweet Home",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81186819,
+                          "unifiedEntityId": "Video:81186819",
+                          "title": "Episode 1",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2020-12-18T08:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3034,
+                          "runtime": 3034,
+                          "logicalEndOffset": 2778,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81061734,
+                            "title": "Sweet Home"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81105849,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2020-12-18T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Sweet Home"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "MzY=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|2280aa21-7ee9-11ec-8fed-0e636f7c9b75|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABb4nCM12DqIJQVi81Nka7JDhMpVa9eLGaxNe4a2um-eAV-5jj9Aa1BybTDK8WUYgqUXdi1iElJ0TWoJwjj79wqr6eG5DxJty6OR9hAN0fbewR8TY9WsfUo2sLyCJvY3uQ0gj.webp?r=70a"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81388078",
+                        "videoId": 81388078,
+                        "title": "Through My Window",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-02-04T08:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 6811,
+                        "runtime": 6811,
+                        "logicalEndOffset": 6574,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Through My Window"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mzc=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|a1df2c10-1ce9-11ef-8274-0e3030f2abe7|en-IN|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABblPpJpjLL2mveh3nH2B1rNhlN-tp2JliRhkEoYAsu1RQ4SeuhRQc2cGP8NvA-0ripfbI2lRrJCwJqOIlIcjo3hAiRcFyw74xRGVuAwJetqeunPBvmuWoZzmvZUAoLL8gvem.webp?r=efc"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81730920",
+                        "videoId": 81730920,
+                        "title": "Maharaj",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-06-21T11:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 7881,
+                        "runtime": 7881,
+                        "logicalEndOffset": 7466,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Maharaj"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mzg=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|a8ea6180-613f-11ed-bf5d-12e97b977211|en|msr|81231975",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABUYi4gZWwl8r6ySnH7TVAXiY0_HRnf237yld6XxEKn2SkRdB9bKUtsMzyHCjn0bh8_AYHjVq_BgYIHBxVvRBPsRkCrRpvz2Uxmn9n9IKeiBVWk26t_YvISKGYj-FNfzHWWxo.webp?r=4d2"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81231974",
+                        "videoId": 81231974,
+                        "title": "Wednesday",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81257204,
+                          "unifiedEntityId": "Video:81257204",
+                          "title": "Wednesday's Child Is Full of Woe",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2022-11-23T08:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3577,
+                          "runtime": 3577,
+                          "logicalEndOffset": 3313,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81231974,
+                            "title": "Wednesday"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81231975,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-11-23T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Wednesday"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "Mzk=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|3abbe9d0-feb6-11ed-8251-12d79c93a2a5|en|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdK5JXY-HTSyLrBxQmThRwatL0ZzZg6q8fniLDVPp8P6Di4KL0VfsC2LX5a-Nn21ThwEgp9Np3yZGAxexj06NcdFKXgqqh-NHy4F5mcBY4nRi8LnEJQ4D3sCJAr6jJvG7S14.webp?r=e81"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81479822",
+                        "videoId": 81479822,
+                        "title": "Lust Stories 2",
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2023-06-29T07:00:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 7955,
+                        "runtime": 7955,
+                        "logicalEndOffset": 7483,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Lust Stories 2"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NDA=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|3a5b5a20-30c5-11ee-a9b8-0a917cf21aed|en|msr|81577401",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWwhtmRg_C32E7X2CxH1e4zUoPHyTHxgRH-oSkvDZ10AroyREBstmwZ4z979kuudKf4pVZSpLHjrcFgcGXoxq1JgnVWKtEVQ2gSoJNexaG5Qoiou-zMUR0sXjh06-yE409ss.webp?r=3ab"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81227574",
+                        "videoId": 81227574,
+                        "title": "Kung Fu Panda: The Dragon Knight",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81246478,
+                          "unifiedEntityId": "Video:81246478",
+                          "title": "A Cause for the Paws",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2022-07-14T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1462,
+                          "runtime": 1462,
+                          "logicalEndOffset": 1363,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81227574,
+                            "title": "Kung Fu Panda: The Dragon Knight"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81227575,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2022-07-14T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Kung Fu Panda: The Dragon Knight"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NDE=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|250465b0-38a1-11ef-8528-0ec59a0e549b|en|msr|81675496",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABaMDsXbYPlCLX-F8rih5VG2Cvza3rnnCm_eYDLUfRzbCdfoKeViHgp5xeMXFmmMZ3Q-sKUqUs_v8k4DJp3Y4kucl34ch1mdk8vqB456FiSJ0784laqBCletUuAP0LiAv0Fs9.webp?r=34c"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:80200942",
+                        "videoId": 80200942,
+                        "title": "Elite",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 80201009,
+                          "unifiedEntityId": "Video:80201009",
+                          "title": "Welcome",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2018-10-05T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 3394,
+                          "runtime": 3394,
+                          "logicalEndOffset": 3256,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 80200942,
+                            "title": "Elite"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 80201129,
+                            "number": 1,
+                            "numberLabelV2": "S1",
+                            "longNumberLabel": "Season 1",
+                            "title": "Season 1"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2018-10-05T07:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Elite"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NDI=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|c5419540-4a0b-11ef-b196-0afffa14cecd|en,BADGE|newcontent:new.season|en",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABaYoVGrRf8WNKYcPTvB0EL9oIyVtGN6nCZ_nLPAUOzW2ZYCP2nb4Ezd0YuoXecoKUGmylzmKWWaxARr1P25tGqrhgRUhNeAcf3TP8oLw1zl9JmpD4nbxhdh3Irs4MiCHhHNc8YhC9aZZMJWEFfsLDuCdxThUO-3DUycriARLYvZT9oaXCA-yflwYtCkvt8o_5yJqeD0nlw3PBQYmfOmI0kx9gGV1yOIOQ_Umf1NBLUdubxtVVxN9QhE5bn1HSO6y9jaV1tfd6XLo06fePQ0NBJJVbUQCVy8fhoO8rGx3ns3i7GGw0e4.webp?r=8e2"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Show",
+                        "unifiedEntityId": "Video:81566729",
+                        "videoId": 81566729,
+                        "title": "Hot Wheels Let's Race",
+                        "currentEpisode": {
+                          "__typename": "Episode",
+                          "videoId": 81675508,
+                          "unifiedEntityId": "Video:81675508",
+                          "title": "Cruise Control / The S'more Fun the Better",
+                          "hasOriginalTreatment": true,
+                          "isAvailable": true,
+                          "isAvailableForDownload": true,
+                          "availabilityStartTime": "2024-09-09T07:00:00.000Z",
+                          "isPlayable": true,
+                          "bookmark": {
+                            "__typename": "VideoBookmark",
+                            "position": null,
+                            "lastModified": null,
+                            "interactivePlaybackProgressPercentage": null
+                          },
+                          "displayRuntime": 1428,
+                          "runtime": 1428,
+                          "logicalEndOffset": 1306,
+                          "protected": {
+                            "__typename": "VideoProtected",
+                            "isPinProtected": false,
+                            "isAgeVerificationProtected": false,
+                            "isPreReleasePinProtected": false
+                          },
+                          "interactiveVideoData": null,
+                          "hiddenEpisodeNumbers": false,
+                          "number": 1,
+                          "parentShow": {
+                            "__typename": "Show",
+                            "videoId": 81566729,
+                            "title": "Hot Wheels Let's Race"
+                          },
+                          "parentSeason": {
+                            "__typename": "Season",
+                            "videoId": 81681665,
+                            "number": 2,
+                            "numberLabelV2": "S2",
+                            "longNumberLabel": "Season 2",
+                            "title": "Season 2"
+                          }
+                        },
+                        "hasOriginalTreatment": true,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2024-03-04T08:00:00.000Z",
+                        "isPlayable": true
+                      },
+                      "displayString": "Hot Wheels Let's Race"
+                    }
+                  },
+                  {
+                    "__typename": "PinotEntityEdge",
+                    "cursor": "NDM=",
+                    "node": {
+                      "__typename": "PinotHorizontalArtworkWithPlaybackEntityTreatment",
+                      "contextualArtwork": {
+                        "__typename": "PinotContextualArtwork",
+                        "artwork": {
+                          "__typename": "Image",
+                          "key": "sdp|82c45550-bda2-11ed-a473-12b5dd64bda3|en-IN|msr",
+                          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf6d-7yLOBJNsVOq9fDdxRC4Md58xJaURaUINbcjwzWKIjEaB76cb2mn-wn_ICxilqyZ8vw5c9tvWsMMC-SiOaF3bZvh6Jtsny4.webp?r=27c"
+                        }
+                      },
+                      "unifiedEntity": {
+                        "__typename": "Movie",
+                        "unifiedEntityId": "Video:81595543",
+                        "videoId": 81595543,
+                        "title": "Shehzada",
+                        "hasOriginalTreatment": false,
+                        "isAvailable": true,
+                        "isAvailableForDownload": true,
+                        "availabilityStartTime": "2023-04-13T18:30:00.000Z",
+                        "isPlayable": true,
+                        "bookmark": {
+                          "__typename": "VideoBookmark",
+                          "position": null,
+                          "lastModified": null,
+                          "interactivePlaybackProgressPercentage": null
+                        },
+                        "displayRuntime": 8539,
+                        "runtime": 8539,
+                        "logicalEndOffset": 8331,
+                        "protected": {
+                          "__typename": "VideoProtected",
+                          "isPinProtected": false,
+                          "isAgeVerificationProtected": false,
+                          "isPreReleasePinProtected": false
+                        },
+                        "interactiveVideoData": null
+                      },
+                      "displayString": "Shehzada"
+                    }
+                  }
+                ]
+              },
+              "sectionId": "=eyJwYWdlSWQiOiJhM2M2MDBiNC1hMDJjLTRmMTctYjRiZS0zZGJkNGI4ZTkwMmUvMy8vLzAvMCIsImxvY2FsU2VjdGlvbklkIjoiMiJ9",
+              "sectionTreatment": {
+                "__typename": "PinotStandardSectionTreatment"
+              }
+            }
+          }
+        ],
+        "pageInfo": { "__typename": "PageInfo", "hasNextPage": false }
+      }
+    }
+  }
+}

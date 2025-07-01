@@ -1,0 +1,144 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Mirzapur",
+  "year": "2018",
+  "ua": "U/A 18+ [A]",
+  "match": "IMDb 8.4",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "",
+  "director": "",
+  "writer": "",
+  "short_cast": "Ali Fazal, Vikrant Massey, Pankaj Tripathi, Divyenndu, Shweta Tripathi, Shriya Pilgaonkar, Rasika Dugal, Kulbhushan Kharbanda",
+  "cast": "Ali Fazal, Vikrant Massey, Pankaj Tripathi, Divyenndu, Shweta Tripathi, Shriya Pilgaonkar, Rasika Dugal, Kulbhushan Kharbanda",
+  "genre": "Drama",
+  "thismovieis": "",
+  "m_desc": "Suitable for ages 18 and older",
+  "m_reason": "alcohol use, substance use, sexual content, violence, tobacco depictions, foul language",
+  "desc": "The iron-fisted Akhandanand Tripathi is a millionaire carpet exporter and the mafia don of Mirzapur. His son, Munna, is an unworthy, power hungry heir who will stop at nothing to inherit his father\u2019s legacy. An incident at a wedding procession forces him to cross paths with Ramakant Pandit, an upstanding lawyer, and his sons, Guddu and Bablu.",
+  "oin": null,
+  "season": [
+    {
+      "s": "1",
+      "id": "0PDOKMV9CRLOMO5EUKNCUJLG4Q",
+      "ep": "9",
+      "sele": " selected"
+    },
+    {
+      "s": "2",
+      "id": "0FBF7DWFYG99Y3TSNVJ4ELOLBO",
+      "ep": "10",
+      "sele": " selected"
+    },
+    {
+      "s": "3",
+      "id": "0HV20AIVKWRM0Q9N6NCXO7DKD5",
+      "ep": "10",
+      "sele": " selected"
+    }
+  ],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "0M31AWYHMHJEEKOBZU6U2XCSO6",
+      "t": "Tetua",
+      "s": "S3",
+      "ep": "E1",
+      "time": "57m"
+    },
+    {
+      "complate": "0",
+      "id": "0IS85QJUCVSCEVAD604U552KD5",
+      "t": "Mexico",
+      "s": "S3",
+      "ep": "E2",
+      "time": "55m"
+    },
+    {
+      "complate": "0",
+      "id": "0GHQD0VL3FPCV3L4ENJOZOU19I",
+      "t": "Pratishodh",
+      "s": "S3",
+      "ep": "E3",
+      "time": "50m"
+    },
+    {
+      "complate": "0",
+      "id": "0SIHCOXWHKTQAPVYWBR6QY7ESL",
+      "t": "Kekadaa",
+      "s": "S3",
+      "ep": "E4",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0GIHA65CXGV059HONR3FJF1V6F",
+      "t": "Traahi",
+      "s": "S3",
+      "ep": "E5",
+      "time": "48m"
+    },
+    {
+      "complate": "0",
+      "id": "0M58DKIU3V3WQOFC8YZ1CMSA90",
+      "t": "Bhasmasur",
+      "s": "S3",
+      "ep": "E6",
+      "time": "54m"
+    },
+    {
+      "complate": "0",
+      "id": "0UASU3FXLCBBXJ5U9Y6P5YH6GO",
+      "t": "Bum-pilaat",
+      "s": "S3",
+      "ep": "E7",
+      "time": "51m"
+    },
+    {
+      "complate": "0",
+      "id": "0JQCOERWKY4UROASBOFZJILBAW",
+      "t": "Raja Beta",
+      "s": "S3",
+      "ep": "E8",
+      "time": "54m"
+    },
+    {
+      "complate": "0",
+      "id": "0PVOVOFKYGIQSBL3W7P2TPH9KE",
+      "t": "Ansh",
+      "s": "S3",
+      "ep": "E9",
+      "time": "40m"
+    },
+    {
+      "complate": "0",
+      "id": "0NZMBVH6LJODEA3NSZLFBL299R",
+      "t": "Pratibimbh",
+      "s": "S3",
+      "ep": "E10",
+      "time": "53m"
+    }
+  ],
+  "nextPageShow": 1,
+  "nextPage": 2,
+  "nextPageSeason": "0HV20AIVKWRM0Q9N6NCXO7DKD5",
+  "lang": [
+    { "l": "Hindi", "s": "hin" },
+    { "l": "Kannada", "s": "kan" },
+    { "l": "Malayalam", "s": "mal" },
+    { "l": "Tamil", "s": "tam" },
+    { "l": "Telugu", "s": "tel" }
+  ],
+  "last_ep": "0M31AWYHMHJEEKOBZU6U2XCSO6",
+  "resume": "",
+  "suggest": [
+    { "id": "0PLX8SNZD9LF4WVXBIE29EEMJ2" },
+    { "id": "0PGDRPYU371D029Q6CLKOYAGQK" },
+    { "id": "0N6V5OIQ8HCKY5PUBZD2H1UR73" },
+    { "id": "0ND9X33NKUP4YOH96K1ZDB7OJP" },
+    { "id": "0QPAPSMA3J2UMMCKGRIIVT6G4X" },
+    { "id": "0U39X8NZH40382GUB7D0B9LQLH" }
+  ],
+  "error": null
+}

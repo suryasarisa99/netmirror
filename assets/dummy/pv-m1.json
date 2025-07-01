@@ -1,0 +1,41 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Vettaiyan",
+  "year": "2024",
+  "ua": "U/A 13+",
+  "match": "",
+  "runtime": "2h 41m",
+  "hdsd": "HD",
+  "type": "m",
+  "creator": "",
+  "director": "T.J. Gananavel",
+  "writer": "T.J. Gnanavel",
+  "short_cast": "Rajinikanth, Amitabh Bachchan, Fahadh Faasil, Rana Daggubati, Manju Warrier, Ritika Singh, Dushara Vijayan, Abirami",
+  "cast": "Rajinikanth, Amitabh Bachchan, Fahadh Faasil, Rana Daggubati, Manju Warrier, Ritika Singh, Dushara Vijayan, Abirami",
+  "genre": "Drama, Action",
+  "thismovieis": "",
+  "m_desc": "Suitable for ages 13+",
+  "m_reason": "violence, sexual content, foul language, alcohol use, substance use, tobacco depictions",
+  "desc": "A sought-after supercop gets caught in a series of unexpected events when he guns down a criminal in a murder case. Amidst his struggle to justify the act, he must confront his moral compass while fighting corrupt, larger-than-life forces. Vettaiyan explores the underbelly of crime investigations with one man's fight against a world, where justice is a rare commodity.",
+  "oin": null,
+  "resume": "",
+  "lang": [
+    { "l": "Hindi", "s": "hin" },
+    { "l": "Kannada", "s": "kan" },
+    { "l": "Malayalam", "s": "mal" },
+    { "l": "Tamil", "s": "tam" },
+    { "l": "Telugu", "s": "tel" }
+  ],
+  "langnum": "5",
+  "episodes": [null],
+  "suggest": [
+    { "id": "0P7XO975B8CJW07QF6NY4P5P5D" },
+    { "id": "0H6DM70ROU4I4989ECUW4ENTQD" },
+    { "id": "0R9UZZB03DS9GN9TWTJ5DNMRVG" },
+    { "id": "0R5LE5VTXOT5UZWWN0YG633CZ4" },
+    { "id": "0UB6SDQ8T2K5CFGGL6V03JQ4CC" },
+    { "id": "0M3J5J8NMNFQV2WSEUFQ68TY7B" }
+  ],
+  "error": null
+}

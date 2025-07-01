@@ -1,0 +1,208 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Shadow and Bone",
+  "year": "2021",
+  "ua": "U/A 16+",
+  "match": "92% match",
+  "runtime": "2 Seasons",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "",
+  "director": "",
+  "writer": "",
+  "short_cast": "Jessie Mei Li, Archie Renaux, Ben Barnes, Freddy Carter, Amita Suman, Kit Young, Patrick Gibson, Daisy Head, Danielle Galligan, Calahan Skogman, Lewis Tan, Jack Wolfe, Anna Leong Brophy, Sujaya Dasgupta, Simon Sears, Zo\u00eb Wanamaker, Luke Pasqualino, Julian Kostov",
+  "cast": "Jessie Mei Li, Archie Renaux, Ben Barnes, Freddy Carter, Amita Suman, Kit Young, Patrick Gibson, Daisy Head, Danielle Galligan, Calahan Skogman, Lewis Tan, Jack Wolfe, Anna Leong Brophy, Sujaya Dasgupta, Simon Sears, Zo\u00eb Wanamaker, Luke Pasqualino, Julian Kostov",
+  "genre": "TV Dramas, TV Shows Based on Books, Teen TV Shows, TV Action & Adventure, US TV Shows, Fantasy TV Shows",
+  "thismovieis": "Ominous",
+  "m_desc": "Suitable for persons aged 16 and above and under parental guidance for people under age of 16",
+  "m_reason": "violence, sexual content, gore",
+  "desc": "Dark forces conspire against orphan mapmaker Alina Starkov when she unleashes an extraordinary power that could change the fate of her war-torn world.",
+  "oin": "y",
+  "season": [
+    {
+      "s": "1",
+      "id": "80236529",
+      "ep": "8",
+      "sele": " selected"
+    },
+    {
+      "s": "2",
+      "id": "81209173",
+      "ep": "8",
+      "sele": " selected"
+    }
+  ],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "81441970",
+      "t": "No Shelter But Me",
+      "s": "S2",
+      "ep": "E1",
+      "time": "55m"
+    },
+    {
+      "complate": "0",
+      "id": "81441971",
+      "t": "Rusalye",
+      "s": "S2",
+      "ep": "E2",
+      "time": "65m"
+    },
+    {
+      "complate": "0",
+      "id": "81441972",
+      "t": "Like Calls to Like",
+      "s": "S2",
+      "ep": "E3",
+      "time": "61m"
+    },
+    {
+      "complate": "0",
+      "id": "81441973",
+      "t": "Every Monstrous Thing",
+      "s": "S2",
+      "ep": "E4",
+      "time": "59m"
+    },
+    {
+      "complate": "0",
+      "id": "81441974",
+      "t": "Yuyeh Sesh (Despise Your Heart)",
+      "s": "S2",
+      "ep": "E5",
+      "time": "59m"
+    },
+    {
+      "complate": "0",
+      "id": "81441975",
+      "t": "Ni Weh Sesh (I Have No Heart)",
+      "s": "S2",
+      "ep": "E6",
+      "time": "61m"
+    },
+    {
+      "complate": "0",
+      "id": "81441976",
+      "t": "Meet You in the Meadow",
+      "s": "S2",
+      "ep": "E7",
+      "time": "63m"
+    },
+    {
+      "complate": "0",
+      "id": "81441977",
+      "t": "No Funerals",
+      "s": "S2",
+      "ep": "E8",
+      "time": "64m"
+    }
+  ],
+  "nextPageShow": 0,
+  "nextPage": 2,
+  "nextPageSeason": "81209173",
+  "lang": [
+    {
+      "l": "Czech",
+      "s": "ces"
+    },
+    {
+      "l": "German",
+      "s": "deu"
+    },
+    {
+      "l": "English",
+      "s": "eng"
+    },
+    {
+      "l": "Spanish",
+      "s": "spa"
+    },
+    {
+      "l": "Spanish",
+      "s": "spa"
+    },
+    {
+      "l": "French",
+      "s": "fra"
+    },
+    {
+      "l": "Hindi",
+      "s": "hin"
+    },
+    {
+      "l": "Hungarian",
+      "s": "hun"
+    },
+    {
+      "l": "Italian",
+      "s": "ita"
+    },
+    {
+      "l": "Japanese",
+      "s": "jpn"
+    },
+    {
+      "l": "Polish",
+      "s": "pol"
+    },
+    {
+      "l": "Portuguese",
+      "s": "por"
+    },
+    {
+      "l": "Thai",
+      "s": "tha"
+    },
+    {
+      "l": "Turkish",
+      "s": "tur"
+    },
+    {
+      "l": "Ukrainian",
+      "s": "ukr"
+    }
+  ],
+  "last_ep": "81441970",
+  "resume": "",
+  "suggest": [
+    {
+      "id": "81690671"
+    },
+    {
+      "id": "80220679"
+    },
+    {
+      "id": "80199393"
+    },
+    {
+      "id": "81150303"
+    },
+    {
+      "id": "80084447"
+    },
+    {
+      "id": "80241239"
+    },
+    {
+      "id": "80189685"
+    },
+    {
+      "id": "81279312"
+    },
+    {
+      "id": "80242724"
+    },
+    {
+      "id": "81258637"
+    },
+    {
+      "id": "80238357"
+    },
+    {
+      "id": "80241581"
+    }
+  ],
+  "error": null
+}

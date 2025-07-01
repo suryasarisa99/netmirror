@@ -1,0 +1,213 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Friends",
+  "year": "1994",
+  "ua": "U/A 13+",
+  "match": "36% match",
+  "runtime": "10 Seasons",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "David Crane, Marta Kauffman",
+  "director": "",
+  "writer": "",
+  "short_cast": "Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry, David Schwimmer",
+  "cast": "Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry, David Schwimmer",
+  "genre": "Sitcoms, TV Comedies, US TV Shows",
+  "thismovieis": "Witty, Quirky",
+  "m_desc": "Suitable for persons aged 13 and above and under parental guidance for people under age of 13",
+  "m_reason": "mature themes, language, crude humor",
+  "desc": "This hit sitcom follows the merry misadventures of six 20-something pals as they navigate the pitfalls of work, life and love in 1990s Manhattan.",
+  "oin": "",
+  "season": [
+    {
+      "s": "1",
+      "id": "60030455",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "2",
+      "id": "60030480",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "3",
+      "id": "60030654",
+      "ep": "25",
+      "sele": " selected"
+    },
+    {
+      "s": "4",
+      "id": "60030845",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "5",
+      "id": "60031936",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "6",
+      "id": "60033708",
+      "ep": "25",
+      "sele": " selected"
+    },
+    {
+      "s": "7",
+      "id": "60035713",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "8",
+      "id": "70012756",
+      "ep": "24",
+      "sele": " selected"
+    },
+    {
+      "s": "9",
+      "id": "70020485",
+      "ep": "23",
+      "sele": " selected"
+    },
+    {
+      "s": "10",
+      "id": "70040765",
+      "ep": "17",
+      "sele": " selected"
+    }
+  ],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "70274215",
+      "t": "The One After Joey and Rachel Kiss",
+      "s": "S10",
+      "ep": "E1",
+      "time": "29m"
+    },
+    {
+      "complate": "0",
+      "id": "70274216",
+      "t": "The One Where Ross Is Fine",
+      "s": "S10",
+      "ep": "E2",
+      "time": "23m"
+    },
+    {
+      "complate": "0",
+      "id": "70274217",
+      "t": "The One with Ross's Tan",
+      "s": "S10",
+      "ep": "E3",
+      "time": "24m"
+    },
+    {
+      "complate": "0",
+      "id": "70274218",
+      "t": "The One with the Cake",
+      "s": "S10",
+      "ep": "E4",
+      "time": "22m"
+    },
+    {
+      "complate": "0",
+      "id": "70274219",
+      "t": "The One Where Rachel's Sister Babysits",
+      "s": "S10",
+      "ep": "E5",
+      "time": "28m"
+    },
+    {
+      "complate": "0",
+      "id": "70274220",
+      "t": "The One with Ross's Grant",
+      "s": "S10",
+      "ep": "E6",
+      "time": "24m"
+    },
+    {
+      "complate": "0",
+      "id": "70274221",
+      "t": "The One with The Home Study",
+      "s": "S10",
+      "ep": "E7",
+      "time": "23m"
+    },
+    {
+      "complate": "0",
+      "id": "70274222",
+      "t": "The One with the Late Thanksgiving",
+      "s": "S10",
+      "ep": "E8",
+      "time": "23m"
+    },
+    {
+      "complate": "0",
+      "id": "70274223",
+      "t": "The One with the Birth Mother",
+      "s": "S10",
+      "ep": "E9",
+      "time": "24m"
+    },
+    {
+      "complate": "0",
+      "id": "70274224",
+      "t": "The One Where Chandler Gets Caught",
+      "s": "S10",
+      "ep": "E10",
+      "time": "22m"
+    }
+  ],
+  "nextPageShow": 1,
+  "nextPage": 2,
+  "nextPageSeason": "70040765",
+  "lang": [
+    {
+      "l": "English",
+      "s": "eng"
+    }
+  ],
+  "last_ep": "70274215",
+  "resume": "",
+  "suggest": [
+    {
+      "id": "70281562"
+    },
+    {
+      "id": "70143830"
+    },
+    {
+      "id": "70136120"
+    },
+    {
+      "id": "80192612"
+    },
+    {
+      "id": "81037371"
+    },
+    {
+      "id": "80113701"
+    },
+    {
+      "id": "80199128"
+    },
+    {
+      "id": "70153373"
+    },
+    {
+      "id": "80036165"
+    },
+    {
+      "id": "70155618"
+    },
+    {
+      "id": "80051137"
+    }
+  ],
+  "error": null
+}

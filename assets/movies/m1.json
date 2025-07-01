@@ -1,0 +1,453 @@
+{
+  "data": {
+    "videos": [
+      {
+        "__typename": "Movie",
+        "title": "Kalki 2898 AD (Hindi)",
+        "videoId": 81726031,
+        "unifiedEntityId": "Video:81726031",
+        "latestYear": 2024,
+        "isAvailable": true,
+        "hasOriginalTreatment": false,
+        "storyArt": {
+          "__typename": "Image",
+          "available": true,
+          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABePi_KjbAQ7fqkj_3UnFQd1PMj_WGMaUGOin-wkVal5BUV8AStzrxgyEicwr2OXS4YBJNoWBRsJMAS6lMp5Y3NTDvqXT7-m-PDP3.webp?r=154"
+        },
+        "brandAndGenreBadge": null,
+        "boxshot": {
+          "__typename": "Image",
+          "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABd-QgIy7zFv7M_P5QZca7-JoW17rhhDXYYAw0k4RBl5EFxNCkUyvkitP9jgbsUIJk3fasVPqSgFAa4DThKAcxeQcsgXJZGMWLNj6cnBc__929DP4Y4SGQzSYhj8YCsdic0bf6quosypBz1lbj8VLdR-oDm5II6iF_MHTu49Is2vNW3sywleyR3bm2j9Q0nQ-6-xGQ1uOVstVh1GC5FrlhEpEyJt9f2OTGosj-QaMMIvsamomoeJPcGHE3x9tNU1EBH1lF3urszztovM_AdUNKLr8bONarL_hHjj6VnW2Mh6H83d6YAWEoYN6_uSl5vYC5o1u_EnJmhHhS0dIkSDcrn0.webp?r=679",
+          "key": "boxshot|ad69c3b0-5e02-11ef-9b5b-0afff3b14a09|en|mx8,BADGE|recently.added|en",
+          "available": true
+        },
+        "playbackBadges": [
+          "VIDEO_HD",
+          "VIDEO_SD",
+          "OFFLINE_DOWNLOAD_AVAILABLE"
+        ],
+        "isPlayable": true,
+        "isAvailableForDownload": true,
+        "contentAdvisory": {
+          "__typename": "ContentAdvisory",
+          "boardName": "India",
+          "boardId": 23821,
+          "broadcastDistributorName": null,
+          "broadcastReleaseDate": null,
+          "certificationValue": "U/A 13+",
+          "certificationRatingId": 23882,
+          "i18nRating": "RATED U/A 13+",
+          "i18nReasonsText": "gore, violence",
+          "maturityDescription": "Suitable for persons aged 13 and above and under parental guidance for people under age of 13",
+          "maturityLevel": 80,
+          "shortDescription": "Suitable for persons aged 13 and above and under parental guidance for people under age of 13",
+          "reasons": [
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 23858,
+              "text": "gore"
+            },
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 23845,
+              "text": "violence"
+            }
+          ]
+        },
+        "watchStatus": "NEVER_WATCHED",
+        "contextualSynopsis": {
+          "__typename": "ContextualSynopsis",
+          "text": "In this mythological sci-fi drama, a bounty hunter pursues a rebellious woman with a great destiny.",
+          "evidenceKey": "synopsis|984801505362378753|en|mx8"
+        },
+        "actors": {
+          "__typename": "PersonConnection",
+          "totalCount": 7,
+          "edges": [
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:20005789",
+                "personId": 20005789,
+                "title": "Amitabh Bachchan",
+                "name": "Amitabh Bachchan"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:20006532",
+                "personId": 20006532,
+                "title": "Kamal Haasan",
+                "name": "Kamal Haasan"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:30052745",
+                "personId": 30052745,
+                "title": "Prabhas",
+                "name": "Prabhas"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:30082146",
+                "personId": 30082146,
+                "title": "Deepika Padukone",
+                "name": "Deepika Padukone"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:40089255",
+                "personId": 40089255,
+                "title": "Disha Patani",
+                "name": "Disha Patani"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:20013273",
+                "personId": 20013273,
+                "title": "Brahmanandam",
+                "name": "Brahmanandam"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:20030173",
+                "personId": 20030173,
+                "title": "Rajendra Prasad",
+                "name": "Rajendra Prasad"
+              }
+            }
+          ]
+        },
+        "creators": {
+          "__typename": "PersonConnection",
+          "totalCount": 0,
+          "edges": []
+        },
+        "directors": {
+          "__typename": "PersonConnection",
+          "totalCount": 1,
+          "edges": [
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:60291683",
+                "personId": 60291683,
+                "title": "Nag Ashwin",
+                "name": "Nag Ashwin"
+              }
+            }
+          ]
+        },
+        "isInPlaylist": false,
+        "isInRemindMeList": false,
+        "thumbRatingV2": "THUMBS_UNRATED",
+        "bookmark": {
+          "__typename": "VideoBookmark",
+          "interactivePlaybackProgressPercentage": null,
+          "lastModified": null,
+          "position": null
+        },
+        "interactiveVideoData": null,
+        "isEpisodeNumberHidden": false,
+        "taglineMessages": [
+          {
+            "__typename": "TaglineMessage",
+            "tagline": "#9 in Movies Today",
+            "typedClassification": "TOP_10",
+            "badgeDate": null,
+            "badgePrefix": null
+          }
+        ],
+        "contentWarning": null,
+        "isInTurboCollections": [],
+        "similarVideos": [
+          {
+            "__typename": "Movie",
+            "videoId": 81252029,
+            "unifiedEntityId": "Video:81252029",
+            "title": "Ala Vaikunthapurramuloo",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2020-02-26T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABRy_e8K0jKrk3XhaF05z3gbUSIQqODQ3TC14c3ZU_y0sJQu1rjQrNu2CnyOOWgDh4CronVayMXx5_scXrVsuSyyGTVc7OOLc_dM.webp?r=ad0",
+              "key": "boxshot|bb91db20-1295-11ef-bdd9-0afff908fca3|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81631823,
+            "unifiedEntityId": "Video:81631823",
+            "title": "Dungeons & Dragons: Honor Among Thieves",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-08-16T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABdDfxytx_eEzS0wNT3J_mdP2ilgf0wZAd6jllAA4Of1P1tIBy7q04WlCkYXbjI92ln_E3ATzPlw-8qLUwHYVb9e2fwBEb39ocZMpFDQ1POiVhoE9_vFwy2E-JfOr28LzaZyh-5hEAtLvSFnesmsWWMyVTuisE8_0sP6tRVZPTXVBi24qgoaSl0654Wu03YOfKVvUEa0kcJVN_wUDCxhjnubdl6mYMdHWu3owWxKRps0ApROFALtdEfvuW2yJX3i4Yh2AIc1ln_-G3oPLLRbOdTLkVGaY.webp?r=c14",
+              "key": "boxshot|2a4a07f0-775e-11ee-a1e2-0ab1ef0ea4bd|en|mx8,BADGE|recently.added|en"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81637260,
+            "unifiedEntityId": "Video:81637260",
+            "title": "Guntur Kaaram",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-02-08T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABcqK5I1_Rlz89PzxVve1VzcokIOi_NmSLxZrunFktBWSGBgmuQLhK8QUSfGGPxxBUgf6MnGY_eqlQMc64c4tMQo75CzwmS69gKM.webp?r=31a",
+              "key": "boxshot|a9aed4e0-c5af-11ee-b40c-0aed36577d1d|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81436990,
+            "unifiedEntityId": "Video:81436990",
+            "title": "Animal",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-01-25T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABWam9uKJs8tr0ED6pGDGqyitZs_ZSe2lQxSRixMHTjunp---4J9obq-7bQeinvBaddjI142CM0OTU7pSHwYjMh68SgWPJz3cBMk.webp?r=8ff",
+              "key": "boxshot|d0659930-baaa-11ee-aaf5-12d054e7a097|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81686137,
+            "unifiedEntityId": "Video:81686137",
+            "title": "Savi",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-07-25T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABZOI5zsk44bPeX5qRnGFAU6HpMnQ4DxAapLkQwcFJ9D8m4SkTy9AGtoEJGeN6r4_aRyurNaCM39s_1YHyK3ik5CwXueraGAfHIo.webp?r=10c",
+              "key": "boxshot|42bc42a0-4812-11ef-8b54-0affd6fba701|en-IN|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81742609,
+            "unifiedEntityId": "Video:81742609",
+            "title": "Indian 2",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-08-13T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABZ5eTENru6exc76LErxfTJ92jkkSMFYCi_6wZunL_LoCUOf_gsL9wYiEzp63jB9EaeABC7kmwAaTMvr168t-gpa5SECPQHUSyLE.webp?r=0fa",
+              "key": "boxshot|d985c620-50aa-11ef-b7c1-12490cc570ed|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81727155,
+            "unifiedEntityId": "Video:81727155",
+            "title": "Salaar",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-01-19T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABVVDELKK49JJU2MpEvB1gcmEXr1TmVqCXzEHcQgsuVv5RTsmylJqMA2a9zJ-I09gOJ0wKTgGUBWtzoN2LvqJsSdF0VIk7NFKibI.webp?r=485",
+              "key": "boxshot|843a8ef0-b616-11ee-a9d5-121fa7f69089|en-IN|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81476453,
+            "unifiedEntityId": "Video:81476453",
+            "title": "RRR (Hindi)",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2022-05-20T06:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABZj3keTYuUaqNqtx98EPY2fDjrNW0XKwGDaMEJhd9IIQ2SBiYPQ3vTs8xfJqv9-QxEEFotbpoF_mb4z6H82WjFvNI5ZojBWeob8.webp?r=c57",
+              "key": "boxshot|6a9e7891-d034-11ec-a4fb-0ab0f8d2afaf|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81073022,
+            "unifiedEntityId": "Video:81073022",
+            "title": "Fast & Furious Presents: Hobbs & Shaw",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-09-08T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABfhDHRY78Qvnt3-2zy2HHFXl3Sp6V1hqT5hz-PqTxC_xL0HC2H1vgC7lhHUiVc0auqXEIfNq1rPO406_O3xmY525bfM9ogWy7ElWY_j79xKHGhb50rPSklsZEEvnb3hwIpSqG7E_jUNm8ielEATLf7_xPlTi124mOOY.webp?r=6e6",
+              "key": "boxshot|9a2a8c70-868a-11ea-a319-0e60f1652177|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81698397,
+            "unifiedEntityId": "Video:81698397",
+            "title": "Fighter",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-03-20T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABU_uM1KgLlY3CwvQ-rJus3Rg7DzYtF42YTjKw0UpSFyDzBVhS6-ndnXd_OjMEejXFmoHnlOpNVEVg5PEEcWtSU7D2bAfBi2cTBw.webp?r=46c",
+              "key": "boxshot|305b33c0-e2b7-11ee-9775-0affec0a2a1b|en|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 81754779,
+            "unifiedEntityId": "Video:81754779",
+            "title": "Salaar (Tamil)",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2024-01-19T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABSRBbDWw6Kkd7HJRnjhOEZYo5_rwro83pOHI7AgFnKJeVYVCFUwHYmZ6A6J9Ngx_yDzLrErPwfKt_tDVVuoaT4uY2FpTWr0Fch4.webp?r=f89",
+              "key": "boxshot|edba5080-b630-11ee-a901-12143d9cc681|en-IN|mx8"
+            }
+          },
+          {
+            "__typename": "Movie",
+            "videoId": 80104648,
+            "unifiedEntityId": "Video:80104648",
+            "title": "Baaghi",
+            "hasOriginalTreatment": false,
+            "isAvailable": true,
+            "isAvailableForDownload": true,
+            "availabilityStartTime": "2022-10-31T18:30:00.000Z",
+            "isPlayable": true,
+            "boxshot": {
+              "__typename": "Image",
+              "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABfTh-aL0WyL1xECJ4RL71KZyBdFemxBsnHzP2czX1Zno4v9jIGBSvArUQqCnemjsc7wQ0etBRbCFZobgkcEx9EK4tI9DztKkRBo.webp?r=831",
+              "key": "boxshot|2627d6e1-842d-11e8-ad1a-0eeb32ec3e0c|en|mx8"
+            }
+          }
+        ],
+        "titleGroupMemberships": [],
+        "supplementalVideosList": {
+          "__typename": "SupplementalsConnection",
+          "totalCount": 1,
+          "edges": [
+            {
+              "__typename": "SupplementalEdge",
+              "cursor": "MA==",
+              "node": {
+                "__typename": "Supplemental",
+                "videoId": 81907168,
+                "unifiedEntityId": "Video:81907168",
+                "title": "Trailer: Kalki 2898 AD",
+                "hasOriginalTreatment": false,
+                "isAvailable": true,
+                "isAvailableForDownload": false,
+                "availabilityStartTime": "2024-08-20T08:30:00.000Z",
+                "isPlayable": true,
+                "runtimeSec": 171,
+                "displayRuntimeSec": 171,
+                "logicalEndOffsetSec": 171,
+                "bookmark": {
+                  "__typename": "VideoBookmark",
+                  "interactivePlaybackProgressPercentage": null,
+                  "lastModified": null,
+                  "position": null
+                },
+                "protected": {
+                  "__typename": "VideoProtected",
+                  "isPinProtected": false,
+                  "isAgeVerificationProtected": false,
+                  "isPreReleasePinProtected": false
+                },
+                "interestingArtworkLarge": {
+                  "__typename": "Image",
+                  "url": "https://occ-0-3215-3662.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABa1Ti9JVL8kzqVU7KIuyfR5XmNYdx-FiP7uGpf-0laIgMjTlPd3tvyiZULZUTZ0DDOT55qm5e7-QQ0QlLgj4fZUF9ddlziWUkaaw0bVRjKwjbm6K1HIptlf0pw.webp?r=842"
+                }
+              }
+            }
+          ]
+        },
+        "promoVideo": {
+          "__typename": "PromoVideo",
+          "computeId": "browse|81907168|en-IN|_UPD_",
+          "video": {
+            "__typename": "Supplemental",
+            "videoId": 81907168,
+            "runtimeMs": 171000,
+            "runtimeSec": 171,
+            "displayRuntimeMs": 171000,
+            "displayRuntimeSec": 171
+          }
+        },
+        "runtimeMs": 10560000,
+        "displayRuntimeMs": 10560000,
+        "runtimeSec": 10560,
+        "displayRuntimeSec": 10560,
+        "logicalEndOffsetSec": 10205,
+        "protected": {
+          "__typename": "VideoProtected",
+          "isPinProtected": false,
+          "isAgeVerificationProtected": false,
+          "isPreReleasePinProtected": false
+        },
+        "liveEvent": null
+      }
+    ],
+    "gatewayRequestDetails": {
+      "__typename": "GatewayRequestDetails",
+      "requestId": "crja7nt74bi29n5quj4g"
+    },
+    "trackIdSdpSource": 284074791,
+    "trackIdMdpSource": 284204822,
+    "trackIdSdp": 200118323,
+    "trackIdMdp": 200117422,
+    "trackIdTrailers": 250014063
+  }
+}

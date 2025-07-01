@@ -1,0 +1,121 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "The Summer I Turned Pretty",
+  "year": "2022",
+  "ua": "U/A 16+",
+  "match": "IMDb 7.3",
+  "hdsd": "HD",
+  "type": "t",
+  "creator": "",
+  "director": "Jesse Peretz, Jeff Chan, Erica Dunton",
+  "writer": "",
+  "short_cast": "Lola Tung, Jackie Chung, Rachel Blanchard, Christopher Briney, Gavin Casalegno, Sean Kaufman, Alfredo Narciso, Minnie Mills, Colin Ferguson, Tom Everett Scott, Rain Spencer, JP Lambert, Summer Madison, David Iacono, Sarah Hudson, Rea DeRosa, Al Vicente",
+  "cast": "Lola Tung, Jackie Chung, Rachel Blanchard, Christopher Briney, Gavin Casalegno, Sean Kaufman, Alfredo Narciso, Minnie Mills, Colin Ferguson, Tom Everett Scott, Rain Spencer, JP Lambert, Summer Madison, David Iacono, Sarah Hudson, Rea DeRosa, Al Vicente",
+  "genre": "Drama, Romance, Young Adult Audience",
+  "thismovieis": "",
+  "m_desc": "Suitable for ages 16+",
+  "m_reason": "tobacco depictions, substance use, alcohol use, nudity, foul language, sexual content, violence",
+  "desc": "Belly Conklin is about to turn 16, and she’s headed to her favorite place in the world, Cousins Beach, to spend the summer with her family and the Fishers. Belly’s grown up a lot over the past year, and she has a feeling that this summer is going to be different than all the summers before. The Summer I Turned Pretty is based on the book by Jenny Han, who is creator and executive producer.",
+  "oin": null,
+  "season": [
+    {
+      "s": "1",
+      "id": "0KAW4T6OOSAPQJVCFDCOXNLGJU",
+      "ep": "7",
+      "sele": " selected"
+    },
+    {
+      "s": "2",
+      "id": "0ITVI13B4SST8NI37QK4HLVXNL",
+      "ep": "8",
+      "sele": " selected"
+    }
+  ],
+  "episodes": [
+    {
+      "complate": "0",
+      "id": "0PGAX959T9M0IUBGF3F37MK7K5",
+      "t": "Love Lost",
+      "s": "S2",
+      "ep": "E1",
+      "time": "56m"
+    },
+    {
+      "complate": "0",
+      "id": "0RKZJBRW6YVIXBH2HPTJ6CBFMX",
+      "t": "Love Scene",
+      "s": "S2",
+      "ep": "E2",
+      "time": "42m"
+    },
+    {
+      "complate": "0",
+      "id": "0RNNKZ8975MTGF80OQW7DNU8L1",
+      "t": "Love Sick",
+      "s": "S2",
+      "ep": "E3",
+      "time": "47m"
+    },
+    {
+      "complate": "0",
+      "id": "0LWFH3O0CF9OUJB0CLVSP4TKCY",
+      "t": "Love Game",
+      "s": "S2",
+      "ep": "E4",
+      "time": "50m"
+    },
+    {
+      "complate": "0",
+      "id": "0FCWFEQ8ET7777QBWQ7VEOU7OS",
+      "t": "Love Fool",
+      "s": "S2",
+      "ep": "E5",
+      "time": "49m"
+    },
+    {
+      "complate": "0",
+      "id": "0HJBSN6JZFIC3JYEEDNAVK8RIS",
+      "t": "Love Fest",
+      "s": "S2",
+      "ep": "E6",
+      "time": "54m"
+    },
+    {
+      "complate": "0",
+      "id": "0U6L0KJC7MNM85T0IEXKEQOA8C",
+      "t": "Love Affair",
+      "s": "S2",
+      "ep": "E7",
+      "time": "56m"
+    },
+    {
+      "complate": "0",
+      "id": "0LZ13W7Y9KA4F2IBVIWADZ5YQ9",
+      "t": "Love Triangle",
+      "s": "S2",
+      "ep": "E8",
+      "time": "58m"
+    }
+  ],
+  "nextPageShow": 0,
+  "nextPage": 2,
+  "nextPageSeason": "0ITVI13B4SST8NI37QK4HLVXNL",
+  "lang": [
+    { "l": "German", "s": "deu" },
+    { "l": "English", "s": "eng" },
+    { "l": "Spanish", "s": "spa" },
+    { "l": "Spanish", "s": "spa" },
+    { "l": "French", "s": "fra" },
+    { "l": "Hindi", "s": "hin" },
+    { "l": "Italian", "s": "ita" },
+    { "l": "Japanese", "s": "jpn" },
+    { "l": "Polish", "s": "pol" },
+    { "l": "Portuguese", "s": "por" },
+    { "l": "Turkish", "s": "tur" }
+  ],
+  "last_ep": "0PGAX959T9M0IUBGF3F37MK7K5",
+  "resume": "",
+  "suggest": "",
+  "error": null
+}

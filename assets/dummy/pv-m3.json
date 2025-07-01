@@ -1,0 +1,40 @@
+{
+  "status": "y",
+  "d_lang": "eng",
+  "title": "Pathaan",
+  "year": "2023",
+  "ua": "U/A 13+",
+  "match": "IMDb 5.8",
+  "runtime": "2h 29m",
+  "hdsd": "HD",
+  "type": "m",
+  "creator": "",
+  "director": "Siddharth Anand",
+  "writer": "Shridhar Raghavan, Abbas Tyrewala, Siddharth Anand",
+  "short_cast": "Shah Rukh Khan, Deepika Padukone, John Abraham, Dimple Kapadia, Ashutosh Rana",
+  "cast": "Shah Rukh Khan, Deepika Padukone, John Abraham, Dimple Kapadia, Ashutosh Rana",
+  "genre": "Action, Suspense, International, Adventure",
+  "thismovieis": "",
+  "m_desc": "Suitable for ages 13+",
+  "m_reason": "alcohol use, sexual content, violence, foul language",
+  "desc": "Indian RAW agent \u201cPathaan\u201d (Shah Rukh Khan) gets to know of a major impending attack against India, mounted by a mercenary group led by the ruthless enigma Jim (John Abraham), who has a history of his own. With the doomsday clock ticking away and an agent Rubai (Deepika Padukone) his only possible ally, Pathaan must fight countless betrayals and deal with destruction as he takes on Jim.",
+  "oin": null,
+  "resume": "",
+  "lang": [
+    { "l": "German", "s": "deu" },
+    { "l": "Hindi", "s": "hin" },
+    { "l": "Tamil", "s": "tam" },
+    { "l": "Telugu", "s": "tel" }
+  ],
+  "langnum": "4",
+  "episodes": [null],
+  "suggest": [
+    { "id": "0IWQLFW5TQ34HQWH0AFQGPILQV" },
+    { "id": "0G10666UQ09EF3WC9XLRJ3OYE0" },
+    { "id": "0NVAIZTX6VXE9UF85SC5PPPATR" },
+    { "id": "0RDCSMM0GYIYK4TS4V6VMTPFGC" },
+    { "id": "0JXI2PMH3GL1IAO2CUNV2T5MCY" },
+    { "id": "0PQHTNL47NU88A3P7S2DYWN1AU" }
+  ],
+  "error": null
+}

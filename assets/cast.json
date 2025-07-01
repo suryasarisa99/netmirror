@@ -1,0 +1,253 @@
+{
+  "data": {
+    "videos": [
+      {
+        "__typename": "Movie",
+        "videoId": 81917393,
+        "isAvailable": true,
+        "title": "Aadujeevitham: The Goat Life (Hindi)",
+        "unifiedEntityId": "Video:81917393",
+        "contentAdvisory": {
+          "__typename": "ContentAdvisory",
+          "boardName": "India",
+          "boardId": 23821,
+          "broadcastDistributorName": null,
+          "broadcastReleaseDate": null,
+          "certificationValue": "U/A 13+",
+          "certificationRatingId": 23882,
+          "i18nRating": "RATED U/A 13+",
+          "i18nReasonsText": "mature themes, nudity, tobacco use, violence",
+          "maturityDescription": "Suitable for persons aged 13 and above and under parental guidance for people under age of 13",
+          "maturityLevel": 80,
+          "shortDescription": "Suitable for persons aged 13 and above and under parental guidance for people under age of 13",
+          "reasons": [
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 23853,
+              "text": "mature themes"
+            },
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 23870,
+              "text": "nudity"
+            },
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 24141,
+              "text": "tobacco use"
+            },
+            {
+              "__typename": "ContentAdvisoryReason",
+              "iconId": 23845,
+              "text": "violence"
+            }
+          ]
+        },
+        "genres": {
+          "__typename": "GenreConnection",
+          "edges": [
+            {
+              "__typename": "GenreEdge",
+              "node": {
+                "__typename": "Genre",
+                "genreId": 59849,
+                "name": "Malayalam-Language Movies",
+                "navigationMenuName": "Malayalam",
+                "unifiedEntityId": "Collection:59849"
+              }
+            },
+            {
+              "__typename": "GenreEdge",
+              "node": {
+                "__typename": "Genre",
+                "genreId": 5763,
+                "name": "Drama Movies",
+                "navigationMenuName": "Dramas",
+                "unifiedEntityId": "Collection:5763"
+              }
+            },
+            {
+              "__typename": "GenreEdge",
+              "node": {
+                "__typename": "Genre",
+                "genreId": 9889,
+                "name": "Movies Based on Books",
+                "navigationMenuName": "Movies Based on Books",
+                "unifiedEntityId": "Collection:9889"
+              }
+            }
+          ]
+        },
+        "tags": [
+          {
+            "__typename": "EntityTag",
+            "id": 100044,
+            "displayName": "Gritty",
+            "isDisplayable": true,
+            "isMood": true
+          },
+          {
+            "__typename": "EntityTag",
+            "id": 81331730,
+            "displayName": "Drama",
+            "isDisplayable": true,
+            "isMood": false
+          },
+          {
+            "__typename": "EntityTag",
+            "id": 81340913,
+            "displayName": "Survival",
+            "isDisplayable": true,
+            "isMood": false
+          },
+          {
+            "__typename": "EntityTag",
+            "id": 81418683,
+            "displayName": "Indian",
+            "isDisplayable": true,
+            "isMood": false
+          },
+          {
+            "__typename": "EntityTag",
+            "id": 100089,
+            "displayName": "Based on a Book",
+            "isDisplayable": true,
+            "isMood": false
+          },
+          {
+            "__typename": "EntityTag",
+            "id": 100106,
+            "displayName": "Movie",
+            "isDisplayable": true,
+            "isMood": false
+          }
+        ],
+        "actors": {
+          "__typename": "PersonConnection",
+          "totalCount": 8,
+          "edges": [
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:30182134",
+                "personId": 30182134,
+                "title": "Prithviraj Sukumaran",
+                "name": "Prithviraj Sukumaran"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:70285881",
+                "personId": 70285881,
+                "title": "K. R. Gokul",
+                "name": "K. R. Gokul"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:20035856",
+                "personId": 20035856,
+                "title": "Jimmy Jean-Louis",
+                "name": "Jimmy Jean-Louis"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:30166262",
+                "personId": 30166262,
+                "title": "Amala Paul",
+                "name": "Amala Paul"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:70285978",
+                "personId": 70285978,
+                "title": "Talib Al Balushi",
+                "name": "Talib Al Balushi"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:70286002",
+                "personId": 70286002,
+                "title": "Shobha Mohan",
+                "name": "Shobha Mohan"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:60385117",
+                "personId": 60385117,
+                "title": "Rik Aby",
+                "name": "Rik Aby"
+              }
+            },
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:30181967",
+                "personId": 30181967,
+                "title": "Robin Das",
+                "name": "Robin Das"
+              }
+            }
+          ]
+        },
+        "creators": {
+          "__typename": "PersonConnection",
+          "totalCount": 0,
+          "edges": []
+        },
+        "directors": {
+          "__typename": "PersonConnection",
+          "totalCount": 1,
+          "edges": [
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:70275755",
+                "personId": 70275755,
+                "title": "Blessy",
+                "name": "Blessy"
+              }
+            }
+          ]
+        },
+        "writers": {
+          "__typename": "PersonConnection",
+          "totalCount": 1,
+          "edges": [
+            {
+              "__typename": "PersonEdge",
+              "node": {
+                "__typename": "Person",
+                "unifiedEntityId": "Person:70275755",
+                "personId": 70275755,
+                "title": "Blessy",
+                "name": "Blessy"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "genresTrackId": 272907144,
+    "moodTagsTrackId": 273357091
+  }
+}

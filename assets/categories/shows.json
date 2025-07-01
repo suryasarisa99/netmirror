@@ -1,0 +1,133 @@
+{
+  "paths": [["filteredCategoriesList", "genre-83"]],
+  "jsonGraph": {
+    "filteredCategoriesList": {
+      "genre-83": {
+        "$type": "atom",
+        "value": [
+          {
+            "genreName": "Available for Download",
+            "genreId": "downloadable-83",
+            "unifiedEntityId": "Collection:1647397"
+          },
+          {
+            "genreName": "Indian",
+            "genreId": "genre-59872",
+            "unifiedEntityId": "Collection:59872"
+          },
+          {
+            "genreName": "US",
+            "genreId": "genre-72404",
+            "unifiedEntityId": "Collection:72404"
+          },
+          {
+            "genreName": "British",
+            "genreId": "genre-52117",
+            "unifiedEntityId": "Collection:52117"
+          },
+          {
+            "genreName": "European",
+            "genreId": "genre-89663",
+            "unifiedEntityId": "Collection:89663"
+          },
+          {
+            "genreName": "Asian",
+            "genreId": "genre-78103",
+            "unifiedEntityId": "Collection:78103"
+          },
+          {
+            "genreName": "Reality & Talk",
+            "genreId": "genre-2070390",
+            "unifiedEntityId": "Collection:2070390"
+          },
+          {
+            "genreName": "Action",
+            "genreId": "genre-10673",
+            "unifiedEntityId": "Collection:10673"
+          },
+          {
+            "genreName": "Dramas",
+            "genreId": "genre-11714",
+            "unifiedEntityId": "Collection:11714"
+          },
+          {
+            "genreName": "Comedies",
+            "genreId": "genre-10375",
+            "unifiedEntityId": "Collection:10375"
+          },
+          {
+            "genreName": "Sci-Fi & Fantasy",
+            "genreId": "genre-1372",
+            "unifiedEntityId": "Collection:1372"
+          },
+          {
+            "genreName": "Crime",
+            "genreId": "genre-26146",
+            "unifiedEntityId": "Collection:26146"
+          },
+          {
+            "genreName": "Sports",
+            "genreId": "genre-25788",
+            "unifiedEntityId": "Collection:25788"
+          },
+          {
+            "genreName": "Family",
+            "genreId": "genre-451716",
+            "unifiedEntityId": "Collection:451716"
+          },
+          {
+            "genreName": "Kids",
+            "genreId": "genre-27346",
+            "unifiedEntityId": "Collection:27346"
+          },
+          {
+            "genreName": "Docuseries",
+            "genreId": "genre-10105",
+            "unifiedEntityId": "Collection:10105"
+          },
+          {
+            "genreName": "Romance",
+            "genreId": "genre-26156",
+            "unifiedEntityId": "Collection:26156"
+          },
+          {
+            "genreName": "Thriller",
+            "genreId": "genre-89811",
+            "unifiedEntityId": "Collection:89811"
+          },
+          {
+            "genreName": "Horror",
+            "genreId": "genre-83059",
+            "unifiedEntityId": "Collection:83059"
+          },
+          {
+            "genreName": "Teen",
+            "genreId": "genre-60951",
+            "unifiedEntityId": "Collection:60951"
+          },
+          {
+            "genreName": "Anime",
+            "genreId": "genre-6721",
+            "unifiedEntityId": "Collection:6721"
+          },
+          {
+            "genreName": "Science & Nature",
+            "genreId": "genre-52780",
+            "unifiedEntityId": "Collection:52780"
+          },
+          {
+            "genreName": "Food & Travel",
+            "genreId": "genre-72436",
+            "unifiedEntityId": "Collection:72436"
+          },
+          {
+            "genreName": "Audio Description in English",
+            "genreId": "assistiveAudio-83",
+            "unifiedEntityId": "Collection:81662944"
+          }
+        ],
+        "$expires": 1727809331358
+      }
+    }
+  }
+}
