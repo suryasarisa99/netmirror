@@ -1,0 +1,6 @@
+<paths>
+    <!-- <external-path name="external_files" path="Android/data/com.example.netmirror/files/" /> -->
+    <external-path name="external_files" path="Android/data/com.surya.netmirror/files/" />
+    <external-path name="external_files" path="Android/data/com.surya.netmirror/app_flutter/downloads/" />
+    <files-path name="internal_files" path="." />
+</paths>

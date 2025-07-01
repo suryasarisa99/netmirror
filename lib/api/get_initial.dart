@@ -32,10 +32,7 @@ Future<String> getInitial() async {
 
   try {
     // final res = await http.get(url, headers: headers);
-    final res = await http.get(
-      url,
-      headers: {'Sec-Ch-Ua-Mobile': '?1', 'Sec-Ch-Ua-Platform': '"Android"'},
-    );
+    final res = await http.get(url, headers: headers);
     final status = res.statusCode;
     if (status != 200) throw Exception('http.get error: statusCode= $status');
     final setCookie = res.headers['set-cookie'];
@@ -53,8 +50,11 @@ Future<String> getInitial() async {
 
 Future<void> openAdd(String addhash) async {
   // final url1Str = 'https://userverify.netmirror.app/verify?dpj1o=$addhash&a=y&t=0.2822303821745413';
+  // final url2Str =
+  //     'https://userverify.netmirror.app/?fr3=$addhash&a=y&t=0.2822303821745413';
+  log("openAdd params: addhash=$addhash", name: "http");
   final url2Str =
-      'https://userverify.netmirror.app/?fr3=$addhash&a=y&t=0.2822303821745413';
+      'https://userver.netfree2.cc/?heyyst=$addhash&a=y&t=0.2822303821745413';
   final url = Uri.parse(url2Str);
   log("add link: $url");
   await http.get(url);

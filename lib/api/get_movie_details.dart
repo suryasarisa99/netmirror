@@ -7,10 +7,7 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/models/netmirror/netmirror_model.dart';
 
-Future<NmMovie> getMovie(
-  String id, {
-  OTT ott = OTT.none,
-}) async {
+Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
   final tHashT = CookiesManager.tHashT;
   final headers = {
     'accept': '*/*',
@@ -32,20 +29,20 @@ Future<NmMovie> getMovie(
     'x-requested-with': 'XMLHttpRequest',
   };
 
-  final params = {
-    'id': id,
-    't': '1734872811',
-  };
+  final params = {'id': id, 't': '1734872811'};
 
-  final url =
-      Uri.parse('$API_URL/${ott.url}post.php').replace(queryParameters: params);
+  final url = Uri.parse(
+    '$API_URL/${ott.url}post.php',
+  ).replace(queryParameters: params);
+  log("getMovie: $url", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;
   if (status != 200) {
-    log("Error: ${res.body}");
+    log("Error: ${res.body}", name: "http");
     throw Exception('http.get error: statusCode= $status');
   }
+  log("getMovie: ${res.body}", name: "http");
 
   return NmMovie.parse(jsonDecode(res.body), id, ott);
 }

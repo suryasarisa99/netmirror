@@ -58,23 +58,24 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   Future<void> loadData() async {
     log("surya abstract class: loadData()");
-    var movie = await DBHelper.instance.getMovie(widget.id);
-    loadDownloads();
+    var localMovie = await DBHelper.instance.getMovie(widget.id);
+    // loadDownloads();
 
-    if (movie != null) {
+    if (localMovie != null) {
       int tabLen = 0;
-      if (movie.isShow) tabLen++;
-      if (movie.suggest.isNotEmpty) tabLen++;
+      if (localMovie.isShow) tabLen++;
+      if (localMovie.suggest.isNotEmpty) tabLen++;
       if (extraTabForCast) tabLen++;
       tabController = TabController(length: tabLen, vsync: this);
 
       setState(() {
-        movie = movie;
-        seasonIndex = movie!.seasons.length - 1;
+        movie = localMovie;
+        seasonIndex = localMovie.seasons.length - 1;
       });
+      log(">>>>> movie got from db, the movie id is: ${localMovie.id}");
     }
 
-    if (movie == null || movie!.isStale) {
+    if (localMovie == null || localMovie.isStale) {
       loadDataFromOnline();
     }
   }
@@ -83,6 +84,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     log("surya abstract class: loadDataFromOnline()");
 
     var movie = await getMovie(widget.id, ott: ott);
+    log("movie got from online: ${movie.id}");
     if (tabController == null) {
       int tabLen = 0;
       if (movie.isShow) tabLen++;

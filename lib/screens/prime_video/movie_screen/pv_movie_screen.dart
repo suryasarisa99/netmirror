@@ -59,6 +59,7 @@ class _PVMovieScreenState extends MovieScreenState {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    log("PVMovieScreen: build() called with id: ${widget.id}, ${movie?.id}");
 
     return RefreshIndicator(
       onRefresh: loadDataFromOnline,

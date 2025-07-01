@@ -67,20 +67,25 @@ class NfMovieScreenState extends MovieScreenState {
           [],
           actions: [
             IconButton(
-                onPressed: () {
-                  GoRouter.of(context).push("/downloads");
-                },
-                icon: isDesk
-                    ? Icon(Icons.download, size: 20)
-                    : Icon(HugeIcons.strokeRoundedDownload05,
-                        size: 30, color: Colors.white)),
+              onPressed: () {
+                GoRouter.of(context).push("/downloads");
+              },
+              icon: isDesk
+                  ? Icon(Icons.download, size: 20)
+                  : Icon(
+                      HugeIcons.strokeRoundedDownload05,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+            ),
             IconButton(
-                onPressed: () {
-                  GoRouter.of(context).push("/search");
-                },
-                icon: isDesk
-                    ? Icon(Icons.search, size: 20)
-                    : Icon(Icons.search, size: 30, color: Colors.white)),
+              onPressed: () {
+                GoRouter.of(context).push("/search");
+              },
+              icon: isDesk
+                  ? Icon(Icons.search, size: 20)
+                  : Icon(Icons.search, size: 30, color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -101,8 +106,9 @@ class NfMovieScreenState extends MovieScreenState {
                   ...buildMainData(size)
                 else
                   SizedBox(
-                      height: 400,
-                      child: Center(child: CircularProgressIndicator()))
+                    height: 400,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
               ],
             ),
           ),
@@ -132,27 +138,33 @@ class NfMovieScreenState extends MovieScreenState {
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 8, top: 8, bottom: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 43, 43, 43),
-                      borderRadius: BorderRadius.circular(4)),
+                    color: const Color.fromARGB(255, 43, 43, 43),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                   child: Row(
                     children: [
                       Text(
-                          "Season ${movie!.seasons[seasonIndex].s}   (${movie!.seasons[seasonIndex].ep} Ep)",
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16)),
+                        "Season ${movie!.seasons[seasonIndex].s}   (${movie!.seasons[seasonIndex].ep} Ep)",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
                       const SizedBox(width: 8),
-                      const Icon(Icons.arrow_drop_down)
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
-        _buildEpisodes()
+        _buildEpisodes(),
       ],
     );
   }
@@ -170,8 +182,9 @@ class NfMovieScreenState extends MovieScreenState {
     } else {
       final currentEpisodesCount = movie!.seasons[seasonIndex].episodes!.length;
       final extraThere = movie!.seasons[seasonIndex].ep > currentEpisodesCount;
-      final episodeCount =
-          extraThere ? currentEpisodesCount + 1 : currentEpisodesCount;
+      final episodeCount = extraThere
+          ? currentEpisodesCount + 1
+          : currentEpisodesCount;
 
       return SliverList.separated(
         itemCount: episodeCount,
@@ -196,10 +209,7 @@ class NfMovieScreenState extends MovieScreenState {
         separatorBuilder: (context, index) {
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 22),
-            child: Divider(
-              color: Colors.white24,
-              height: 1,
-            ),
+            child: Divider(color: Colors.white24, height: 1),
           );
         },
       );
@@ -218,25 +228,22 @@ class NfMovieScreenState extends MovieScreenState {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final id = movie!.suggest[index].id;
-                return GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context).push("/nf-movie", extra: id);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: CachedNetworkImage(
-                      imageUrl: movie!.ott.getImg(id),
-                      cacheManager: NfSmallCacheManager.instance,
-                      fit: BoxFit.cover,
-                    ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final id = movie!.suggest[index].id;
+              return GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).push("/nf-movie", extra: id);
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: CachedNetworkImage(
+                    imageUrl: movie!.ott.getImg(id),
+                    cacheManager: NfSmallCacheManager.instance,
+                    fit: BoxFit.cover,
                   ),
-                );
-              },
-              childCount: movie!.suggest.length,
-            ),
+                ),
+              );
+            }, childCount: movie!.suggest.length),
           ),
         ),
       ],
@@ -260,15 +267,17 @@ class NfMovieScreenState extends MovieScreenState {
             indicatorSize: TabBarIndicatorSize.tab,
             unselectedLabelColor: Colors.white70,
             labelColor: Colors.white,
-            tabs: (tabController!.length == 2
-                    ? ["Episodes", "More Like This"]
-                    : ["More Like This"])
-                .map(
-                  (e) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(e)),
-                )
-                .toList(),
+            tabs:
+                (tabController!.length == 2
+                        ? ["Episodes", "More Like This"]
+                        : ["More Like This"])
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(e),
+                      ),
+                    )
+                    .toList(),
           ),
         ),
     ];
@@ -284,54 +293,63 @@ class NfMovieScreenState extends MovieScreenState {
           const SizedBox(height: 20),
           // Play Button
           FilledButton(
-              onPressed: playMovie,
-              style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(3)), // Removes the border radius
-                    ),
-                  ),
-                  padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(vertical: 10))),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.play_arrow, size: 28, color: Colors.black),
-                  SizedBox(width: 5),
-                  Text("Play",
-                      style: TextStyle(fontSize: 18, color: Colors.black))
-                ],
-              )),
+            onPressed: playMovie,
+            style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(Colors.white),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(3),
+                  ), // Removes the border radius
+                ),
+              ),
+              padding: WidgetStatePropertyAll(
+                EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.play_arrow, size: 28, color: Colors.black),
+                SizedBox(width: 5),
+                Text(
+                  "Play",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 6),
           // Download Button
           FilledButton(
-              onPressed: () async {
-                downloadMovie();
-              },
-              style: const ButtonStyle(
-                  backgroundColor:
-                      WidgetStatePropertyAll(Color.fromARGB(255, 38, 38, 38)),
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
-                    ),
-                  ),
-                  padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(vertical: 10))),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.download,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 5),
-                  Text("Download",
-                      style: TextStyle(color: Colors.white, fontSize: 18))
-                ],
-              )),
+            onPressed: () async {
+              downloadMovie();
+            },
+            style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                Color.fromARGB(255, 38, 38, 38),
+              ),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(3)),
+                ),
+              ),
+              padding: WidgetStatePropertyAll(
+                EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.download, color: Colors.white),
+                SizedBox(width: 5),
+                Text(
+                  "Download",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 8),
           // Movie Title
           Padding(
@@ -339,9 +357,10 @@ class NfMovieScreenState extends MovieScreenState {
             child: Text(
               movie!.title,
               style: const TextStyle(
-                  fontSize: 28,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800),
+                fontSize: 28,
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
           const SizedBox(height: 5),
@@ -353,20 +372,18 @@ class NfMovieScreenState extends MovieScreenState {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 72, 72, 72),
-                    borderRadius: BorderRadius.circular(2)),
-                child: Text(
-                  movie!.ua,
-                  style: const TextStyle(fontSize: 12),
+                  color: const Color.fromARGB(255, 72, 72, 72),
+                  borderRadius: BorderRadius.circular(2),
                 ),
+                child: Text(movie!.ua, style: const TextStyle(fontSize: 12)),
               ),
               if (movie!.isShow && movie!.seasons.length > 1) ...[
                 const SizedBox(width: 12),
-                Text("${movie!.seasons.length} Seasons")
+                Text("${movie!.seasons.length} Seasons"),
               ],
               if (movie!.isMovie) ...[
                 const SizedBox(width: 12),
-                Text(movie!.runtime ?? "NaN m")
+                Text(movie!.runtime ?? "NaN m"),
               ],
               const SizedBox(width: 8),
             ],
@@ -381,24 +398,28 @@ class NfMovieScreenState extends MovieScreenState {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text("Starring: ",
-                    style: TextStyle(fontSize: 12, color: Colors.white70)),
+                const Text(
+                  "Starring: ",
+                  style: TextStyle(fontSize: 12, color: Colors.white70),
+                ),
                 Expanded(
-                  child: Text(movie!.shortCast ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          const TextStyle(fontSize: 12, color: Colors.white60)),
+                  child: Text(
+                    movie!.shortCast ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12, color: Colors.white60),
+                  ),
                 ),
                 GestureDetector(
-                    onTap: () {
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return const CastPopupScreen();
-                      //     });
-                    },
-                    child: const Text(" more", style: TextStyle(fontSize: 13))),
+                  onTap: () {
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (context) {
+                    //       return const CastPopupScreen();
+                    //     });
+                  },
+                  child: const Text(" more", style: TextStyle(fontSize: 13)),
+                ),
               ],
             ),
           // Movie Directors
@@ -407,14 +428,17 @@ class NfMovieScreenState extends MovieScreenState {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text("Directors: ",
-                    style: TextStyle(fontSize: 12, color: Colors.white70)),
+                const Text(
+                  "Directors: ",
+                  style: TextStyle(fontSize: 12, color: Colors.white70),
+                ),
                 Expanded(
-                  child: Text(movie!.director,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          const TextStyle(fontSize: 12, color: Colors.white60)),
+                  child: Text(
+                    movie!.director,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12, color: Colors.white60),
+                  ),
                 ),
               ],
             ),
@@ -427,32 +451,43 @@ class NfMovieScreenState extends MovieScreenState {
   Widget buildActionItems() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        _MovieScreenActionItem(
-          LottieBuilder.asset(
-            "assets/lottie/my-list-plus-to-check.json",
-            reverse: true,
-            animate: inWatchlist,
-            repeat: repeat,
-            // controller: _animationController,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _MovieScreenActionItem(
+            LottieBuilder.asset(
+              "assets/lottie/my-list-plus-to-check.json",
+              reverse: true,
+              animate: inWatchlist,
+              repeat: repeat,
+              // controller: _animationController,
+            ),
+            "Movie List",
+            handleAddWatchlist,
           ),
-          "Movie List",
-          handleAddWatchlist,
-        ),
-        _MovieScreenActionItem(
+          _MovieScreenActionItem(
             const Icon(HugeIcons.strokeRoundedThumbsUp, color: Colors.white),
             "Rate",
-            () {}),
-        _MovieScreenActionItem(
-            const Icon(Icons.share, color: Colors.white), "Share", () {
-          Share.shareUri(Uri.parse("$API_URL/watch/${movie!.id}"));
-        }),
-        _MovieScreenActionItem(
-            const Icon(HugeIcons.strokeRoundedDownload04,
-                size: 32, color: Colors.white),
+            () {},
+          ),
+          _MovieScreenActionItem(
+            const Icon(Icons.share, color: Colors.white),
+            "Share",
+            () {
+              Share.shareUri(Uri.parse("$API_URL/watch/${movie!.id}"));
+            },
+          ),
+          _MovieScreenActionItem(
+            const Icon(
+              HugeIcons.strokeRoundedDownload04,
+              size: 32,
+              color: Colors.white,
+            ),
             "Download",
-            () {}),
-      ]),
+            () {},
+          ),
+        ],
+      ),
     );
   }
 }
@@ -476,7 +511,7 @@ class _MovieScreenActionItem extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(color: Colors.white70, fontSize: 10),
-          )
+          ),
         ],
       ),
     );

@@ -30,18 +30,17 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     _initializeVideo();
   }
 
   Future<void> _initializeVideo() async {
     if (!CookiesManager.isValidResourceKey) {
       log("Invalid resource key");
-      await getSource(
-        id: widget.data.id,
-        ott: widget.data.ott,
-      );
+      await getSource(id: widget.data.id, ott: widget.data.ott);
     }
     final resourceKey = CookiesManager.resourceKey;
 
@@ -114,9 +113,7 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
         controlsConfiguration: controlsConfiguration,
       ),
       betterPlayerPlaylistConfiguration:
-          const BetterPlayerPlaylistConfiguration(
-        initialStartIndex: 0,
-      ),
+          const BetterPlayerPlaylistConfiguration(initialStartIndex: 0),
       betterPlayerDataSource: betterPlayerDataSource,
     )..setBetterPlayerGlobalKey(_betterPlayerKey);
 
@@ -142,31 +139,37 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
         // betterPlayerAudioController!.setSpeed(200);
 
         if (audioTracks != null) {
-          final preferredAudioTrack =
-              ref.read(audioTrackProvider.notifier).pickPreferred(audioTracks);
+          final preferredAudioTrack = ref
+              .read(audioTrackProvider.notifier)
+              .pickPreferred(audioTracks);
           _betterPlayerVideoController!.setAudioTrack(preferredAudioTrack);
           if (audioTracks.length > 1) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Center(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: Text(
-                    "Selected Audio ${preferredAudioTrack.label ?? preferredAudioTrack.language}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white),
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      "Selected Audio ${preferredAudioTrack.label ?? preferredAudioTrack.language}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
+                behavior: SnackBarBehavior.floating,
+                width: 220,
+                backgroundColor: const Color.fromARGB(255, 34, 34, 34),
+                duration: const Duration(milliseconds: 3000),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    25.0,
+                  ), // Adjust radius as needed
+                ),
               ),
-              behavior: SnackBarBehavior.floating,
-              width: 220,
-              backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-              duration: const Duration(milliseconds: 3000),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(25.0), // Adjust radius as needed
-              ),
-            ));
+            );
           }
         }
         // if (widget.wh != null &&
@@ -200,8 +203,10 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -218,8 +223,10 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
   @override
   void dispose() {
     _betterPlayerVideoController?.dispose();
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 }

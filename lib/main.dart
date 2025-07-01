@@ -30,22 +30,22 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (isDesk) {
-    databaseFactory = databaseFactoryFfi;
-    // await windowManager.ensureInitialized();
+  // if (isDesk) {
+  //   databaseFactory = databaseFactoryFfi;
+  //   // await windowManager.ensureInitialized();
 
-    const WindowOptions windowOptions = WindowOptions(
-      size: Size(800, 600),
-      center: true,
-      backgroundColor: Colors.transparent,
-      skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
-    );
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-    });
-  }
+  //   const WindowOptions windowOptions = WindowOptions(
+  //     size: Size(800, 600),
+  //     center: true,
+  //     backgroundColor: Colors.transparent,
+  //     skipTaskbar: false,
+  //     titleBarStyle: TitleBarStyle.hidden,
+  //   );
+  //   windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //     await windowManager.show();
+  //     await windowManager.focus();
+  //   });
+  // }
 
   await DBHelper.instance.database;
   Downloader.instance;

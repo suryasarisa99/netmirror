@@ -140,8 +140,7 @@ final headers2 = [
 //     id: id,
 //   );
 
-final bool isDesk =
-    Platform.isLinux || Platform.isWindows || Platform.isWindows;
+final bool isDesk = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
 const Dot = "•";
 int parseIdFromUrl(String url) {
   // Use regular expression to find the part containing digits
