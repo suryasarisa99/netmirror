@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -15,9 +16,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-          surfaceTintColor: Colors.black,
-          backgroundColor: Colors.black,
-          title: windowDragAreaWithChild([Text('Settings')])),
+        surfaceTintColor: Colors.black,
+        backgroundColor: Colors.black,
+        title: windowDragAreaWithChild([Text('Settings')]),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Column(
@@ -27,6 +29,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: <Widget>[
             buildPlayerRow(false),
             buildPlayerRow(true),
+            FilledButton(
+              onPressed: () async {
+                PermissionStatus status = await Permission.manageExternalStorage
+                    .request();
+                if (status.isGranted) {}
+              },
+              child: Text("permission"),
+            ),
           ],
         ),
       ),

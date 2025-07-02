@@ -1,3 +1,4 @@
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/downloader/download_db.dart';
@@ -15,7 +16,7 @@ class EpisodeWidget extends StatelessWidget {
     rq,
   });
 
-  final NmEpisode episode;
+  final Episode episode;
   final String ott;
   final MiniDownloadItem? dEpisode;
   final VoidCallback downloadEpisode;

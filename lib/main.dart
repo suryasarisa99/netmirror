@@ -141,6 +141,13 @@ final GlobalKey<StatefulNavigationShellState> pvMainHomeKey =
 final GlobalKey<StatefulNavigationShellState> nfMainHomeKey =
     GlobalKey<StatefulNavigationShellState>();
 
+typedef PlayerScreenData = ({
+  Movie movie,
+  WatchHistoryModel? watchHistory,
+  int? seasonIndex,
+  int? episodeIndex,
+});
+
 final routes = GoRouter(
   initialLocation: "/initial-screen",
   routes: [
@@ -213,10 +220,15 @@ final routes = GoRouter(
     GoRoute(
       path: "/nm-player",
       pageBuilder: (context, state) {
-        // final (playerData, watchHistory) =
-        //     state.extra as (PlayerData, WatchHistoryModel?);
-        final movie = state.extra as NmMovie;
-        return MaterialPage(child: NetmirrorPlayer(data: movie, wh: null));
+        final data = state.extra as PlayerScreenData;
+        return MaterialPage(
+          child: NetmirrorPlayer(
+            data: data.movie,
+            wh: data.watchHistory,
+            seasonIndex: data.seasonIndex,
+            episodeIndex: data.episodeIndex,
+          ),
+        );
       },
     ),
     GoRoute(

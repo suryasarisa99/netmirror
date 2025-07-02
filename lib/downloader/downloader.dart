@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:netmirror/api/playlist/get_audio_hls.dart';
@@ -593,7 +594,7 @@ class Downloader {
   Future<void> startSeasonDownload(
     MinifyMovie movie,
     int seasonIndex,
-    List<NmEpisode> episodes,
+    List<Episode> episodes,
     int qualityIndex,
     List<int> audioIndexs,
     String firstEpisodeSourceRaw,
@@ -680,6 +681,7 @@ class Downloader {
       sourceRaw: sourceRaw,
       audioIndexes: audioIndexs,
     );
+    // return;
 
     if (movie.isShow) {
       final seasonNumber = movie.seasons[seasonIndex!].s;

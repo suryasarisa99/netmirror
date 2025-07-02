@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +24,10 @@ class Search extends ConsumerStatefulWidget {
 class _NmSearchState extends ConsumerState<Search>
     with SingleTickerProviderStateMixin {
   late int _tabIndex = widget.tabIndex;
-  late final TabController _tabController =
-      TabController(length: 5, vsync: this);
+  late final TabController _tabController = TabController(
+    length: 5,
+    vsync: this,
+  );
   late final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
   final List<NmSearchResults?> searchResults = [null, null, null, null, null];
@@ -34,8 +37,10 @@ class _NmSearchState extends ConsumerState<Search>
   void initState() {
     super.initState();
     if (_tabIndex != 0) {
-      _tabController.animateTo(_tabIndex,
-          duration: const Duration(milliseconds: 50));
+      _tabController.animateTo(
+        _tabIndex,
+        duration: const Duration(milliseconds: 50),
+      );
     }
     // listen for tab changes
     _tabController.addListener(_onTabChange);
@@ -70,8 +75,10 @@ class _NmSearchState extends ConsumerState<Search>
       log("message: ${_searchController.text}");
       int backupTabIndex = _tabIndex;
 
-      final x = await getNmSearch(_searchController.text,
-          ott: OTT.values[backupTabIndex]);
+      final x = await getNmSearch(
+        _searchController.text,
+        ott: OTT.values[backupTabIndex],
+      );
 
       setState(() {
         searchResults[backupTabIndex] = x;
@@ -111,61 +118,64 @@ class _NmSearchState extends ConsumerState<Search>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          surfaceTintColor: Colors.black,
-          title: windowDragAreaWithChild([
-            const Text('Search'),
-          ]),
-          // title: ,
-        ),
-        body: Column(
-          children: [
-            buildSearchbar(),
-            TabBar(
-                controller: _tabController,
-                indicatorWeight: 1.0,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicatorColor: Colors.white,
-                labelStyle: const TextStyle(
-                    fontSize: 17.0, fontWeight: FontWeight.bold),
-                unselectedLabelColor: Colors.grey,
-                labelColor: Colors.white,
-                isScrollable: true,
-                tabs: OTT.values.map((e) => Tab(text: e.name)).toList()),
-            Expanded(
-              child: TabBarView(controller: _tabController, children: [
+        surfaceTintColor: Colors.black,
+        title: windowDragAreaWithChild([const Text('Search')]),
+        // title: ,
+      ),
+      body: Column(
+        children: [
+          buildSearchbar(),
+          TabBar(
+            controller: _tabController,
+            indicatorWeight: 1.0,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorColor: Colors.white,
+            labelStyle: const TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.white,
+            isScrollable: true,
+            tabs: OTT.values.map((e) => Tab(text: e.name)).toList(),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
                 // Text('Netflix'),
                 buildNetflixSearchResults(size),
                 buildPrimeVideoSearchResults(),
                 const Center(child: Text('Not Implemented Yet')),
                 const Center(child: Text('Not Implemented Yet')),
                 const Center(child: Text('Not Implemented Yet')),
-              ]),
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildNetflixSearchResults(Size size) {
     if (_searchController.text.isEmpty) {
-      return const Center(
-        child: Text('Search for something'),
-      );
+      return const Center(child: Text('Search for something'));
     }
 
     final searchResult = searchResults[0]; // Remove the force unwrap
     if (searchResult == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (searchResult.error.isNotEmpty) {
       return Center(
-        child: Text(searchResult.error,
-            style: const TextStyle(color: Colors.white, fontSize: 18)),
+        child: Text(
+          searchResult.error,
+          style: const TextStyle(color: Colors.white, fontSize: 18),
+        ),
       );
     }
 
@@ -177,51 +187,50 @@ class _NmSearchState extends ConsumerState<Search>
     }
 
     return GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
-        itemCount: searchResult.results.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isDesk ? getCrossAxisCount(size.width) : 3,
-          // childAspectRatio: OTT.none.vImgRatio,
-          childAspectRatio: OTT.none.aspectRatio,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemBuilder: (context, index) {
-          final result = searchResult.results[index];
-          return GestureDetector(
-            onTap: () {
-              GoRouter.of(context).push("/nf-movie", extra: result.id);
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                searchResult.ott.getImg(result.id),
-                // width: 80,
-                fit: BoxFit.cover,
-              ),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+      itemCount: searchResult.results.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: isDesk ? getCrossAxisCount(size.width) : 3,
+        // childAspectRatio: OTT.none.vImgRatio,
+        childAspectRatio: OTT.none.aspectRatio,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
+      itemBuilder: (context, index) {
+        final result = searchResult.results[index];
+        return GestureDetector(
+          onTap: () {
+            GoRouter.of(context).push("/nf-movie", extra: result.id);
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              searchResult.ott.getImg(result.id),
+              // width: 80,
+              fit: BoxFit.cover,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget buildPrimeVideoSearchResults() {
     if (_searchController.text.isEmpty) {
-      return const Center(
-        child: Text('Search for something'),
-      );
+      return const Center(child: Text('Search for something'));
     }
 
     final searchResult = searchResults[1]; // Remove the force unwrap
     if (searchResult == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (searchResult.error.isNotEmpty) {
       return Center(
-        child: Text(searchResult.error,
-            style: const TextStyle(color: Colors.white, fontSize: 18)),
+        child: Text(
+          searchResult.error,
+          style: const TextStyle(color: Colors.white, fontSize: 18),
+        ),
       );
     }
 
@@ -250,13 +259,18 @@ class _NmSearchState extends ConsumerState<Search>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(result.t,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400)),
-                      Text("${result.y ?? ''} ${result.r ?? ''}",
-                          style: const TextStyle(color: Colors.grey)),
+                      Text(
+                        result.t,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        "${result.y ?? ''} ${result.r ?? ''}",
+                        style: const TextStyle(color: Colors.grey),
+                      ),
                     ],
                   ),
                 ),

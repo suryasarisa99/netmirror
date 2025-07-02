@@ -36,8 +36,9 @@ class DBHelper {
         await db.execute(
           'CREATE TABLE ott_nf_home (key TEXT PRIMARY KEY, value TEXT)',
         );
-        await db
-            .execute('CREATE TABLE movie (key TEXT PRIMARY KEY, value TEXT)');
+        await db.execute(
+          'CREATE TABLE movie (key TEXT PRIMARY KEY, value TEXT)',
+        );
         // for (final statement in DownloadTables.createStatements) {
         //   await db.execute(statement);
         // }
@@ -64,61 +65,54 @@ class DBHelper {
 
   Future<void> addPvHomePage(String key, PvHomeModel data) async {
     final db = await database;
-    db.insert(
-      "ott_pv_home",
-      {
-        'key': key,
-        'value': jsonEncode(data.toJson()),
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    db.insert("ott_pv_home", {
+      'key': key,
+      'value': jsonEncode(data.toJson()),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> addNfHomePage(String key, NfHomeModel data) async {
     final db = await database;
-    db.insert(
-      "ott_nf_home",
-      {
-        'key': key,
-        'value': jsonEncode(data.toJson()),
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    db.insert("ott_nf_home", {
+      'key': key,
+      'value': jsonEncode(data.toJson()),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<PvHomeModel?> getPvHomePage(String key) async {
     final db = await database;
-    final res =
-        await db.query("ott_pv_home", where: 'key = ?', whereArgs: [key]);
+    final res = await db.query(
+      "ott_pv_home",
+      where: 'key = ?',
+      whereArgs: [key],
+    );
     if (res.isEmpty) return null;
     return PvHomeModel.fromJson(jsonDecode(res.first['value']! as String));
   }
 
   Future<NfHomeModel?> getNfHomePage(String key) async {
     final db = await database;
-    final res =
-        await db.query("ott_nf_home", where: 'key = ?', whereArgs: [key]);
+    final res = await db.query(
+      "ott_nf_home",
+      where: 'key = ?',
+      whereArgs: [key],
+    );
     if (res.isEmpty) return null;
     return NfHomeModel.fromJson(jsonDecode(res.first['value']! as String));
   }
 
-  Future<void> addMovie(String key, NmMovie data) async {
+  Future<void> addMovie(String key, Movie data) async {
     final db = await database;
-    db.insert(
-      "movie",
-      {
-        'key': key,
-        'value': jsonEncode(data.toJson()),
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    db.insert("movie", {
+      'key': key,
+      'value': jsonEncode(data.toJson()),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<NmMovie?> getMovie(String key) async {
+  Future<Movie?> getMovie(String key) async {
     final db = await database;
     final res = await db.query("movie", where: 'key = ?', whereArgs: [key]);
     if (res.isEmpty) return null;
-    return NmMovie.fromJson(
-        jsonDecode(res.first['value']! as String), key, null);
+    return Movie.fromJson(jsonDecode(res.first['value']! as String), key, null);
   }
 }

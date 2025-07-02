@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -197,7 +198,6 @@ class NfMovieScreenState extends MovieScreenState {
           }
           final episode = movie!.seasons[seasonIndex].episodes![index];
           final depisode = downloads[episode.id];
-          log("Episode: ${depisode?.status}");
           return EpisodeWidget(
             episode: episode,
             dEpisode: depisode,

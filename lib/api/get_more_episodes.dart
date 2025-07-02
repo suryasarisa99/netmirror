@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 
-Future<List<NmEpisode>> getMoreEpisodes({
+Future<List<Episode>> getMoreEpisodes({
   required String s,
   required String series,
   required OTT ott,
@@ -34,15 +35,12 @@ Future<List<NmEpisode>> getMoreEpisodes({
     'x-requested-with': 'XMLHttpRequest',
   };
 
-  final params = {
-    's': s,
-    'series': series,
-    't': '1735114641',
-  };
+  final params = {'s': s, 'series': series, 't': '1735114641'};
   if (page != null) params['page'] = page.toString();
 
-  final url = Uri.parse('$API_URL/${ott.url}episodes.php')
-      .replace(queryParameters: params);
+  final url = Uri.parse(
+    '$API_URL/${ott.url}episodes.php',
+  ).replace(queryParameters: params);
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;
@@ -54,5 +52,5 @@ Future<List<NmEpisode>> getMoreEpisodes({
   final json = jsonDecode(res.body);
   log(json.toString());
 
-  return (json['episodes'] as List).map((e) => NmEpisode.fromJson(e)).toList();
+  return (json['episodes'] as List).map((e) => Episode.fromJson(e)).toList();
 }

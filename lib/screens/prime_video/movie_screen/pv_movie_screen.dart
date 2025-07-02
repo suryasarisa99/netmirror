@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -59,7 +60,6 @@ class _PVMovieScreenState extends MovieScreenState {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    log("PVMovieScreen: build() called with id: ${widget.id}, ${movie?.id}");
 
     return RefreshIndicator(
       onRefresh: loadDataFromOnline,
@@ -176,7 +176,7 @@ class _PVMovieScreenState extends MovieScreenState {
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: () async {
-                    playMovie();
+                    playMovieOrEpisode();
                   },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.white),

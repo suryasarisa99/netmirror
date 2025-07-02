@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
@@ -41,6 +42,7 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
   log("Source url: $url");
 
   final res = await http.get(url, headers: headers);
+  log("Source response: ${res.body}");
   final status = res.statusCode;
 
   if (status != 200) throw Exception('http.get error: statusCode= $status');
@@ -108,17 +110,19 @@ class Sources {
   final List<SourceModel> sources;
   final List<TrackModel> otherTracks;
   final List<TrackModel> subtitles;
+  final String resourceKey;
 
   Sources({
     required this.image,
     required this.sources,
     required this.otherTracks,
+    required this.resourceKey,
     this.subtitles = const [],
   });
 
-  String get resourceKey {
-    return sources.first.file.split("=").last.trim();
-  }
+  // String get resourceKey {
+  //   return sources.first.file.split("=").last.trim();
+  // }
 
   String? get subtitle {
     return otherTracks.firstWhereOrNull((t) => t.kind == "captions")?.file;
@@ -142,13 +146,18 @@ class Sources {
         : <TrackModel>[];
     final subtitles = tracks.where((t) => t.kind == "captions").toList();
     final otherTracks = tracks.where((t) => t.kind != "captions").toList();
+    final sources = (json['sources'] as List)
+        .map((e) => SourceModel.fromJson(e))
+        .toList();
+    final resourceKey =
+        Uri.parse(sources.first.file).queryParameters['in'] ?? '';
+
     return Sources(
       image: json['image'],
-      sources: (json['sources'] as List)
-          .map((e) => SourceModel.fromJson(e))
-          .toList(),
+      sources: sources,
       otherTracks: otherTracks,
       subtitles: subtitles,
+      resourceKey: resourceKey,
     );
   }
 

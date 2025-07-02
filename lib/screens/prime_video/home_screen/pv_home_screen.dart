@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -77,10 +78,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
 
   Future<void> loadDataFromOnline() async {
     log("Load:: PV from network");
-    final raw = await getPv(
-      id: widget.tab,
-      ott: OTT.pv,
-    );
+    final raw = await getPv(id: widget.tab, ott: OTT.pv);
     final temp = PvHomeModel.parse(raw);
     setState(() {
       data = temp;
@@ -105,9 +103,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                   controller: scrollController,
                   slivers: [
                     buildAppBar(),
-                    SliverToBoxAdapter(
-                      child: buildCarousel(),
-                    ),
+                    SliverToBoxAdapter(child: buildCarousel()),
                     SliverList.builder(
                       itemCount: data!.trays.length,
                       itemBuilder: (context, i) {
@@ -117,12 +113,11 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                             : PvHomeRow(tray: tray);
                       },
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 20),
-                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
                   ],
                 ),
-              )),
+              ),
+            ),
     );
   }
 
@@ -135,36 +130,41 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
       surfaceTintColor: Colors.black,
       titleSpacing: 24,
       automaticallyImplyLeading: false,
-      title: windowDragAreaWithChild([
-        widget.tab == 0
-            ? Image.asset("assets/logos/pv-header.png", width: 80)
-            : Text(
-                widget.tab == 1 ? "Movies" : "Tv Shows",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      title: windowDragAreaWithChild(
+        [
+          widget.tab == 0
+              ? Image.asset("assets/logos/pv-header.png", width: 80)
+              : Text(
+                  widget.tab == 1 ? "Movies" : "Tv Shows",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-      ], actions: [
-        TopbarButtons.settingsBtn(context),
-        TopbarButtons.downloadsBtn(context),
-        TopbarButtons.searchBtn(context),
-      ]),
+        ],
+        actions: [
+          TopbarButtons.settingsBtn(context),
+          TopbarButtons.downloadsBtn(context),
+          TopbarButtons.searchBtn(context),
+        ],
+      ),
       toolbarHeight: toolbarHeight,
       expandedHeight: toolbarHeight + extendedHeight,
       floating: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-            margin: const EdgeInsets.only(top: toolbarHeight - 5),
-            child: PvHeaderTabs(tab: widget.tab)),
+          margin: const EdgeInsets.only(top: toolbarHeight - 5),
+          child: PvHeaderTabs(tab: widget.tab),
+        ),
       ),
     );
   }
 
   Widget buildCarousel() {
-    return Column(children: [
-      SizedBox(
+    return Column(
+      children: [
+        SizedBox(
           height: 230,
           child: CarouselSlider(
             carouselController: carouselController,
@@ -189,10 +189,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                   return GestureDetector(
                     onTap: () {
                       log("navigating to movie");
-                      GoRouter.of(context).push(
-                        "/pv-movie",
-                        extra: item.id,
-                      );
+                      GoRouter.of(context).push("/pv-movie", extra: item.id);
                     },
                     child: CachedNetworkImage(
                       imageUrl: item.img,
@@ -203,32 +200,34 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                 },
               );
             }).toList(),
-          )),
-      const SizedBox(height: 8),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(data!.carouselImgs.length, (i) {
-          bool isSelected = i == currentCarouselIndex;
-          return GestureDetector(
-            onTap: () {
-              carouselController.animateToPage(i);
-            },
-            child: AnimatedContainer(
-              width: isSelected ? 12 : 5,
-              height: 5,
-              margin: EdgeInsets.symmetric(horizontal: isSelected ? 4 : 1.5),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.white : Colors.grey[600],
-                borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(data!.carouselImgs.length, (i) {
+            bool isSelected = i == currentCarouselIndex;
+            return GestureDetector(
+              onTap: () {
+                carouselController.animateToPage(i);
+              },
+              child: AnimatedContainer(
+                width: isSelected ? 12 : 5,
+                height: 5,
+                margin: EdgeInsets.symmetric(horizontal: isSelected ? 4 : 1.5),
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.white : Colors.grey[600],
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
               ),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeIn,
-            ),
-          );
-        }),
-      ),
-      const SizedBox(height: 20),
-    ]);
+            );
+          }),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
   }
 }

@@ -8,8 +8,6 @@ import 'package:netmirror/api/playlist/get_source.dart';
 import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
-import 'package:netmirror/models/player_data_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 
@@ -32,18 +30,17 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
   void initState() {
     super.initState();
     log("player screen");
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
     _initializeVideo();
   }
 
   Future<void> _initializeVideo() async {
     if (!CookiesManager.isValidResourceKey) {
       log("Invalid resource key");
-      await getSource(
-        id: widget.data.videoId.toString(),
-        ott: OTT.none,
-      );
+      await getSource(id: widget.data.videoId.toString(), ott: OTT.none);
     }
     final resourceKey = CookiesManager.resourceKey;
 
@@ -62,14 +59,14 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
       ),
       videoExtension: "m3u8",
       headers: {...headers, 'cookie': 'hd=on'},
-      // playerData: widget.data, //@me: added by me
+      playerData: widget.data, //@me: added by me
       subtitles: [
         BetterPlayerSubtitlesSource(
           type: BetterPlayerSubtitlesSourceType.network,
           name: "English",
           selectedByDefault: true,
           urls: [
-            "https://subs.nfmirrorcdn.top/files/${widget.data.videoId}/${widget.data.videoId}-en.srt"
+            "https://subs.nfmirrorcdn.top/files/${widget.data.videoId}/${widget.data.videoId}-en.srt",
           ],
         ),
       ],
@@ -115,9 +112,7 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
         controlsConfiguration: controlsConfiguration,
       ),
       betterPlayerPlaylistConfiguration:
-          const BetterPlayerPlaylistConfiguration(
-        initialStartIndex: 0,
-      ),
+          const BetterPlayerPlaylistConfiguration(initialStartIndex: 0),
       betterPlayerDataSource: betterPlayerDataSource,
     )..setBetterPlayerGlobalKey(_betterPlayerKey);
 
@@ -143,31 +138,37 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
         // betterPlayerAudioController!.setSpeed(200);
 
         if (audioTracks != null) {
-          final preferredAudioTrack =
-              ref.read(audioTrackProvider.notifier).pickPreferred(audioTracks);
+          final preferredAudioTrack = ref
+              .read(audioTrackProvider.notifier)
+              .pickPreferred(audioTracks);
           _betterPlayerVideoController!.setAudioTrack(preferredAudioTrack);
           if (audioTracks.length > 1) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Center(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: Text(
-                    "Selected Audio ${preferredAudioTrack.label ?? preferredAudioTrack.language}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white),
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      "Selected Audio ${preferredAudioTrack.label ?? preferredAudioTrack.language}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
+                behavior: SnackBarBehavior.floating,
+                width: 220,
+                backgroundColor: const Color.fromARGB(255, 34, 34, 34),
+                duration: const Duration(milliseconds: 3000),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    25.0,
+                  ), // Adjust radius as needed
+                ),
               ),
-              behavior: SnackBarBehavior.floating,
-              width: 220,
-              backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-              duration: const Duration(milliseconds: 3000),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(25.0), // Adjust radius as needed
-              ),
-            ));
+            );
           }
         }
         if (widget.wh != null &&
@@ -176,8 +177,9 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
                 : true)) {
           log("need to bee seek to :  ${widget.wh!.current / 1000 / 60} min");
           _betterPlayerVideoController!.setSpeed(widget.wh!.speed);
-          _betterPlayerVideoController!
-              .seekTo(Duration(milliseconds: widget.wh!.current));
+          _betterPlayerVideoController!.seekTo(
+            Duration(milliseconds: widget.wh!.current),
+          );
           _betterPlayerVideoController!.play();
         } else {
           log("wath history is null");
@@ -186,7 +188,9 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
 
         log("tracks len: ${qualityTracks.length}");
         final preferedQuality = qualityTracks.firstWhere((track) {
-          log("b: ${track.bitrate} | f : ${track.frameRate} | s : ${track.height} | w: ${track.width}");
+          log(
+            "b: ${track.bitrate} | f : ${track.frameRate} | s : ${track.height} | w: ${track.width}",
+          );
           return (track.height != null && track.height == 480);
         }, orElse: () => qualityTracks.first);
         log("selected Q: ${preferedQuality.height}");
@@ -201,8 +205,10 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -219,8 +225,10 @@ class _BetterPlayerScreenState extends ConsumerState<BetterPlayerScreen> {
   @override
   void dispose() {
     _betterPlayerVideoController?.dispose();
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 }

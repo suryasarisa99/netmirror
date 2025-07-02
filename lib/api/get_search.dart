@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
@@ -29,13 +30,11 @@ Future<NmSearchResults> getNmSearch(String query, {OTT ott = OTT.none}) async {
     'x-requested-with': 'XMLHttpRequest',
   };
 
-  final params = {
-    's': query,
-    't': '1734872866',
-  };
+  final params = {'s': query, 't': '1734872866'};
 
-  final url = Uri.parse('$API_URL/${ott.url}search.php')
-      .replace(queryParameters: params);
+  final url = Uri.parse(
+    '$API_URL/${ott.url}search.php',
+  ).replace(queryParameters: params);
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;

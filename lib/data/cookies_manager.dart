@@ -72,19 +72,23 @@ class CookiesManager {
       _resourceExpire != null &&
       _resourceKey!.isNotEmpty &&
       _resourceKey!.length > 5 &&
-      _resourceExpire!.isAfter(DateTime.now());
+      _resourceExpire!.isAfter(DateTime.now()) &&
+      !_resourceKey!.contains("unknown");
 
   static Future<void> validate() async {
     if (isExpired) {
-      log("thasht is expired");
+      log("t_hash_t is expired");
       addHash = await getInitial();
 
-      await openAdd(_addhash!);
-
+      try {
+        await openAdd(_addhash!);
+      } catch (e) {
+        log("Error opening add link: $e");
+      }
       await Future.delayed(const Duration(seconds: 35), () async {
         try {
           final newTHashT = await verifyAdd(_addhash!);
-          log("new thash $newTHashT");
+          log("new t_hash_t $newTHashT");
           if (newTHashT != null) {
             tHashT = newTHashT;
           }

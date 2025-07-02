@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
 import 'package:netmirror/constants.dart';
@@ -7,7 +8,7 @@ import 'package:netmirror/models/netmirror/netmirror_model.dart';
 
 Future<String> getMasterHls(String id, String key, OTT ott, {hd = true}) async {
   final url = Uri.parse('$API_URL/${ott.url}hls/$id.m3u8?in=$key');
-  // log("playlist url: $url");
+  log("getMasterHls url: $url, key: $key", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;

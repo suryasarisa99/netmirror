@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 
-Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
+Future<Movie> getMovie(String id, {OTT ott = OTT.none}) async {
   final tHashT = CookiesManager.tHashT;
   final headers = {
     'accept': '*/*',
@@ -32,10 +32,9 @@ Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
   final params = {'id': id, 't': '1734872811'};
 
   final url = Uri.parse(
-    // '$API_URL/${ott.url}post.php',
     'https://a.netfree2.cc/mobile/${ott.url}post.php',
   ).replace(queryParameters: params);
-  log("getMovie: $url", name: "http");
+  // log("getMovie: $url", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;
@@ -43,6 +42,6 @@ Future<NmMovie> getMovie(String id, {OTT ott = OTT.none}) async {
     log("Error: ${res.body}", name: "http");
     throw Exception('http.get error: statusCode= $status');
   }
-  log("res.body: ${res.body}", name: "http");
-  return NmMovie.parse(jsonDecode(res.body), id, ott);
+  // log("res.body: ${res.body}", name: "http");
+  return Movie.parse(jsonDecode(res.body), id, ott);
 }

@@ -1,36 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:netmirror/models/watch_model.dart';
 
-class MinifyMovie {
-  String id;
-  String title;
-  String year;
-  String? runtime;
-  String type;
-  List<NmSeason> seasons;
-  List<Language> lang;
-  List<Suggestion> suggest;
-  OTT ott;
-
-  get isMovie => type == 'm';
-  get isShow => !isMovie;
-
-  MinifyMovie({
-    required this.id,
-    required this.title,
-    required this.year,
-    required this.runtime,
-    required this.type,
-    required this.seasons,
-    required this.lang,
-    required this.suggest,
-    required this.ott,
-  });
-}
-
-class NmMovie {
+class Movie {
   String id;
   DateTime lastUpdated;
   String status;
@@ -55,13 +30,13 @@ class NmMovie {
   String desc;
   String? oin;
   String resume;
-  List<NmSeason> seasons;
+  List<Season> seasons;
   List<Language> lang;
   List<Suggestion> suggest;
   dynamic error;
   OTT ott;
 
-  NmMovie({
+  Movie({
     required this.id,
     required this.status,
     required this.dLang,
@@ -93,29 +68,29 @@ class NmMovie {
     this.error,
   });
 
-  get isMovie => type == 'm';
-  get isShow => !isMovie;
+  bool get isMovie => type == 'm';
+  bool get isShow => !isMovie;
   // OTT get ott => OTT.fromValue(ottStr);
 
-  factory NmMovie.parse(Map<String, dynamic> json, String id, OTT? ott) {
-    List<NmEpisode> episodesList = [];
+  factory Movie.parse(Map<String, dynamic> json, String id, OTT? ott) {
+    List<Episode> episodesList = [];
     List<Suggestion> suggestList = [];
     List<String> genre = [];
 
     if (json['episodes'] != null) {
       List episodes = json['episodes'] as List;
       if (!(episodes.length == 1 && episodes[0] == null)) {
-        episodesList = episodes.map((e) => NmEpisode.fromJson(e)).toList();
+        episodesList = episodes.map((e) => Episode.fromJson(e)).toList();
       }
     }
 
     var seasons = json['season'] != null
-        ? (json['season'] as List).map((s) => NmSeason.parse(s)).toList()
-        : <NmSeason>[];
+        ? (json['season'] as List).map((s) => Season.parse(s)).toList()
+        : <Season>[];
 
     log("seasons length: ${seasons.length}");
     for (int i = seasons.length - 1; i >= 0; i--) {
-      int seasonIndex = NmEpisode.getSeasonsNumber(episodesList.first);
+      int seasonIndex = Episode.getSeasonsNumber(episodesList.first);
       if (seasons[i].s == seasonIndex) {
         seasons[i].episodes = episodesList;
         break;
@@ -131,7 +106,7 @@ class NmMovie {
         : (json['genre'] as String).split(', ').map((e) => e.trim()).toList();
 
     log(jsonEncode(json));
-    return NmMovie(
+    return Movie(
       id: id,
       status: json['status'],
       dLang: json['d_lang'],
@@ -169,13 +144,13 @@ class NmMovie {
   bool get isStale => DateTime.now().difference(lastUpdated).inHours > 24;
   bool get isFresh => !isStale;
 
-  factory NmMovie.fromJson(Map<String, dynamic> json, String id, OTT? ott) {
+  factory Movie.fromJson(Map<String, dynamic> json, String id, OTT? ott) {
     List<Suggestion> suggestList = [];
     List<String> genre = [];
 
     var seasons = json['season'] != null
-        ? (json['season'] as List).map((s) => NmSeason.fromJson(s)).toList()
-        : <NmSeason>[];
+        ? (json['season'] as List).map((s) => Season.fromJson(s)).toList()
+        : <Season>[];
 
     if (json['suggest'] == "") {
       suggestList = [];
@@ -185,8 +160,10 @@ class NmMovie {
     }
 
     if (json['genre'] is String) {
-      genre =
-          (json['genre'] as String).split(', ').map((e) => e.trim()).toList();
+      genre = (json['genre'] as String)
+          .split(', ')
+          .map((e) => e.trim())
+          .toList();
     } else if (json['genre'] is List) {
       genre = (json['genre'] as List).map((e) => e.toString()).toList();
     } else {
@@ -194,7 +171,7 @@ class NmMovie {
     }
 
     // log(jsonEncode(json));
-    return NmMovie(
+    return Movie(
       id: id,
       status: json['status'],
       dLang: json['d_lang'],
@@ -275,128 +252,24 @@ class NmMovie {
       ott: ott,
     );
   }
-}
 
-class NmSeason {
-  int s; // season number
-  int ep; // episodes total count
-  String id; // season id
-  List<NmEpisode>? episodes;
-
-  NmSeason({
-    required this.s,
-    required this.ep,
-    required this.id,
-    required this.episodes,
-  });
-
-  factory NmSeason.fromJson(Map<String, dynamic> json) {
-    return NmSeason(
-      s: json['s'],
-      ep: json['ep'],
-      id: json['id'],
-      episodes: json['episodes'] == null
-          ? null
-          : (json['episodes'] as List)
-              .map((e) => NmEpisode.fromJson(e))
-              .toList(),
+  PlayerData toPlayerData(
+    int seasonIndex, {
+    int? episodeIndex,
+    WatchHistoryModel? wh,
+  }) {
+    return PlayerData(
+      id: id,
+      title: title,
+      year: year,
+      runtime: runtime,
+      type: type,
+      seasons: seasons,
+      lang: lang,
+      suggest: suggest,
+      ott: ott,
+      currentEpisodeIndex: episodeIndex ?? wh?.episodeIndex ?? 0,
+      currentSeasonIndex: seasonIndex,
     );
-  }
-
-  factory NmSeason.parse(Map<String, dynamic> json) {
-    return NmSeason(
-      s: int.parse(json['s']),
-      ep: int.parse(json['ep']),
-      id: json['id'],
-      episodes: null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      's': s,
-      'ep': ep,
-      'id': id,
-      'episodes': episodes?.map((e) => e.toJson()).toList(),
-    };
-  }
-}
-
-class NmEpisode {
-  String id;
-  String t;
-  String s;
-  String ep;
-  String time;
-
-  NmEpisode({
-    required this.id,
-    required this.t,
-    required this.s,
-    required this.ep,
-    required this.time,
-  });
-
-  static int getSeasonsNumber(NmEpisode episode) {
-    return int.parse(episode.s.substring(1));
-  }
-
-  factory NmEpisode.fromJson(Map<String, dynamic> json) {
-    return NmEpisode(
-      id: json['id'],
-      t: json['t'],
-      s: json['s'],
-      ep: json['ep'],
-      time: json['time'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      't': t,
-      's': s,
-      'ep': ep,
-      'time': time,
-    };
-  }
-}
-
-class Language {
-  String l;
-  String s;
-
-  Language({required this.l, required this.s});
-
-  factory Language.fromJson(Map<String, dynamic> json) {
-    return Language(
-      l: json['l'],
-      s: json['s'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'l': l,
-      's': s,
-    };
-  }
-}
-
-class Suggestion {
-  String id;
-
-  Suggestion({required this.id});
-
-  factory Suggestion.fromJson(Map<String, dynamic> json) {
-    return Suggestion(
-      id: json['id'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-    };
   }
 }

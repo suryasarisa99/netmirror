@@ -98,6 +98,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     } else {
       x = await DownloadDb.instance.getSeriesEpisodes(widget.seriesId!);
     }
+    log("x: ${x.length}");
     setState(() {
       log("downloads: ${x.length}");
       downloads = x;
@@ -257,251 +258,251 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     );
   }
 
-  Widget buildDownloadItem(DownloadItem item, int i) {
+  // Widget buildDownloadItemWrapper(DownloadItem item, int i) {
+  //   log("item: ${item.title} ${item.id} ${item.type}");
+  //   final firstFalseIndex = item.audioLangs.indexWhere((e) => !e.status);
+  //   return ContextMenuWidget(
+  //     menuProvider: (_) {
+  //       log("plalistpath offline: ${item.playlistPath}");
+  //       return Menu(
+  //         children: [
+  //           Menu(
+  //             title: "Play With",
+  //             children: [
+  //               MenuAction(
+  //                 // callback: () => playWithVlc(item.playlistPath),
+  //                 callback: () =>
+  //                     ExternalPlayer.offlineFile.vlc(item.playlistPath),
+  //                 title: "Vlc",
+  //               ),
+  //               MenuAction(
+  //                 // callback: () => playWithMpv(item.playlistPath),
+  //                 callback: () =>
+  //                     ExternalPlayer.offlineFile.mpv(item.playlistPath),
+  //                 title: "Mpv",
+  //               ),
+  //               MenuAction(
+  //                 callback: () => playWithFfPlay(item.playlistPath),
+  //                 title: "FfPlay",
+  //               ),
+  //               MenuAction(
+  //                 callback: () => playWithMplayer(item.playlistPath),
+  //                 title: "Mplayer",
+  //               ),
+  //               MenuAction(
+  //                 callback: () => playWithWmp(item.playlistPath),
+  //                 title: "Windows Media Player",
+  //               ),
+  //             ],
+  //           ),
+  //           MenuAction(
+  //             // callback: () => playWithVlc(item.playlistPath),
+  //             callback: () =>
+  //                 context.push("/nf-movie", extra: widget.seriesId ?? item.id),
+  //             title: "Go to Page",
+  //           ),
+  //           MenuAction(
+  //             callback: () => delete(item.id, item.type, i),
+  //             title: "Delete Download",
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //     child: buildDownloadItem(item, i),
+  //   );
+  // }
+
+  GestureDetector buildDownloadItem(DownloadItem item, int i) {
     final firstFalseIndex = item.audioLangs.indexWhere((e) => !e.status);
-    // return ContextMenuWidget(
-    //   menuProvider: (_) {
-    //     log("plalistpath offline: ${item.playlistPath}");
-    //     return Menu(
-    //       children: [
-    //         Menu(
-    //           title: "Play With",
-    //           children: [
-    //             MenuAction(
-    //               // callback: () => playWithVlc(item.playlistPath),
-    //               callback: () =>
-    //                   ExternalPlayer.offlineFile.vlc(item.playlistPath),
-    //               title: "Vlc",
-    //             ),
-    //             MenuAction(
-    //               // callback: () => playWithMpv(item.playlistPath),
-    //               callback: () =>
-    //                   ExternalPlayer.offlineFile.mpv(item.playlistPath),
-    //               title: "Mpv",
-    //             ),
-    //             MenuAction(
-    //               callback: () => playWithFfPlay(item.playlistPath),
-    //               title: "FfPlay",
-    //             ),
-    //             MenuAction(
-    //               callback: () => playWithMplayer(item.playlistPath),
-    //               title: "Mplayer",
-    //             ),
-    //             MenuAction(
-    //               callback: () => playWithWmp(item.playlistPath),
-    //               title: "Windows Media Player",
-    //             ),
-    //           ],
-    //         ),
-    //         MenuAction(
-    //           // callback: () => playWithVlc(item.playlistPath),
-    //           callback: () =>
-    //               context.push("/nf-movie", extra: widget.seriesId ?? item.id),
-    //           title: "Go to Page",
-    //         ),
-    //         MenuAction(
-    //           callback: () => delete(item.id, item.type, i),
-    //           title: "Delete Download",
-    //         ),
-    //       ],
-    //     );
-    //   },
-    //   child: GestureDetector(
-    //     onTap: () async {
-    //       if (item.type == "series") {
-    //         context.push("/downloads", extra: item.id);
-    //         return;
-    //       }
-    //       log("item id: ${item.downloadPath}");
-    //       log("item path: ${item.playlistPath}");
-    //       if (isDesk) {
-    //         ExternalPlayer.offlineFile.mpv(item.playlistPath);
-    //       } else {
-    //         final y = item.playlistPath;
-    //         final x = item.playlistPath.replaceFirst(".mp4", ".m3u8");
-    //         _launchFileWithExternalApp(item.playlistPath);
-    //       }
-    //     },
-    //     child: Container(
-    //       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    //       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-    //       decoration: BoxDecoration(
-    //         color: const Color.fromARGB(255, 30, 30, 30),
-    //         borderRadius: BorderRadius.circular(8),
-    //       ),
-    //       child: Column(
-    //         children: [
-    //           Row(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               ClipRRect(
-    //                 borderRadius: BorderRadius.circular(8),
-    //                 child: Image.network(
-    //                   item.thumbnail,
-    //                   fit: BoxFit.cover,
-    //                   width: 172,
-    //                   height: 100,
-    //                   errorBuilder: (context, error, stackTrace) {
-    //                     return Container(
-    //                       width: 172,
-    //                       height: 100,
-    //                       color: Colors.grey[800],
-    //                       child: Center(
-    //                         child: Icon(Icons.error, color: Colors.white),
-    //                       ),
-    //                     );
-    //                   },
-    //                   // cacheManager: MovieCacheManager.instance,
-    //                 ),
-    //               ),
-    //               SizedBox(width: 12),
-    //               Expanded(
-    //                 child: Column(
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   children: [
-    //                     // Text("${item.title} ${item.id} || ${item.movieId}"),
-    //                     Text(
-    //                       item.title,
-    //                       style: TextStyle(fontSize: 16, color: Colors.white),
-    //                     ),
+    return GestureDetector(
+      onTap: () async {
+        if (item.type == "series") {
+          context.push("/downloads", extra: item.id);
+          return;
+        }
+        log("item id: ${item.downloadPath}");
+        log("item path: ${item.playlistPath}");
+        if (isDesk) {
+          ExternalPlayer.offlineFile.mpv(item.playlistPath);
+        } else {
+          final y = item.playlistPath;
+          final x = item.playlistPath.replaceFirst(".mp4", ".m3u8");
+          _launchFileWithExternalApp(item.playlistPath);
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 30, 30, 30),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    item.thumbnail,
+                    fit: BoxFit.cover,
+                    width: 165,
+                    height: 95,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[800],
+                        child: Center(
+                          child: Icon(Icons.error, color: Colors.white),
+                        ),
+                      );
+                    },
+                    // cacheManager: MovieCacheManager.instance,
+                  ),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text("${item.title} ${item.id} || ${item.movieId}"),
+                      Text(
+                        item.title,
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
 
-    //                     if (item.type == "series") ...[
-    //                       SizedBox(height: 6),
-    //                       Text(
-    //                         "Episodes: ${item.completedEpisodes}/${item.totalEpisodes}",
-    //                       ),
-    //                       SizedBox(height: 6),
-    //                       if (item.completedEpisodes == item.totalEpisodes)
-    //                         Text(
-    //                           "Status: Completed",
-    //                           style: TextStyle(color: DownloadColors.completed),
-    //                         ),
-    //                     ] else ...[
-    //                       Padding(
-    //                         padding: const EdgeInsets.symmetric(vertical: 6),
-    //                         child: Row(
-    //                           children: [
-    //                             if (item.type == "episode") ...[
-    //                               buildContainer(
-    //                                 "S${item.seasonNumber} $Dot E${item.episodeNumber!}",
-    //                               ),
-    //                             ],
-    //                             buildContainer(item.resolution),
-    //                             buildContainer(item.runtime ?? "Nan"),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                       // Text("id: ${item.id}"),
-    //                       // if (item.status == "downloading")
-    //                       Text(
-    //                         "Progress:  ${firstFalseIndex != -1 ? "Audio ${firstFalseIndex + 1}/${item.audioLangs.length}  $Dot ${item.audioProgress}%" : "Video  $Dot ${item.videoProgress}%"}",
-    //                       ),
-    //                       // else
-    //                       Text.rich(
-    //                         TextSpan(
-    //                           children: [
-    //                             TextSpan(
-    //                               text:
-    //                                   'Status: ', // Default color for the prefix
-    //                             ),
-    //                             TextSpan(
-    //                               text: item.status,
-    //                               style: TextStyle(
-    //                                 color: DownloadColors.fromStatus(
-    //                                   item.status,
-    //                                 ),
-    //                               ), // Color for the status
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ],
-    //                 ),
-    //               ),
-    //               if (item.type == "series")
-    //                 SizedBox(
-    //                   // color: Colors.red,
-    //                   width: 30,
-    //                   height: 100,
-    //                   child: Icon(
-    //                     Icons.arrow_forward_ios,
-    //                     color: Colors.white70,
-    //                     size: 22,
-    //                   ),
-    //                 ),
-    //             ],
-    //           ),
-    //           if (item.status != "completed")
-    //             Padding(
-    //               padding: const EdgeInsets.only(top: 12),
-    //               child: Row(
-    //                 mainAxisSize: MainAxisSize.min,
-    //                 children: [
-    //                   if (item.status == "paused" || item.status == "failed")
-    //                     IconButton.filledTonal(
-    //                       color: Colors.white,
-    //                       style: ButtonStyle(
-    //                         backgroundColor: WidgetStatePropertyAll(
-    //                           Colors.white10,
-    //                         ),
-    //                       ),
-    //                       onPressed: () {
-    //                         // setState(() {
-    //                         //   downloads[i].status = "downloading";
-    //                         // });
-    //                         Downloader.instance.resumeDownload(item.id);
-    //                       },
-    //                       iconSize: 18,
-    //                       icon: Icon(Icons.play_arrow),
-    //                     ),
-    //                   if (item.status == "downloading" ||
-    //                       item.status == "pending")
-    //                     IconButton.filledTonal(
-    //                       color: Colors.white,
-    //                       style: ButtonStyle(
-    //                         backgroundColor: WidgetStatePropertyAll(
-    //                           Colors.white10,
-    //                         ),
-    //                       ),
-    //                       onPressed: () {
-    //                         // setState(() {
-    //                         //   downloads[i].status = "paused";
-    //                         // });
-    //                         Downloader.instance.pauseDownload(item.id);
-    //                       },
-    //                       iconSize: 18,
-    //                       icon: Icon(Icons.pause),
-    //                     ),
-    //                   SizedBox(width: 8),
-    //                   Expanded(
-    //                     child: LinearProgressIndicator(
-    //                       value:
-    //                           (item.audioPrefix.isNotEmpty &&
-    //                                   item.audioProgress < 100
-    //                               ? item.audioProgress
-    //                               : item.videoProgress) /
-    //                           100,
-    //                       backgroundColor: Colors.grey[800],
-    //                       // color: const Color.fromARGB(255, 214, 214, 214),
-    //                       // color: const Color.fromARGB(255, 214, 214, 214),
-    //                       // color: item.audioPrefix.isNotEmpty &&
-    //                       //         item.audioProgress < 100
-    //                       color: firstFalseIndex != -1
-    //                           ? Color.fromARGB(255, 150, 150, 150)
-    //                           : Colors.white,
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-
-    return SizedBox();
+                      if (item.type == "series") ...[
+                        SizedBox(height: 6),
+                        Text(
+                          "Episodes: ${item.completedEpisodes}/${item.totalEpisodes}",
+                        ),
+                        SizedBox(height: 6),
+                        if (item.completedEpisodes == item.totalEpisodes)
+                          Text(
+                            "Status: Completed",
+                            style: TextStyle(color: DownloadColors.completed),
+                          ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            children: [
+                              if (item.type == "episode") ...[
+                                buildContainer(
+                                  "S${item.seasonNumber} $Dot E${item.episodeNumber!}",
+                                ),
+                              ],
+                              buildContainer(item.resolution),
+                              buildContainer(item.runtime ?? "Nan"),
+                            ],
+                          ),
+                        ),
+                        // Text("id: ${item.id}"),
+                        // if (item.status == "downloading")
+                        Text(
+                          "Progress:  ${firstFalseIndex != -1 ? "Audio ${firstFalseIndex + 1}/${item.audioLangs.length}  $Dot ${item.audioProgress}%" : "Video  $Dot ${item.videoProgress}%"}",
+                        ),
+                        // else
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text:
+                                    'Status: ', // Default color for the prefix
+                              ),
+                              TextSpan(
+                                text: item.status,
+                                style: TextStyle(
+                                  color: DownloadColors.fromStatus(item.status),
+                                ), // Color for the status
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                if (item.type == "series")
+                  SizedBox(
+                    // color: Colors.red,
+                    width: 30,
+                    height: 100,
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white70,
+                      size: 22,
+                    ),
+                  ),
+              ],
+            ),
+            if (item.status != "completed")
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.status == "paused" || item.status == "failed")
+                      IconButton.filledTonal(
+                        color: Colors.white,
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Colors.white10,
+                          ),
+                        ),
+                        onPressed: () {
+                          // setState(() {
+                          //   downloads[i].status = "downloading";
+                          // });
+                          Downloader.instance.resumeDownload(item.id);
+                        },
+                        iconSize: 18,
+                        icon: Icon(Icons.play_arrow),
+                      ),
+                    if (item.status == "downloading" ||
+                        item.status == "pending")
+                      IconButton.filledTonal(
+                        color: Colors.white,
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Colors.white10,
+                          ),
+                        ),
+                        onPressed: () {
+                          // setState(() {
+                          //   downloads[i].status = "paused";
+                          // });
+                          Downloader.instance.pauseDownload(item.id);
+                        },
+                        iconSize: 18,
+                        icon: Icon(Icons.pause),
+                      ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: LinearProgressIndicator(
+                        value:
+                            (item.audioPrefix.isNotEmpty &&
+                                    item.audioProgress < 100
+                                ? item.audioProgress
+                                : item.videoProgress) /
+                            100,
+                        backgroundColor: Colors.grey[800],
+                        // color: const Color.fromARGB(255, 214, 214, 214),
+                        // color: const Color.fromARGB(255, 214, 214, 214),
+                        // color: item.audioPrefix.isNotEmpty &&
+                        //         item.audioProgress < 100
+                        color: firstFalseIndex != -1
+                            ? Color.fromARGB(255, 150, 150, 150)
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildContainer(String text) {

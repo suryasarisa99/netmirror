@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:better_player_plus/better_player_plus.dart';
+import 'package:netmirror/models/watch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
@@ -35,7 +37,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   abstract bool extraTabForCast;
 
   bool inWatchlist = false;
-  NmMovie? movie;
+  Movie? movie;
   Map<String, MiniDownloadItem> downloads = {};
   TabController? tabController;
   int seasonIndex = -1;
@@ -59,7 +61,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   Future<void> loadData() async {
     log("surya abstract class: loadData()");
     var localMovie = await DBHelper.instance.getMovie(widget.id);
-    // loadDownloads();
+    loadDownloads();
 
     if (localMovie != null) {
       int tabLen = 0;
@@ -114,7 +116,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
     if (movie!.seasons[index].episodes == null) {
       log("episodes are loading");
-      NmSeason season = movie!.seasons[seasonIndex];
+      Season season = movie!.seasons[seasonIndex];
       final moreEpisodes = await getMoreEpisodes(
         s: season.id,
         series: widget.id,
@@ -136,7 +138,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
     log("loading more episodes");
     episodesLoading = true;
-    NmSeason season = movie!.seasons[seasonIndex];
+    Season season = movie!.seasons[seasonIndex];
 
     final pageNum = season.episodes!.length ~/ 10 + 1; // page number
 
@@ -214,6 +216,14 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     }
   }
 
+  void playMovieOrEpisode() {
+    if (movie!.isShow) {
+      playEpisode(0);
+    } else {
+      playMovie();
+    }
+  }
+
   void playMovie() async {
     final x = await getSource(id: movie!.id, ott: ott);
     if (!isDesk) {
@@ -222,7 +232,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         launchExternalPlayer(movie!.id, x.resourceKey);
         // launchExternalPlayer(movie!.id, "");
       } else {
-        GoRouter.of(context).push("/nm-player", extra: movie);
+        goToPlayer(movie: movie!);
       }
     } else {
       launchExternalPlayer(movie!.id, x.resourceKey);
@@ -232,15 +242,32 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   void playEpisode(int episodeIndex) async {
     final videoId = movie!.seasons[seasonIndex].episodes![episodeIndex].id;
-    final x = await getSource(id: videoId, ott: ott);
-    log("resource: $x");
-    log("resource id: ${x.resourceKey}");
+    log("play episode: $episodeIndex, videoId: $videoId");
+    // final x = await getSource(id: videoId, ott: ott);
+    // log("resource id: ${x.resourceKey}");
 
     if (SettingsOptions.externalPlayer || isDesk) {
-      launchExternalPlayer(videoId, x.resourceKey);
+      // launchExternalPlayer(videoId, x.resourceKey);
     } else {
-      // GoRouter.of(context).push("/nm-player", extra: movie);
+      goToPlayer(movie: movie!);
     }
+  }
+
+  void goToPlayer({
+    required Movie movie,
+    WatchHistoryModel? wh,
+    int? seasonIndex,
+    int? episodeIndex,
+  }) {
+    GoRouter.of(context).push(
+      "/nm-player",
+      extra: (
+        movie: movie,
+        watchHistory: wh,
+        seasonIndex: seasonIndex,
+        episodeIndex: episodeIndex,
+      ),
+    );
   }
 
   void downloadMovie() async {

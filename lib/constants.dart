@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/watch_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late final SharedPreferences? sp;
@@ -73,8 +76,6 @@ final headers2 = [
   // 'sec-ch-ua-platform: "Linux"',
 ];
 
-// Usage example
-
 // PlayerData movieDetailsToEpisode(MovieModel data, WatchHistoryModel? wh,
 //     int seasonIndex, int? episodeIndex) {
 //   final isShow = data.isShow;
@@ -106,39 +107,6 @@ final headers2 = [
 //     id: id,
 //   );
 // }
-
-// PlayerData netmirrorToPlayerData(
-//     NmMovie data, WatchHistoryModel? wh, int seasonIndex, int? episodeIndex) {
-//   final isShow = data.isShow;
-//   // final int? curentEpisodeIndex =
-//   //     isShow ? (episodeIndex ?? wh?.episodeIndex ?? 0) : null;
-//   final int? curentEpisodeIndex = null;
-//   // final Episode? episode =
-//   //     isShow ? data.seasons[seasonIndex].episodes[curentEpisodeIndex!] : null;
-//   final String? movieId = isShow ? null : data.id;
-//   final String id = data.id;
-//   final img = OTT.pv.getImg(data.id);
-//   final title = data.title;
-//   // final episodes = data.seasons.map((season) {
-//   //   return season.episodes.map((episode) {
-//   //     return EpisodeData(
-//   //         id: episode.videoId, title: episode.title, url: episode.boxart.url);
-//   //   }).toList();
-//   // }).toList();
-//   final List<List<EpisodeData>> episodes = [];
-//   final seasonsCount = 0;
-
-//   return PlayerData(
-//     episodes: episodes,
-//     currentEpisodeIndex: curentEpisodeIndex,
-//     isShow: isShow,
-//     movieId: movieId,
-//     currentSeasonIndex: seasonIndex,
-//     seasonsCount: seasonsCount,
-//     title: title,
-//     img: img,
-//     id: id,
-//   );
 
 final bool isDesk = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
 const Dot = "•";

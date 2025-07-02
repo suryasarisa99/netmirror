@@ -1,3 +1,4 @@
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,19 +95,19 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
   Widget build(BuildContext context) {
     final Color? baseColor = data?.gradientColor;
     final backgroundOpacity =
-        ((scrollProgress * scrollThreshold) / (scrollThreshold * 0.7))
-            .clamp(0.0, 1.0);
+        ((scrollProgress * scrollThreshold) / (scrollThreshold * 0.7)).clamp(
+          0.0,
+          1.0,
+        );
     final appBarOpacity =
-        ((scrollProgress * scrollThreshold) / (scrollThreshold * 0.3))
-            .clamp(0.0, 0.9);
+        ((scrollProgress * scrollThreshold) / (scrollThreshold * 0.3)).clamp(
+          0.0,
+          0.9,
+        );
 
     // Calculate the background color
     final Color backgroundColor = baseColor != null
-        ? Color.lerp(
-            baseColor,
-            Colors.black,
-            backgroundOpacity,
-          )!
+        ? Color.lerp(baseColor, Colors.black, backgroundOpacity)!
         : Colors.black;
 
     return RefreshIndicator(
@@ -117,8 +118,10 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
         // bottomNavigationBar: const NfNavBar(current: 0),
         extendBodyBehindAppBar: true,
 
-        body: CustomScrollView(controller: _controller, slivers: [
-          SliverAppBar(
+        body: CustomScrollView(
+          controller: _controller,
+          slivers: [
+            SliverAppBar(
               backgroundColor: Colors.black.withOpacity(appBarOpacity),
               surfaceTintColor: Colors.transparent,
               pinned: true,
@@ -134,7 +137,8 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
                         )
                       : Text(
                           ["Tv Shows", "Movies", "Categories"][widget.tab - 1],
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                 ],
                 actions: [
                   TopbarButtons.settingsBtn(context),
@@ -144,51 +148,55 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
-                    padding: EdgeInsets.only(top: isDesk ? 55 : 105),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          // these color is showing on expanded mode of appbar only
-                          // so : it shows initialy, and when scroll up
-
-                          if (scrollProgress == 0) ...[
-                            Color.lerp(
-                              baseColor?.lighten(0.2) ?? Colors.black,
-                              Colors.black,
-                              scrollProgress,
-                            )!,
-                            // Base gradient color transitioning to black
-                            Color.lerp(
-                              baseColor?.withOpacity(0.5) ?? Colors.black,
-                              Colors.black.withAlpha(200),
-                              scrollProgress,
-                            )!,
-                          ] else ...[
-                            Colors.transparent,
-                            Colors.transparent,
-                          ]
+                  padding: EdgeInsets.only(top: isDesk ? 55 : 105),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        // these color is showing on expanded mode of appbar only
+                        // so : it shows initialy, and when scroll up
+                        if (scrollProgress == 0) ...[
+                          Color.lerp(
+                            baseColor?.lighten(0.2) ?? Colors.black,
+                            Colors.black,
+                            scrollProgress,
+                          )!,
+                          // Base gradient color transitioning to black
+                          Color.lerp(
+                            baseColor?.withOpacity(0.5) ?? Colors.black,
+                            Colors.black.withAlpha(200),
+                            scrollProgress,
+                          )!,
+                        ] else ...[
+                          Colors.transparent,
+                          Colors.transparent,
                         ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
-                    child: NfHeaderTabs(widget.tab)),
-              )),
-          data == null
-              ? const SliverToBoxAdapter(
-                  child: SizedBox(
-                      height: 600,
-                      child: Center(child: CircularProgressIndicator())))
-              : SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      buildSpotlight(backgroundColor, baseColor),
-                      const SizedBox(height: 20),
-                      ...data!.trays.map((e) => NfHomeRow(tray: e))
-                    ],
                   ),
+                  child: NfHeaderTabs(widget.tab),
                 ),
-        ]),
+              ),
+            ),
+            data == null
+                ? const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 600,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  )
+                : SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        buildSpotlight(backgroundColor, baseColor),
+                        const SizedBox(height: 20),
+                        ...data!.trays.map((e) => NfHomeRow(tray: e)),
+                      ],
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -199,139 +207,142 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
         GoRouter.of(context).push("/nf-movie", extra: data!.spotlightId);
       },
       child: Container(
-          height: 520,
-          width: double.infinity,
-          margin:
-              const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.white54, width: 0.5),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.42),
-                  spreadRadius: 12,
-                  blurRadius: 25,
-                  offset: const Offset(0, 22), // Offset for bottom left corner
+        height: 520,
+        width: double.infinity,
+        margin: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.white54, width: 0.5),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black.withOpacity(0.42),
+              spreadRadius: 12,
+              blurRadius: 25,
+              offset: const Offset(0, 22), // Offset for bottom left corner
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              bottom: 70,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://imgcdn.media/poster/c/${data!.spotlightId}.jpg",
+                  cacheManager: NfSpotLightCacheManager.instance,
+                  fit: BoxFit.cover,
                 ),
-              ]),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                bottom: 70,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        "https://imgcdn.media/poster/c/${data!.spotlightId}.jpg",
-                    cacheManager: NfSpotLightCacheManager.instance,
-                    fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 220,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.transparent,
+                      // baseColor?.withOpacity(0.5) ?? Colors.black,
+                      baseColor ?? Colors.black,
+                      // Colors.red,
+                      // Colors.green,
+                      // Colors.blue,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.0, 0.65],
                   ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 220,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          // baseColor?.withOpacity(0.5) ?? Colors.black,
-                          baseColor ?? Colors.black,
-                          // Colors.red,
-                          // Colors.green,
-                          // Colors.blue,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 0.65],
-                      ),
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          "https://imgcdn.media/poster/n/${data!.spotlightId}.jpg",
-                      cacheManager: NfSpotLightCacheManager.instance,
-                      height: 125,
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      data!.genre.join("  $Dot  "),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          Colors.white),
-                                  shape: WidgetStatePropertyAll<OutlinedBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4))),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl:
+                        "https://imgcdn.media/poster/n/${data!.spotlightId}.jpg",
+                    cacheManager: NfSpotLightCacheManager.instance,
+                    height: 125,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    data!.genre.join("  $Dot  "),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll<Color>(
+                                Colors.white,
+                              ),
+                              shape: WidgetStatePropertyAll<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.play_arrow),
-                                    SizedBox(width: 4),
-                                    Text("Play",
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                )),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.play_arrow),
+                                SizedBox(width: 4),
+                                Text("Play", style: TextStyle(fontSize: 16)),
+                              ],
+                            ),
                           ),
-                          SizedBox(width: 8),
-                          Expanded(
-                              child: FilledButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStatePropertyAll<Color>(
-                                            Colors.white.withOpacity(0.25)),
-                                    foregroundColor:
-                                        WidgetStatePropertyAll<Color>(
-                                            Colors.white),
-                                    shape:
-                                        WidgetStatePropertyAll<OutlinedBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4))),
-                                  ),
-                                  onPressed: () {},
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add,
-                                          color: Colors.white, size: 18),
-                                      SizedBox(width: 4),
-                                      Text("MyList",
-                                          style: TextStyle(fontSize: 16)),
-                                    ],
-                                  ))),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll<Color>(
+                                Colors.white.withOpacity(0.25),
+                              ),
+                              foregroundColor: WidgetStatePropertyAll<Color>(
+                                Colors.white,
+                              ),
+                              shape: WidgetStatePropertyAll<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add, color: Colors.white, size: 18),
+                                SizedBox(width: 4),
+                                Text("MyList", style: TextStyle(fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 12),
-                  ],
-                ),
-              )
-            ],
-          )),
+                  ),
+                  SizedBox(height: 12),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

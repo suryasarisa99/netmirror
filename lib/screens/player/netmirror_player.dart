@@ -13,9 +13,17 @@ import 'package:netmirror/models/watch_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 
 class NetmirrorPlayer extends ConsumerStatefulWidget {
-  const NetmirrorPlayer({super.key, required this.data, required this.wh});
-  final NmMovie data;
+  const NetmirrorPlayer({
+    super.key,
+    required this.data,
+    required this.wh,
+    this.seasonIndex,
+    this.episodeIndex,
+  });
+  final Movie data;
   final WatchHistoryModel? wh;
+  final int? seasonIndex;
+  final int? episodeIndex;
 
   @override
   ConsumerState<NetmirrorPlayer> createState() => _BetterPlayerScreenState();
@@ -38,15 +46,43 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
   }
 
   Future<void> _initializeVideo() async {
+    log("resourceKey before: ${CookiesManager.resourceKey}", name: "player");
     if (!CookiesManager.isValidResourceKey) {
       log("Invalid resource key");
       await getSource(id: widget.data.id, ott: widget.data.ott);
     }
     final resourceKey = CookiesManager.resourceKey;
+    if (!CookiesManager.isValidResourceKey) {
+      log(
+        "Invalid resource key after fetching, may t_hast_t is expired",
+        name: "player",
+      );
+      return;
+    }
+    log("resourceKey after : $resourceKey", name: "player");
+    late String videoId;
+    try {
+      videoId = widget.data.isMovie
+          ? widget.data.id
+          : widget
+                .data
+                .seasons[widget.seasonIndex ?? 0]
+                .episodes![widget.episodeIndex ?? 0]
+                .id;
+    } catch (e) {
+      log(
+        "Error episodes is null, for season ${widget.seasonIndex}",
+        name: "player",
+      );
+      return;
+    }
 
     final url =
-        '$API_URL/${widget.data.ott.url}hls/${widget.data.id}.m3u8?in=$resourceKey';
-
+        '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+    log(
+      "${widget.data.title}(${widget.data.id}) : video url: $url",
+      name: "player",
+    );
     final betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       url,
@@ -60,7 +96,7 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
       ),
       videoExtension: "m3u8",
       headers: {...headers, 'cookie': 'hd=on'},
-      // playerData: widget.data, //@me: added by me
+      playerData: widget.data.toPlayerData(0),
       subtitles: [
         BetterPlayerSubtitlesSource(
           type: BetterPlayerSubtitlesSourceType.network,

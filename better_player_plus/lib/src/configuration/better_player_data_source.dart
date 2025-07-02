@@ -1,3 +1,4 @@
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:better_player_plus/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player_plus/src/configuration/better_player_data_source_type.dart';
 import 'package:better_player_plus/src/configuration/better_player_drm_configuration.dart';
@@ -76,9 +77,13 @@ class BetterPlayerDataSource {
   ///platform.
   final BetterPlayerBufferingConfiguration bufferingConfiguration;
 
+  // @me: added by me
+  final PlayerData? playerData;
+
   BetterPlayerDataSource(
     this.type,
     this.url, {
+    this.playerData, // @me: added by me
     this.bytes,
     this.subtitles,
     this.liveStream = false,
@@ -110,6 +115,7 @@ class BetterPlayerDataSource {
   ///Bytes parameter is not used in this data source.
   factory BetterPlayerDataSource.network(
     String url, {
+    PlayerData? playerData, // @me: added by me
     List<BetterPlayerSubtitlesSource>? subtitles,
     bool? liveStream,
     Map<String, String>? headers,
@@ -130,6 +136,7 @@ class BetterPlayerDataSource {
     return BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       url,
+      playerData: playerData, // @me: added by me
       subtitles: subtitles,
       liveStream: liveStream,
       headers: headers,
@@ -209,6 +216,7 @@ class BetterPlayerDataSource {
   BetterPlayerDataSource copyWith({
     BetterPlayerDataSourceType? type,
     String? url,
+    PlayerData? playerData, // @me: added by me
     List<int>? bytes,
     List<BetterPlayerSubtitlesSource>? subtitles,
     bool? liveStream,
@@ -231,6 +239,7 @@ class BetterPlayerDataSource {
     return BetterPlayerDataSource(
       type ?? this.type,
       url ?? this.url,
+      playerData: playerData ?? this.playerData, // @me: added by me
       bytes: bytes ?? this.bytes,
       subtitles: subtitles ?? this.subtitles,
       liveStream: liveStream ?? this.liveStream,
