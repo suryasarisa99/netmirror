@@ -12,7 +12,6 @@ import 'package:netmirror/api/playlist/get_video_hls.dart';
 import 'package:netmirror/api/playlist/local_playlist.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/downloader/download_db.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -22,8 +21,7 @@ class Downloader {
   static final Downloader _instance = Downloader._internal();
   static bool _isInitialized = false;
   static final Future<Database> _db = DownloadDb.instance.database;
-  final _progressController =
-      StreamController<Map<String, DownloadProgress>>.broadcast();
+  final _progressController = StreamController<DownloadProgress>.broadcast();
   final _notifications = FlutterLocalNotificationsPlugin();
   static late final Directory downloadDir;
 
@@ -47,8 +45,7 @@ class Downloader {
     return _instance;
   }
 
-  Stream<Map<String, DownloadProgress>> get progressStream =>
-      _progressController.stream;
+  Stream<DownloadProgress> get progressStream => _progressController.stream;
 
   int count = 0;
   Future<void> initializeNotifications() async {
@@ -91,7 +88,7 @@ class Downloader {
     });
     // may be not required
     log("Paused Download: [$videoId]");
-    _progressController.add({videoId: DownloadProgress.status("paused")});
+    _progressController.add(DownloadProgress.status(videoId, "paused"));
     await db.update(
       DownloadTables.downloads,
       {'status': 'paused'},
@@ -105,7 +102,7 @@ class Downloader {
 
   Future<void> moveToPending(String videoId) async {
     final db = await _db;
-    _progressController.add({videoId: DownloadProgress.status("pending")});
+    _progressController.add(DownloadProgress.status(videoId, "pending"));
     await db.update(
       DownloadTables.downloads,
       {'status': 'pending'},
@@ -117,7 +114,7 @@ class Downloader {
   Future<void> moveToDownloadingStatus(List<String> ids) async {
     final db = await _db;
     for (var id in ids) {
-      _progressController.add({id: DownloadProgress.status("downloading")});
+      _progressController.add(DownloadProgress.status(id, "downloading"));
     }
     await db.update(
       DownloadTables.downloads,
@@ -135,7 +132,7 @@ class Downloader {
       return;
     }
     pauseFlags[videoId] = false;
-    _progressController.add({videoId: DownloadProgress.status("downloading")});
+    _progressController.add(DownloadProgress.status(videoId, "downloading"));
     await db.update(
       DownloadTables.downloads,
       {'status': 'downloading'},
@@ -308,15 +305,16 @@ class Downloader {
     bool isAudio = false,
   }) async {
     final progress = (currentPart / totalParts * 100).toInt();
-    _progressController.add({
-      id: DownloadProgress(
+    _progressController.add(
+      DownloadProgress(
+        id: id,
         currentPart: currentPart,
         totalParts: totalParts,
         status: null,
         progress: progress,
         isAudio: isAudio,
       ),
-    });
+    );
     await DownloadDb.instance.updateProgress(
       id,
       currentPart,
@@ -329,7 +327,7 @@ class Downloader {
     String videoId,
     List<DownloadAudioLangs> audioLangs,
   ) async {
-    _progressController.add({videoId: DownloadProgress.audioLangs(audioLangs)});
+    _progressController.add(DownloadProgress.audioLangs(videoId, audioLangs));
     await DownloadDb.instance.updateAudioLangs(videoId, audioLangs);
   }
 
@@ -522,73 +520,6 @@ class Downloader {
 
     return (record, totalParts);
   }
-  //* @startSeasonDownload
-  // Future<void> startSeasonDownload(
-  //   MinifyMovie movie,
-  //   int seasonNumber,
-  //   List<NmEpisode> episodes,
-  //   int qualityIndex,
-  //   List<int> audioIndexs,
-  //   String firstEpisodeSourceRaw,
-  //   String resourceKey,
-  // ) async {
-  //   final db = await _db;
-  //   List<Map<String, dynamic>> records = [];
-  //   final List<(int, int)> otherList = [];
-
-  //   for (int i = 0; i < episodes.length; i++) {
-  //     final episode = episodes[i];
-  //     final sourceRaw = i == 0
-  //         ? firstEpisodeSourceRaw
-  //         : await getMasterHls(episode.id, resourceKey, movie.ott);
-  //     final masterPlayList = parseMasterHls(sourceRaw);
-  //     final videoId = episode.id;
-
-  //     final (record, totalParts) = await createDownloaItem(
-  //       videoId: videoId,
-  //       masterPlaylist: masterPlayList,
-  //       title: movie.title,
-  //       isMovie: movie.isMovie,
-  //       thumbnail: movie.ott.getImg(videoId),
-  //       qualityIndex: qualityIndex,
-  //       sourceRaw: sourceRaw,
-  //       audioIndexs: audioIndexs,
-  //     );
-  //     records.add(record);
-  //     otherList.add((totalParts, int.parse(episode.ep.substring(1))));
-  //   }
-
-  //   records = records.mapIndexed((i, record) {
-  //     return {
-  //       ...record,
-  //       'season_number': seasonNumber,
-  //       'episode_number': otherList[i].$2,
-  //     };
-  //   }).toList();
-
-  //   await DownloadDb.instance.insertSeriesWithEpisodes({
-  //     'id': movie.id,
-  //     'title': movie.title,
-  //     'type': 'series',
-  //     'created_at': DateTime.now().millisecondsSinceEpoch,
-  //     'updated_at': DateTime.now().millisecondsSinceEpoch,
-  //     'thumbnail': movie.ott.getImg(movie.id),
-  //   }, records);
-
-  //   // _progressController.add({
-  //   //   "$movie.id": DownloadProgress(downloadedEpisodesPlus: episodes.length),
-  //   // });
-  //   // _progressController.add({
-  //   //   videoId: DownloadProgress(
-  //   //     currentPart: 0,
-  //   //     progress: 0,
-  //   //     totalParts: totalParts,
-  //   //     status: "downloading",
-  //   //     isAudio: masterPlaylist.audios.isNotEmpty,
-  //   //     newItem: true,
-  //   //   )
-  //   // });
-  // }
 
   //* @startSeasonDownload
   Future<void> startSeasonDownload(
@@ -596,7 +527,7 @@ class Downloader {
     int seasonIndex,
     List<Episode> episodes,
     int qualityIndex,
-    List<int> audioIndexs,
+    List<int> audioIndexes,
     String firstEpisodeSourceRaw,
     String resourceKey,
   ) async {
@@ -626,11 +557,11 @@ class Downloader {
         thumbnail: movie.ott.getImg(videoId, forceHorizontal: true),
         qualityIndex: qualityIndex,
         sourceRaw: sourceRaw,
-        audioIndexes: audioIndexs,
+        audioIndexes: audioIndexes,
       );
 
       DownloadDb.instance
-          .inserItem({
+          .insertItem({
             ...record,
             'series_id': movie.id,
             'runtime': episode.time,
@@ -638,13 +569,13 @@ class Downloader {
             'episode_number': int.parse(episode.ep.substring(1)),
           })
           .then((value) {
-            _progressController.add({
-              videoId: DownloadProgress(seriesId: movie.id, newItem: true),
-            });
+            _progressController.add(
+              DownloadProgress(id: videoId, seriesId: movie.id, newItem: true),
+            );
             log("add episodes: ${episodes.length}");
-            _progressController.add({
-              movie.id: DownloadProgress(totalEpisodesPlus: 1),
-            });
+            _progressController.add(
+              DownloadProgress(id: movie.id, totalEpisodesPlus: 1),
+            );
             if (currentDownloadItems < maxDownloadLimit) {
               log("$currentDownloadItems < $maxDownloadLimit");
               currentDownloadItems++;
@@ -658,7 +589,7 @@ class Downloader {
   Future<void> startDownload(
     MinifyMovie movie,
     String sourceRaw,
-    List<int> audioIndexs,
+    List<int> audioIndexes,
     int qualityIndex,
     String resourceKey,
     MasterPlayList masterPlaylist, {
@@ -679,7 +610,7 @@ class Downloader {
       thumbnail: movie.ott.getImg(videoId, forceHorizontal: true),
       qualityIndex: qualityIndex,
       sourceRaw: sourceRaw,
-      audioIndexes: audioIndexs,
+      audioIndexes: audioIndexes,
     );
     // return;
 
@@ -708,9 +639,9 @@ class Downloader {
           },
         ],
       );
-      _progressController.add({
-        movie.id: DownloadProgress(downloadedEpisodesPlus: 1),
-      });
+      _progressController.add(
+        DownloadProgress(id: movie.id, downloadedEpisodesPlus: 1),
+      );
     } else {
       await db.insert(DownloadTables.downloads, {
         ...record,
@@ -718,8 +649,9 @@ class Downloader {
       });
     }
 
-    _progressController.add({
-      videoId: DownloadProgress(
+    _progressController.add(
+      DownloadProgress(
+        id: videoId,
         currentPart: 0,
         progress: 0,
         totalParts: totalParts,
@@ -729,7 +661,7 @@ class Downloader {
         isAudio: masterPlaylist.audios.isNotEmpty,
         newItem: true,
       ),
-    });
+    );
 
     if (currentDownloadItems < maxDownloadLimit) {
       currentDownloadItems++;
@@ -842,11 +774,11 @@ class Downloader {
         }
       }
       log("Download Completed");
-      _progressController.add({videoId: DownloadProgress.status("completed")});
+      _progressController.add(DownloadProgress.status(videoId, "completed"));
       if (info.type == "episode") {
-        _progressController.add({
-          "${info.seriesId}": DownloadProgress(downloadedEpisodesPlus: 1),
-        });
+        _progressController.add(
+          DownloadProgress(id: info.seriesId!, downloadedEpisodesPlus: 1),
+        );
       }
       await db.update(
         DownloadTables.downloads,
@@ -858,7 +790,7 @@ class Downloader {
       continueDownload();
     } catch (e) {
       log("Error at Download: $e");
-      _progressController.add({videoId: DownloadProgress.status("failed")});
+      _progressController.add(DownloadProgress.status(videoId, "failed"));
       await db.update(
         DownloadTables.downloads,
         {'status': 'failed'},

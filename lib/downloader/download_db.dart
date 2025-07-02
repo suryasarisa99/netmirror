@@ -142,7 +142,7 @@ class DownloadDb {
 
   //* Database Insertions
   // Insert a movie download
-  Future<void> inserItem(Map<String, dynamic> movie) async {
+  Future<void> insertItem(Map<String, dynamic> movie) async {
     final db = await database;
     await db.insert(DownloadTables.downloads, movie);
   }

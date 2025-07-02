@@ -173,6 +173,8 @@ class DownloadTables {
 }
 
 class DownloadProgress {
+  final String id;
+
   final String? seriesId;
   final int? currentPart;
   final int? totalParts;
@@ -186,6 +188,7 @@ class DownloadProgress {
   final bool maybeNewSeries;
 
   DownloadProgress({
+    required this.id,
     this.seriesId,
     this.currentPart,
     this.totalParts,
@@ -199,12 +202,15 @@ class DownloadProgress {
     this.maybeNewSeries = false,
   });
 
-  factory DownloadProgress.status(String status) {
-    return DownloadProgress(status: status);
+  factory DownloadProgress.status(String id, String status) {
+    return DownloadProgress(id: id, status: status);
   }
 
-  factory DownloadProgress.audioLangs(List<DownloadAudioLangs> langs) {
-    return DownloadProgress(isAudio: true, audioLangs: langs);
+  factory DownloadProgress.audioLangs(
+    String id,
+    List<DownloadAudioLangs> langs,
+  ) {
+    return DownloadProgress(id: id, isAudio: true, audioLangs: langs);
   }
 }
 

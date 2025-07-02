@@ -28,7 +28,7 @@ class DownloadsScreen extends StatefulWidget {
 
 class _DownloadsScreenState extends State<DownloadsScreen> {
   List<DownloadItem> downloads = [];
-  StreamSubscription<Map<String, DownloadProgress>>? _progressSubscription;
+  StreamSubscription<DownloadProgress>? _progressSubscription;
 
   @override
   void dispose() {
@@ -42,24 +42,21 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     super.initState();
     loadDownloads();
     _progressSubscription = Downloader.instance.progressStream.listen((update) {
-      final downloadId = update.keys.first;
+      final downloadId = update.id;
+
       log("download id: $downloadId");
 
       // when new download item added
-      if (update[downloadId]!.newItem) {
-        if ((widget.seriesId == null && update[downloadId]!.seriesId == null) ||
-            (widget.seriesId != null &&
-                update[downloadId]?.seriesId != null &&
-                update[downloadId]!.seriesId == widget.seriesId)) {
-          DownloadDb.instance.getDownloadItem(downloadId).then((x) {
-            if (mounted) {
-              setState(() {
-                downloads.add(x);
-              });
-            }
-          });
-          return;
-        }
+      // i think handling new episode download in series, not handling for new movie (may be need to fix it)
+      if (update.newItem && update.seriesId == widget.seriesId) {
+        DownloadDb.instance.getDownloadItem(downloadId).then((x) {
+          if (mounted) {
+            setState(() {
+              downloads.add(x);
+            });
+          }
+        });
+        return;
       }
 
       final currItem = downloads.firstWhereOrNull((e) => e.id == downloadId);
@@ -67,22 +64,17 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       if (currItem == null) return;
 
       final statusChanged =
-          (update[downloadId]!.status != null) &&
-          update[downloadId]!.status != currItem.status;
+          (update.status != null) && update.status != currItem.status;
 
-      final progress = update[downloadId]!;
+      final progress = update;
       final progressChanged = progress.isAudio!
           ? (progress.progress != currItem.audioProgress)
           : (progress.progress != currItem.videoProgress);
 
-      if ((progressChanged ||
-              update[downloadId]!.progress == null ||
-              statusChanged) &&
+      if ((progressChanged || update.progress == null || statusChanged) &&
           mounted) {
-        if (update[downloadId]!.totalEpisodesPlus != null) {
-          log(
-            "Total episodes added in inside IF: ${update[downloadId]!.totalEpisodesPlus}",
-          );
+        if (update.totalEpisodesPlus != null) {
+          log("Total episodes added in inside IF: ${update.totalEpisodesPlus}");
         }
         setState(() {
           currItem.update(progress);
