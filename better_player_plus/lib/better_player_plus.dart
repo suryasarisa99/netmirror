@@ -40,4 +40,3 @@ export 'src/video_player/video_player.dart' show VideoPlayerValue;
 
 export 'src/models/movie_model.dart';
 export 'src/models/ott.dart';
-export 'src/models/player_data.dart';

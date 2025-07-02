@@ -643,6 +643,7 @@ class Downloader {
         DownloadProgress(id: movie.id, downloadedEpisodesPlus: 1),
       );
     } else {
+      // is movie
       await db.insert(DownloadTables.downloads, {
         ...record,
         'runtime': movie.runtime,

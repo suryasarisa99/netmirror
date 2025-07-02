@@ -8,9 +8,12 @@ import 'package:netmirror/api/playlist/get_source.dart';
 import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
+
+const l = L("player");
 
 class NetmirrorPlayer extends ConsumerStatefulWidget {
   const NetmirrorPlayer({
@@ -46,20 +49,20 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
   }
 
   Future<void> _initializeVideo() async {
-    log("resourceKey before: ${CookiesManager.resourceKey}", name: "player");
+    if (widget.data.isShow && widget.episodeIndex == null) {
+      l.error("Episdoe index is null");
+    }
+    l.info("resourceKey before: ${CookiesManager.resourceKey}");
     if (!CookiesManager.isValidResourceKey) {
-      log("Invalid resource key");
+      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
       await getSource(id: widget.data.id, ott: widget.data.ott);
     }
     final resourceKey = CookiesManager.resourceKey;
     if (!CookiesManager.isValidResourceKey) {
-      log(
-        "Invalid resource key after fetching, may t_hast_t is expired",
-        name: "player",
-      );
+      l.error("Invalid resource key after fetching, may t_hast_t is expired");
       return;
     }
-    log("resourceKey after : $resourceKey", name: "player");
+    l.info("resourceKey after : $resourceKey");
     late String videoId;
     try {
       videoId = widget.data.isMovie
@@ -70,19 +73,15 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
                 .episodes![widget.episodeIndex ?? 0]
                 .id;
     } catch (e) {
-      log(
-        "Error episodes is null, for season ${widget.seasonIndex}",
-        name: "player",
+      l.error(
+        "Error episodes is null ${widget.data.seasons[widget.episodeIndex!]}, for season ${widget.seasonIndex}",
       );
       return;
     }
 
     final url =
         '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-    log(
-      "${widget.data.title}(${widget.data.id}) : video url: $url",
-      name: "player",
-    );
+    l.info("${widget.data.title} (${widget.data.id}) : video url: $url");
     final betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       url,

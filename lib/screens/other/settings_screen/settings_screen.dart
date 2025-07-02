@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:netmirror/data/options.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 

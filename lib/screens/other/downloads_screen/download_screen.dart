@@ -47,7 +47,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       log("download id: $downloadId");
 
       // when new download item added
-      // i think handling new episode download in series, not handling for new movie (may be need to fix it)
+      // handles both movie and series, in case of movie, both seriesId are null and became equal
       if (update.newItem && update.seriesId == widget.seriesId) {
         DownloadDb.instance.getDownloadItem(downloadId).then((x) {
           if (mounted) {
@@ -391,6 +391,19 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                         ),
                         // Text("id: ${item.id}"),
                         // if (item.status == "downloading")
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Progress: ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ), // Default color for the prefix
+                              ),
+                            ],
+                          ),
+                        ),
                         Text(
                           "Progress:  ${firstFalseIndex != -1 ? "Audio ${firstFalseIndex + 1}/${item.audioLangs.length}  $Dot ${item.audioProgress}%" : "Video  $Dot ${item.videoProgress}%"}",
                         ),
@@ -430,7 +443,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
             ),
             if (item.status != "completed")
               Padding(
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.only(top: 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -484,7 +497,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                         // color: item.audioPrefix.isNotEmpty &&
                         //         item.audioProgress < 100
                         color: firstFalseIndex != -1
-                            ? Color.fromARGB(255, 150, 150, 150)
+                            ? Color.fromARGB(255, 116, 116, 116)
                             : Colors.white,
                       ),
                     ),

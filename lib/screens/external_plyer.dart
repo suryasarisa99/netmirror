@@ -26,46 +26,34 @@ class _PlayerCommand {
     switch (type) {
       case 'online-url':
         print('MPV playing online URL: $url');
-        Process.start(
-          'mpv',
-          [
-            '--no-config',
-            '--demuxer=lavf',
-            '--user-agent=$_userAgent',
-            '--http-header-fields=${headers2.join(',')}',
-            '--force-window=yes',
-            '--cache=yes',
-            url,
-          ],
-          mode: ProcessStartMode.detached,
-        );
+        Process.start('mpv', [
+          '--no-config',
+          '--demuxer=lavf',
+          '--user-agent=$_userAgent',
+          '--http-header-fields=${headers2.join(',')}',
+          '--force-window=yes',
+          '--cache=yes',
+          url,
+        ], mode: ProcessStartMode.detached);
         break;
       case 'online-file':
         print('MPV playing online file: $url');
-        Process.start(
-          'mpv',
-          [
-            '--no-config',
-            '--demuxer=lavf',
-            '--force-window=yes',
-            '--cache=yes',
-            url,
-          ],
-          mode: ProcessStartMode.detached,
-        );
+        Process.start('mpv', [
+          '--no-config',
+          '--demuxer=lavf',
+          '--force-window=yes',
+          '--cache=yes',
+          url,
+        ], mode: ProcessStartMode.detached);
         break;
       case 'offline-file':
         print('MPV playing offline file: $url');
-        Process.start(
-          'mpv',
-          [
-            '--no-config',
-            '--demuxer=lavf',
-            '--force-window=yes',
-            url,
-          ],
-          mode: ProcessStartMode.detached,
-        );
+        Process.start('mpv', [
+          '--no-config',
+          '--demuxer=lavf',
+          '--force-window=yes',
+          url,
+        ], mode: ProcessStartMode.detached);
         // await Process.run('mpv', ['--no-cache', url]);
         break;
     }
@@ -102,10 +90,7 @@ class _PlayerCommand {
       case 'offline-file':
         Process.start(
           "vlc",
-          [
-            "--fullscreen",
-            url,
-          ],
+          ["--fullscreen", url],
           mode: ProcessStartMode.detached,
           environment: Platform.isWindows ? null : linuxEnv,
         );
@@ -114,5 +99,9 @@ class _PlayerCommand {
         print('VLC playing offline file: $url');
         break;
     }
+  }
+
+  Future<void> iina(String url) async {
+    Process.start('open', ['-a', 'IINA', url], mode: ProcessStartMode.detached);
   }
 }

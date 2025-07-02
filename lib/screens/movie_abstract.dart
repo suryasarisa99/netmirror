@@ -212,6 +212,9 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       );
       await intent.launch();
     } else {
+      if (Platform.isMacOS) {
+        ExternalPlayer.onlineFile.iina(filterFile.path);
+      }
       ExternalPlayer.onlineFile.vlc(filterFile.path);
     }
   }
@@ -236,36 +239,35 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       }
     } else {
       launchExternalPlayer(movie!.id, x.resourceKey);
-      // launchExternalPlayer(movie!.id, "");
     }
   }
 
   void playEpisode(int episodeIndex) async {
     final videoId = movie!.seasons[seasonIndex].episodes![episodeIndex].id;
     log("play episode: $episodeIndex, videoId: $videoId");
-    // final x = await getSource(id: videoId, ott: ott);
-    // log("resource id: ${x.resourceKey}");
 
     if (SettingsOptions.externalPlayer || isDesk) {
-      // launchExternalPlayer(videoId, x.resourceKey);
+      final x = await getSource(id: videoId, ott: ott);
+      log("resource id: ${x.resourceKey}");
+      launchExternalPlayer(videoId, x.resourceKey);
     } else {
-      goToPlayer(movie: movie!);
+      goToPlayer(movie: movie!, eIndex: episodeIndex);
     }
   }
 
   void goToPlayer({
     required Movie movie,
     WatchHistoryModel? wh,
-    int? seasonIndex,
-    int? episodeIndex,
+    int? sIndex,
+    int? eIndex,
   }) {
     GoRouter.of(context).push(
       "/nm-player",
       extra: (
         movie: movie,
         watchHistory: wh,
-        seasonIndex: seasonIndex,
-        episodeIndex: episodeIndex,
+        seasonIndex: sIndex ?? seasonIndex,
+        episodeIndex: eIndex,
       ),
     );
   }
