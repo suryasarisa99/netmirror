@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:media_kit/media_kit.dart';
 // import 'package:netmirror/better_player/better_player.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/downloader.dart';
@@ -13,7 +14,8 @@ import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_screen.dart';
 import 'package:netmirror/screens/netflix/nf_movie_screen/nf_movie_screen.dart';
 import 'package:netmirror/screens/other/downloads_screen/download_screen.dart';
 import 'package:netmirror/screens/other/settings_screen/settings_screen.dart';
-import 'package:netmirror/screens/player/chewie_player.dart';
+// import 'package:netmirror/screens/player/chewie_player.dart';
+import 'package:netmirror/screens/player/mediakit_player.dart';
 // import 'package:netmirror/old/netflix/movie_screen/movie_screen.dart';
 // import 'package:netmirror/screens/player/netmirror_player.dart';
 // import 'package:netmirror/screens/player/online_player.dart';
@@ -28,6 +30,9 @@ import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize MediaKit for video playback
+  MediaKit.ensureInitialized();
 
   // if (isDesk) {
   //   databaseFactory = databaseFactoryFfi;
@@ -221,7 +226,21 @@ final routes = GoRouter(
       pageBuilder: (context, state) {
         final data = state.extra as PlayerScreenData;
         return MaterialPage(
-          child: ChewiePlayer(
+          child: MediaKitPlayer(
+            data: data.movie,
+            wh: data.watchHistory,
+            seasonIndex: data.seasonIndex,
+            episodeIndex: data.episodeIndex,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/mediakit-player",
+      pageBuilder: (context, state) {
+        final data = state.extra as PlayerScreenData;
+        return MaterialPage(
+          child: MediaKitPlayer(
             data: data.movie,
             wh: data.watchHistory,
             seasonIndex: data.seasonIndex,
