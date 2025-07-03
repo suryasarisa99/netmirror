@@ -38,5 +38,5 @@ export 'src/subtitles/better_player_subtitles_source.dart';
 export 'src/subtitles/better_player_subtitles_source_type.dart';
 export 'src/video_player/video_player.dart' show VideoPlayerValue;
 
-export 'src/models/movie_model.dart';
-export 'src/models/ott.dart';
+export '../../shared_code/models/movie_model.dart';
+export '../../shared_code/models/ott.dart';

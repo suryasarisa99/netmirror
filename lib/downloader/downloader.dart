@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:netmirror/api/playlist/get_audio_hls.dart';
@@ -13,6 +12,7 @@ import 'package:netmirror/api/playlist/local_playlist.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_code/models/movie_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 

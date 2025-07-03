@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/models/watch_model.dart';
+import 'package:shared_code/models/movie_model.dart';
+import 'package:shared_code/models/ott.dart';
 
 class Movie {
   String id;

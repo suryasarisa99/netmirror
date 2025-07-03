@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';

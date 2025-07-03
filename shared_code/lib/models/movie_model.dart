@@ -1,4 +1,4 @@
-import 'package:better_player_plus/src/models/ott.dart';
+import 'ott.dart';
 
 class MinifyMovie {
   String id;
@@ -178,13 +178,7 @@ class Episode {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      't': t,
-      's': s,
-      'ep': ep,
-      'time': time,
-    };
+    return {'id': id, 't': t, 's': s, 'ep': ep, 'time': time};
   }
 }
 
@@ -195,17 +189,11 @@ class Language {
   Language({required this.l, required this.s});
 
   factory Language.fromJson(Map<String, dynamic> json) {
-    return Language(
-      l: json['l'],
-      s: json['s'],
-    );
+    return Language(l: json['l'], s: json['s']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'l': l,
-      's': s,
-    };
+    return {'l': l, 's': s};
   }
 }
 
@@ -215,14 +203,10 @@ class Suggestion {
   Suggestion({required this.id});
 
   factory Suggestion.fromJson(Map<String, dynamic> json) {
-    return Suggestion(
-      id: json['id'],
-    );
+    return Suggestion(id: json['id']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-    };
+    return {'id': id};
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -19,12 +18,13 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/downloader/downloader.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_code/models/movie_model.dart';
+import 'package:shared_code/models/ott.dart';
 
 abstract class MovieScreen extends ConsumerStatefulWidget {
   const MovieScreen(this.id, {super.key});

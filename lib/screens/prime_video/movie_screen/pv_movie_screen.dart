@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
@@ -17,6 +15,7 @@ import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/sticky_header_delegate.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
+import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class PVMovieScreen extends MovieScreen {

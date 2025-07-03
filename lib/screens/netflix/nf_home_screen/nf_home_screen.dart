@@ -1,4 +1,3 @@
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,13 +6,13 @@ import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/models/prime_video/pv_home_model.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_rows.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_tabs.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
+import 'package:shared_code/models/ott.dart';
 
 class NfMainHomeScreen extends StatelessWidget {
   const NfMainHomeScreen(this.shell, {super.key});

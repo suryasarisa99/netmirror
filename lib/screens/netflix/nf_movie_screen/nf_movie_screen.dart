@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,13 +9,13 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/dialogs/category_dialog.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NfMovieScreen extends MovieScreen {

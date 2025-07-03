@@ -1,14 +1,11 @@
 import 'dart:developer';
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:netmirror/better_player/better_player.dart';
-import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
-import 'package:netmirror/models/player_data_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 // import 'package:netmirror/old/netflix/home_screen/home_screen.dart';
 import 'package:netmirror/screens/initial_screen.dart';
@@ -16,14 +13,16 @@ import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_screen.dart';
 import 'package:netmirror/screens/netflix/nf_movie_screen/nf_movie_screen.dart';
 import 'package:netmirror/screens/other/downloads_screen/download_screen.dart';
 import 'package:netmirror/screens/other/settings_screen/settings_screen.dart';
+import 'package:netmirror/screens/player/chewie_player.dart';
 // import 'package:netmirror/old/netflix/movie_screen/movie_screen.dart';
-import 'package:netmirror/screens/player/netmirror_player.dart';
-import 'package:netmirror/screens/player/online_player.dart';
-import 'package:netmirror/screens/player/source_picker.dart';
+// import 'package:netmirror/screens/player/netmirror_player.dart';
+// import 'package:netmirror/screens/player/online_player.dart';
+// import 'package:netmirror/screens/player/source_picker.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_screen.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_movie_screen.dart';
 import 'package:netmirror/screens/other/search_screen/search_screen.dart';
 import 'package:netmirror/screens/other/settings_screen/audio_track_screen.dart';
+import 'package:shared_code/models/movie_model.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -222,7 +221,7 @@ final routes = GoRouter(
       pageBuilder: (context, state) {
         final data = state.extra as PlayerScreenData;
         return MaterialPage(
-          child: NetmirrorPlayer(
+          child: ChewiePlayer(
             data: data.movie,
             wh: data.watchHistory,
             seasonIndex: data.seasonIndex,
@@ -237,15 +236,15 @@ final routes = GoRouter(
         return const MaterialPage(child: InitialScreen());
       },
     ),
-    GoRoute(
-      path: "/source-picker",
-      pageBuilder: (context, state) {
-        return MaterialPage(
-          child: SourcePicker(state.extra as BetterPlayerController),
-        );
-        // return const MaterialPage(child: BetterPlayerPage(title: "Sample"));
-      },
-    ),
+    // GoRoute(
+    //   path: "/source-picker",
+    //   pageBuilder: (context, state) {
+    //     return MaterialPage(
+    //       child: SourcePicker(state.extra as BetterPlayerController),
+    //     );
+    //     // return const MaterialPage(child: BetterPlayerPage(title: "Sample"));
+    //   },
+    // ),
     GoRoute(
       path: "/downloads",
       pageBuilder: (context, state) {
@@ -282,16 +281,16 @@ final routes = GoRouter(
         return const MaterialPage(child: AudioTrackSelectionScreen());
       },
     ),
-    GoRoute(
-      path: "/player",
-      pageBuilder: (context, state) {
-        final (playerData, watchHistory) =
-            state.extra as (PlayerData, WatchHistoryModel?);
-        return MaterialPage(
-          child: BetterPlayerScreen(data: playerData, wh: watchHistory),
-        );
-      },
-    ),
+    // GoRoute(
+    //   path: "/player",
+    //   pageBuilder: (context, state) {
+    //     final (playerData, watchHistory) =
+    //         state.extra as (PlayerData, WatchHistoryModel?);
+    //     return MaterialPage(
+    //       child: BetterPlayerScreen(data: playerData, wh: watchHistory),
+    //     );
+    //   },
+    // ),
     // GoRoute(
     //   path: "/",
     //   pageBuilder: (context, state) {

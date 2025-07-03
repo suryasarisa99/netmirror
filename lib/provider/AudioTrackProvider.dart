@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:netmirror/constants.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:collection/collection.dart';
@@ -12,10 +11,12 @@ class AudioTrackProvider extends StateNotifier<List<Map<String, String>>> {
   void initial() async {
     log("initited");
     state = (jsonDecode(sp!.getString("audioTracks") ?? "[]") as List)
-        .map((e) => {
-              "language": e["language"] as String,
-              "label": e["label"] as String,
-            })
+        .map(
+          (e) => {
+            "language": e["language"] as String,
+            "label": e["label"] as String,
+          },
+        )
         .toList();
   }
 
@@ -24,29 +25,30 @@ class AudioTrackProvider extends StateNotifier<List<Map<String, String>>> {
     sp!.setString("audioTracks", jsonEncode((n)));
   }
 
-  BetterPlayerAsmsAudioTrack pickPreferred(
-      List<BetterPlayerAsmsAudioTrack> tracks) {
-    // Iterate over the preferred tracks first, to prioritize in the given order
-    for (var preferredTrack in state) {
-      // Check if any track matches the preferred language or label
-      final matchingTrack = tracks.firstWhereOrNull(
-        (track) =>
-            track.language == preferredTrack["language"] ||
-            track.label == preferredTrack["label"],
-      );
+  // BetterPlayerAsmsAudioTrack pickPreferred(
+  //     List<BetterPlayerAsmsAudioTrack> tracks) {
+  //   // Iterate over the preferred tracks first, to prioritize in the given order
+  //   for (var preferredTrack in state) {
+  //     // Check if any track matches the preferred language or label
+  //     final matchingTrack = tracks.firstWhereOrNull(
+  //       (track) =>
+  //           track.language == preferredTrack["language"] ||
+  //           track.label == preferredTrack["label"],
+  //     );
 
-      if (matchingTrack != null) {
-        return matchingTrack;
-      } else {
-        log("track ${preferredTrack["language"]} | ${preferredTrack["label"]} is Not There");
-      }
-    }
+  //     if (matchingTrack != null) {
+  //       return matchingTrack;
+  //     } else {
+  //       log("track ${preferredTrack["language"]} | ${preferredTrack["label"]} is Not There");
+  //     }
+  //   }
 
-    // If no preferred match is found, fall back to the first track
-    return tracks.first;
-  }
+  //   // If no preferred match is found, fall back to the first track
+  //   return tracks.first;
+  // }
 }
 
 final audioTrackProvider =
     StateNotifierProvider<AudioTrackProvider, List<Map<String, String>>>(
-        (ref) => AudioTrackProvider());
+      (ref) => AudioTrackProvider(),
+    );

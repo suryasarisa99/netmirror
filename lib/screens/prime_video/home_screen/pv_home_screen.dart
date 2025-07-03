@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +8,13 @@ import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/models/prime_video/pv_home_model.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
+import 'package:shared_code/models/ott.dart';
 
 class PvMainHomeScreen extends StatelessWidget {
   const PvMainHomeScreen(this.shell, {super.key});

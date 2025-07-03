@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +10,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/netmirror/netmirror_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
+import 'package:shared_code/models/ott.dart';
 
 class Search extends ConsumerStatefulWidget {
   const Search(this.tabIndex, {super.key});

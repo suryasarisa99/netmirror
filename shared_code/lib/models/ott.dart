@@ -1,4 +1,4 @@
-import 'package:better_player_plus/src/models/constants.dart';
+import 'constants.dart';
 
 enum OTT {
   // none("", name: "Netflix"),
@@ -15,26 +15,38 @@ enum OTT {
     hImgHeight: 374,
     hImgWidth: 665,
   ),
-  pv("pv",
-      name: "Prime Video",
-      vImgHeight: 0,
-      vImgWidth: 0,
-      hImgHeight: 0,
-      hImgWidth: 0),
-  dh("dh",
-      name: "Disney + Hotstar",
-      vImgHeight: 0,
-      vImgWidth: 0,
-      hImgHeight: 0,
-      hImgWidth: 0),
-  lionGate("lg",
-      name: "Lionsgate",
-      vImgHeight: 0,
-      vImgWidth: 0,
-      hImgHeight: 0,
-      hImgWidth: 0),
-  hbo("hbo",
-      name: "HBO", vImgHeight: 0, vImgWidth: 0, hImgHeight: 0, hImgWidth: 0);
+  pv(
+    "pv",
+    name: "Prime Video",
+    vImgHeight: 0,
+    vImgWidth: 0,
+    hImgHeight: 0,
+    hImgWidth: 0,
+  ),
+  dh(
+    "dh",
+    name: "Disney + Hotstar",
+    vImgHeight: 0,
+    vImgWidth: 0,
+    hImgHeight: 0,
+    hImgWidth: 0,
+  ),
+  lionGate(
+    "lg",
+    name: "Lionsgate",
+    vImgHeight: 0,
+    vImgWidth: 0,
+    hImgHeight: 0,
+    hImgWidth: 0,
+  ),
+  hbo(
+    "hbo",
+    name: "HBO",
+    vImgHeight: 0,
+    vImgWidth: 0,
+    hImgHeight: 0,
+    hImgWidth: 0,
+  );
 
   final String value;
   final String name;
@@ -53,8 +65,8 @@ enum OTT {
     required this.hImgHeight,
     required this.hImgWidth,
     // required this.vImgRatio = hImgHeight / hImgWidth,
-  })  : vAspectRatio = vImgWidth / vImgHeight,
-        hAspectRatio = hImgWidth / hImgHeight;
+  }) : vAspectRatio = vImgWidth / vImgHeight,
+       hAspectRatio = hImgWidth / hImgHeight;
 
   get url => value.isEmpty ? '' : '$value/';
 

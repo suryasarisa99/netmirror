@@ -1,5 +1,4 @@
-import 'package:better_player_plus/better_player_plus.dart';
-import 'package:netmirror/constants.dart';
+import 'package:shared_code/models/ott.dart';
 
 class NmSearchResults {
   final List<NmSearchResult> results;

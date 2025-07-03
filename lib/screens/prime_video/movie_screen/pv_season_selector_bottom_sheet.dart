@@ -1,6 +1,5 @@
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:shared_code/models/movie_model.dart';
 
 class SeasonSelectorBottomSheet extends StatelessWidget {
   final List<Season> seasons;

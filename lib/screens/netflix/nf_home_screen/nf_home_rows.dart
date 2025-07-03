@@ -1,4 +1,3 @@
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/prime_video/pv_home_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:shared_code/models/ott.dart';
 
 class NfHomeRow extends StatelessWidget {
   const NfHomeRow({super.key, required this.tray});
