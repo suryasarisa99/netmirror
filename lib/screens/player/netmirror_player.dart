@@ -32,7 +32,8 @@ class NetmirrorPlayer extends ConsumerStatefulWidget {
   ConsumerState<NetmirrorPlayer> createState() => _BetterPlayerScreenState();
 }
 
-class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
+class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer>
+    with WidgetsBindingObserver {
   BetterPlayerController? _betterPlayerVideoController;
   bool controlsVisible = true;
   int fitValue = 0;
@@ -41,11 +42,30 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom],
     );
     _initializeVideo();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      // App is going to background, enter PiP mode
+      if (_betterPlayerVideoController != null &&
+          _betterPlayerVideoController!.isPlaying() == true) {
+        _betterPlayerVideoController!.enablePictureInPicture(_betterPlayerKey);
+        l.info("Attempting to enter PiP mode due to app lifecycle change");
+      }
+    } else if (state == AppLifecycleState.resumed) {
+      // App is back in foreground
+      l.info("App resumed from background");
+    }
   }
 
   Future<void> _initializeVideo() async {
@@ -146,6 +166,9 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
         placeholderOnTop: true,
         useRootNavigator: true,
         controlsConfiguration: controlsConfiguration,
+        handleLifecycle: true,
+        autoDetectFullscreenAspectRatio: true,
+        autoDetectFullscreenDeviceOrientation: true,
       ),
       betterPlayerPlaylistConfiguration:
           const BetterPlayerPlaylistConfiguration(initialStartIndex: 0),
@@ -169,8 +192,8 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
 
         final audioTracks =
             _betterPlayerVideoController!.betterPlayerAsmsAudioTracks;
-        final qualityTracks =
-            _betterPlayerVideoController!.betterPlayerAsmsTracks;
+        // final qualityTracks =
+        //     _betterPlayerVideoController!.betterPlayerAsmsTracks;
         // betterPlayerAudioController!.setSpeed(200);
 
         if (audioTracks != null) {
@@ -257,6 +280,7 @@ class _BetterPlayerScreenState extends ConsumerState<NetmirrorPlayer> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _betterPlayerVideoController?.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
