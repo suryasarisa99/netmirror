@@ -232,10 +232,10 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   void playMovie() async {
-    if (!CookiesManager.isValidResourceKey) {
-      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
-      await getSource(id: movie!.id, ott: movie!.ott);
-    }
+    // if (!CookiesManager.isValidResourceKey) {
+    l.error("Invalid resource key, ${CookiesManager.resourceKey}");
+    await getSource(id: movie!.id, ott: movie!.ott);
+    // }
     if (!CookiesManager.isValidResourceKey) {
       l.error("Resource key is still invalid after fetching source");
       return;
@@ -282,15 +282,23 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       l.error("Episode index is null for show");
       return;
     }
-    GoRouter.of(context).push(
-      "/nm-player",
-      extra: (
-        movie: movie,
-        watchHistory: wh,
-        seasonIndex: sIndex ?? seasonIndex,
-        episodeIndex: eIndex,
-      ),
-    );
+    // GoRouter.of(context).push(
+    //   "/nm-player",
+    //   extra: (
+    //     movie: movie,
+    //     watchHistory: wh,
+    //     seasonIndex: sIndex ?? seasonIndex,
+    //     episodeIndex: eIndex,
+    //   ),
+    // );
+
+    // for testing, passing object doesn't supports hot reload, so url for testing purpose
+    final videoId = movie.isMovie
+        ? movie.id
+        : movie.seasons[sIndex ?? seasonIndex].episodes![eIndex!].id;
+    final resourceKey = CookiesManager.resourceKey!;
+    final url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+    GoRouter.of(context).push("/nm-player", extra: url);
   }
 
   void downloadMovie() async {

@@ -15,15 +15,17 @@ const l = L("player");
 class MediaKitPlayer extends ConsumerStatefulWidget {
   const MediaKitPlayer({
     super.key,
-    required this.data,
-    required this.wh,
-    this.seasonIndex,
-    this.episodeIndex,
+    // required this.data,
+    // required this.wh,
+    // this.seasonIndex,
+    // this.episodeIndex,
+    required this.url,
   });
-  final Movie data;
-  final WatchHistoryModel? wh;
-  final int? seasonIndex;
-  final int? episodeIndex;
+  // final Movie data;
+  // final WatchHistoryModel? wh;
+  // final int? seasonIndex;
+  // final int? episodeIndex;
+  final String url;
 
   @override
   ConsumerState<MediaKitPlayer> createState() => _MediaKitPlayerState();
@@ -56,17 +58,17 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   Future<void> _initializeVideo() async {
     late String videoId;
     final resourceKey = CookiesManager.resourceKey;
-    videoId = widget.data.isMovie
-        ? widget.data.id
-        : widget
-              .data
-              .seasons[widget.seasonIndex!]
-              .episodes![widget.episodeIndex!]
-              .id;
+    // videoId = widget.data.isMovie
+    //     ? widget.data.id
+    //     : widget
+    //           .data
+    //           .seasons[widget.seasonIndex!]
+    //           .episodes![widget.episodeIndex!]
+    //           .id;
 
-    final url =
-        '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-    l.info("${widget.data.title} (${widget.data.id}) : video url: $url");
+    // final url =
+    //     '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+    // l.info("${widget.data.title} (${widget.data.id}) : video url: $url");
 
     try {
       // Initialize MediaKit Player
@@ -115,18 +117,18 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       // Open media with headers
       await _player!.open(
         Media(
-          url,
+          widget.url,
           httpHeaders: {...headers, 'cookie': 'hd=on', 'Range': 'none'},
         ),
         play: true,
       );
 
       // Handle watch history if available
-      if (widget.wh != null) {
-        final seekPosition = Duration(milliseconds: widget.wh!.current);
-        await _player!.seek(seekPosition);
-        l.info("Seeking to position: ${seekPosition.inMinutes} minutes");
-      }
+      // if (widget.wh != null) {
+      //   final seekPosition = Duration(milliseconds: widget.wh!.current);
+      //   await _player!.seek(seekPosition);
+      //   l.info("Seeking to position: ${seekPosition.inMinutes} minutes");
+      // }
 
       setState(() {
         _isInitialized = true;
@@ -384,7 +386,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
                 : const CircularProgressIndicator(color: Colors.red),
           ),
 
-          // Quality/Audio selection button
+          // // Quality/Audio selection button
           if (_isInitialized &&
               !_isPipMode &&
               (_videoTracks.isNotEmpty || _audioTracks.isNotEmpty))

@@ -224,31 +224,19 @@ final routes = GoRouter(
     GoRoute(
       path: "/nm-player",
       pageBuilder: (context, state) {
-        final data = state.extra as PlayerScreenData;
+        // final data = state.extra as PlayerScreenData;
         return MaterialPage(
           child: MediaKitPlayer(
-            data: data.movie,
-            wh: data.watchHistory,
-            seasonIndex: data.seasonIndex,
-            episodeIndex: data.episodeIndex,
+            url: state.extra as String,
+            // data: data.movie,
+            // wh: data.watchHistory,
+            // seasonIndex: data.seasonIndex,
+            // episodeIndex: data.episodeIndex,
           ),
         );
       },
     ),
-    GoRoute(
-      path: "/mediakit-player",
-      pageBuilder: (context, state) {
-        final data = state.extra as PlayerScreenData;
-        return MaterialPage(
-          child: MediaKitPlayer(
-            data: data.movie,
-            wh: data.watchHistory,
-            seasonIndex: data.seasonIndex,
-            episodeIndex: data.episodeIndex,
-          ),
-        );
-      },
-    ),
+
     GoRoute(
       path: "/initial-screen",
       pageBuilder: (context, state) {
