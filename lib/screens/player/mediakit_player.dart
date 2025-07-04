@@ -9,6 +9,7 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/provider/AudioTrackProvider.dart';
 
 const l = L("player");
 
@@ -105,14 +106,12 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
       // Add listeners for track changes
       _player!.stream.tracks.listen((tracks) {
-        setState(() {
-          _videoTracks = tracks.video;
-          _audioTracks = tracks.audio;
-        });
-
-        // Auto-select preferred audio track
-        if (_audioTracks.isNotEmpty && _selectedAudioTrack == null) {
-          _selectPreferredAudioTrack();
+        final audioTracks = tracks.audio
+            .where((track) => track.channels != null)
+            .toList();
+        l.info("xxxxxxxxxxxxxxxxxxxx tracks length: ${tracks.audio.length}");
+        if (tracks.audio.isNotEmpty) {
+          _selectPreferredAudioTrack(audioTracks);
         }
 
         l.info(
@@ -159,35 +158,27 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
     }
   }
 
-  void _selectPreferredAudioTrack() {
-    if (_audioTracks.isEmpty) return;
-
+  void _selectPreferredAudioTrack(List<AudioTrack> audioTracks) {
     // Simple preferred audio track selection
-    AudioTrack preferredTrack = _audioTracks.first;
-    for (final track in _audioTracks) {
-      if (track.language?.toLowerCase().contains('en') == true) {
-        preferredTrack = track;
-        break;
-      }
-    }
+    AudioTrack preferredTrack = ref
+        .read(audioTrackProvider.notifier)
+        .pickPreferred(audioTracks);
 
     _selectAudioTrack(preferredTrack);
 
-    if (_audioTracks.length > 1) {
+    if (audioTracks.length > 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           content: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              child: Text(
-                "Selected Audio: ${preferredTrack.title ?? preferredTrack.language ?? 'Default'}",
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white),
-              ),
+            child: Text(
+              "Selected Audio: ${preferredTrack.title ?? preferredTrack.language ?? 'Default'}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
           behavior: SnackBarBehavior.floating,
-          width: 220,
+          width: 200,
           backgroundColor: const Color.fromARGB(255, 34, 34, 34),
           duration: const Duration(milliseconds: 3000),
           shape: RoundedRectangleBorder(

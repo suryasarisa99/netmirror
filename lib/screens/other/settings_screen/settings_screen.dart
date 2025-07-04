@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -39,6 +40,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 if (status.isGranted) {}
               },
               child: Text("permission"),
+            ),
+            FilledButton(
+              onPressed: () async {
+                GoRouter.of(context).push('/settings-audio-tracks');
+              },
+              child: Text("Audio Tracks"),
             ),
           ],
         ),
