@@ -48,11 +48,15 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _setupPipListener();
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom],
-    );
+    hideStatusBarAndNavigationBar();
     _initializeVideo();
+  }
+
+  void hideStatusBarAndNavigationBar() {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [],
+    );
   }
 
   Future<void> _initializeVideo() async {
@@ -73,11 +77,15 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
     try {
       // Initialize MediaKit Player
       _player = Player(
-        configuration: PlayerConfiguration(logLevel: MPVLogLevel.debug),
+        configuration: PlayerConfiguration(
+          logLevel: MPVLogLevel.debug,
+          ready: () {
+            // _player?.state.
+          },
+        ),
       );
 
-      // _player?.platform?.configuration.s
-      // _player?.state?.videoParams?.
+      // _player?.platform?.configuration.
       // _player?.stream?.videoParams?.first.then((v){
       //   v.
       // })
@@ -281,107 +289,6 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
     l.info("Selected audio track: ${track.id} - ${track.title}");
   }
 
-  void _showTrackSelection() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.black87,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Quality & Audio Settings',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Video Quality Selection
-              if (_videoTracks.isNotEmpty) ...[
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Video Quality:',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...(_videoTracks.map(
-                  (track) => ListTile(
-                    title: Text(
-                      track.title ?? 'Quality ${track.id}',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      '${track.w ?? 'Unknown'}x${track.h ?? 'Unknown'}',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    leading: Radio<VideoTrack>(
-                      value: track,
-                      groupValue: _selectedVideoTrack,
-                      onChanged: (value) {
-                        if (value != null) _selectVideoTrack(value);
-                        Navigator.pop(context);
-                      },
-                      activeColor: Colors.red,
-                    ),
-                    onTap: () {
-                      _selectVideoTrack(track);
-                      Navigator.pop(context);
-                    },
-                  ),
-                )),
-                const Divider(color: Colors.grey),
-              ],
-
-              // Audio Track Selection
-              if (_audioTracks.isNotEmpty) ...[
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Audio Language:',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...(_audioTracks.map(
-                  (track) => ListTile(
-                    title: Text(
-                      track.title ?? track.language ?? 'Audio ${track.id}',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      'Channels: ${track.channels?.toString() ?? "Unknown"}',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    leading: Radio<AudioTrack>(
-                      value: track,
-                      groupValue: _selectedAudioTrack,
-                      onChanged: (value) {
-                        if (value != null) _selectAudioTrack(value);
-                        Navigator.pop(context);
-                      },
-                      activeColor: Colors.red,
-                    ),
-                    onTap: () {
-                      _selectAudioTrack(track);
-                      Navigator.pop(context);
-                    },
-                  ),
-                )),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -395,6 +302,9 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           ? Video(
               controller: _controller!,
               fit: BoxFit.cover,
+              onExitFullscreen: () async {
+                hideStatusBarAndNavigationBar();
+              },
               // fill: Colors.green,
             )
           : Center(child: const CircularProgressIndicator(color: Colors.red)),
@@ -405,6 +315,11 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _player?.dispose();
+    // Restore system UI when leaving the player
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: SystemUiOverlay.values,
+    );
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

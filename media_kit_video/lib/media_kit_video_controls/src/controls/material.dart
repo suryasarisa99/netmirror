@@ -95,7 +95,7 @@ const kDefaultMaterialVideoControlsThemeDataFullscreen =
   seekBarMargin: EdgeInsets.only(
     left: 16.0,
     right: 16.0,
-    bottom: 42.0,
+    bottom: 50.0,
   ),
   seekBarHeight: 2.4,
   seekBarContainerHeight: 36.0,
@@ -525,10 +525,6 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   bool _showFitControl = false;
   bool _showAudioControl = false;
   bool _showVideoControl = false;
-  List<VideoTrack> _videoTracks = [];
-  List<AudioTrack> _audioTracks = [];
-  VideoTrack? _selectedVideoTrack;
-  AudioTrack? _selectedAudioTrack;
 
   Offset _dragInitialDelta =
       Offset.zero; // Initial position for horizontal drag
@@ -611,19 +607,19 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
           // Add tracks listener
           controller(context).player.stream.tracks.listen(
             (event) {
-              log("tracks: ${event.video.length} video, ${event.audio.length} audio");
-              setState(() {
-                _videoTracks = event.video;
-                _audioTracks = event.audio;
+              // log("tracks: ${event.video.length} video, ${event.audio.length} audio");
+              // setState(() {
+              //   _videoTracks = event.video;
+              //   _audioTracks = event.audio;
 
-                // Auto-select the first track if none is selected
-                if (_selectedVideoTrack == null && _videoTracks.isNotEmpty) {
-                  _selectedVideoTrack = _videoTracks.first;
-                }
-                if (_selectedAudioTrack == null && _audioTracks.isNotEmpty) {
-                  _selectedAudioTrack = _audioTracks.first;
-                }
-              });
+              //   // Auto-select the first track if none is selected
+              //   if (_selectedVideoTrack == null && _videoTracks.isNotEmpty) {
+              //     _selectedVideoTrack = _videoTracks.first;
+              //   }
+              //   if (_selectedAudioTrack == null && _audioTracks.isNotEmpty) {
+              //     _selectedAudioTrack = _audioTracks.first;
+              //   }
+              // });
             },
           ),
         ],
@@ -915,22 +911,18 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }
 
   void _selectVideoTrack(VideoTrack track) {
-    setState(() {
-      _selectedVideoTrack = track;
-    });
     controller(context).player.setVideoTrack(track);
   }
 
   void _selectAudioTrack(AudioTrack track) {
-    setState(() {
-      _selectedAudioTrack = track;
-    });
     controller(context).player.setAudioTrack(track);
   }
 
   Widget _buildCustomControls() {
     // Only show in fullscreen mode and when controls are visible
     if (!visible) return const SizedBox.shrink();
+    final audioTracks = controller(context).player.state.tracks.audio;
+    final videoTracks = controller(context).player.state.tracks.video;
 
     return Positioned(
       bottom: 0, // Position at bottom above seek bar
@@ -984,7 +976,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
           const SizedBox(width: 8),
 
           // Audio Track Button
-          if (_audioTracks.isNotEmpty)
+          if (audioTracks.isNotEmpty)
             MaterialCustomButton(
               icon: Icon(Icons.audiotrack),
               onPressed: () {
@@ -998,10 +990,10 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
               },
               // tooltip: 'Audio Track (${_audioTracks.length})',
             ),
-          if (_audioTracks.isNotEmpty) const SizedBox(width: 8),
+          if (audioTracks.isNotEmpty) const SizedBox(width: 8),
 
           // Video Quality Button
-          if (_videoTracks.isNotEmpty)
+          if (videoTracks.isNotEmpty)
             MaterialCustomButton(
               icon: Icon(Icons.high_quality),
               onPressed: () {
@@ -1039,7 +1031,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }) {
     return Positioned(
       right: 10,
-      bottom: 50,
+      bottom: 58,
       child: GestureDetector(
         onTap: () {},
         child: Container(
@@ -1061,7 +1053,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }) {
     return Positioned(
       right: -5,
-      bottom: 50,
+      bottom: 58,
       top: 5,
       // top: -4,
       child: GestureDetector(
@@ -1230,10 +1222,26 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }
 
   Widget _buildAudioControl() {
-    if (!_showAudioControl || !visible || _audioTracks.isEmpty) {
+    if (!_showAudioControl || !visible) {
       return const SizedBox.shrink();
     }
-
+    final audios = controller(context)
+        .player
+        .state
+        .tracks
+        .audio
+        .where((a) => a.channels != null)
+        .toList();
+    // log("tracks len: ${audios.length}");
+    // log("first track ${audios.length > 0 ? audios.first.channels : "0len"}",
+    //     name: "first audio track");
+    // final currTrack = controller(context).player.state.track.audio;
+    // log("curr track: ${currTrack.id} ${currTrack.title}, ${currTrack.language}, ${currTrack.channels}");
+    if (audios.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final selectedAudioTrackId =
+        controller(context).player.state.track.audio.id;
     return _buildLargeControlsBackground(
       width: 250,
       child: Column(
@@ -1243,7 +1251,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Audio Track (${_audioTracks.length})',
+                'Audio Track (${audios.length})',
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -1256,14 +1264,17 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
             ],
           ),
           const SizedBox(height: 12),
-          if (_audioTracks.isNotEmpty)
+          if (audios.isNotEmpty)
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: _audioTracks.length,
+                itemCount: audios.length,
                 itemBuilder: (context, index) {
-                  final track = _audioTracks[index];
-                  final isSelected = _selectedAudioTrack?.id == track.id;
+                  final track = audios[index];
+                  final isSelected = selectedAudioTrackId == track.id;
+
+                  debugPrint(
+                      "title: ${track.title}, language: ${track.language}, id: ${track.id}, ${track.channels}");
 
                   return GestureDetector(
                     onTap: () {
@@ -1297,8 +1308,8 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              track.language ??
-                                  track.title ??
+                              track.title ??
+                                  track.language ??
                                   'Track ${index + 1}',
                               style: TextStyle(
                                 color: isSelected
@@ -1337,9 +1348,22 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }
 
   Widget _buildVideoControl() {
-    if (!_showVideoControl || !visible || _videoTracks.isEmpty) {
+    if (!_showVideoControl || !visible) {
       return const SizedBox.shrink();
     }
+    final videos = controller(context)
+        .player
+        .state
+        .tracks
+        .video
+        .where((v) => v.w != null && v.h != null)
+        .toList();
+
+    if (videos.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final selectedVideoTrackId =
+        controller(context).player.state.track.video.id;
 
     return _buildLargeControlsBackground(
       width: 250,
@@ -1351,7 +1375,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Video Quality (${_videoTracks.length})',
+                  'Video Quality (${videos.length})',
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -1364,14 +1388,16 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
               ],
             ),
             const SizedBox(height: 12),
-            if (_videoTracks.isNotEmpty)
+            if (videos.isNotEmpty)
               Flexible(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: _videoTracks.length,
+                  itemCount: videos.length,
                   itemBuilder: (context, index) {
-                    final track = _videoTracks[index];
-                    final isSelected = _selectedVideoTrack?.id == track.id;
+                    final track = videos[index];
+                    debugPrint(
+                        "video tracks: ${track.id}, ${track.w}x${track.h}, bitrate: ${track.bitrate}");
+                    final isSelected = selectedVideoTrackId == track.id;
 
                     return GestureDetector(
                       onTap: () {
@@ -1588,11 +1614,8 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                     if (mount)
                       Padding(
                         padding: _theme(context).padding ??
-                            (
-                                // Add padding in fullscreen!
-                                isFullscreen(context)
-                                    ? MediaQuery.of(context).padding
-                                    : EdgeInsets.zero),
+                            // Add padding for both normal and fullscreen modes.
+                            MediaQuery.of(context).padding,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -1694,12 +1717,8 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
               // Buffering Indicator.
               IgnorePointer(
                 child: Padding(
-                  padding: _theme(context).padding ??
-                      (
-                          // Add padding in fullscreen!
-                          isFullscreen(context)
-                              ? MediaQuery.of(context).padding
-                              : EdgeInsets.zero),
+                  padding:
+                      _theme(context).padding ?? MediaQuery.of(context).padding,
                   child: Column(
                     children: [
                       Container(
@@ -1862,12 +1881,8 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
               // Speedup Indicator.
               IgnorePointer(
                 child: Padding(
-                  padding: _theme(context).padding ??
-                      (
-                          // Add padding in fullscreen!
-                          isFullscreen(context)
-                              ? MediaQuery.of(context).padding
-                              : EdgeInsets.zero),
+                  padding:
+                      _theme(context).padding ?? MediaQuery.of(context).padding,
                   child: Column(
                     children: [
                       Container(

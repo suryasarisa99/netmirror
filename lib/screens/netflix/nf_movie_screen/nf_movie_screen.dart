@@ -292,7 +292,7 @@ class NfMovieScreenState extends MovieScreenState {
           const SizedBox(height: 20),
           // Play Button
           FilledButton(
-            onPressed: playMovie,
+            onPressed: playMovieOrEpisode,
             style: const ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(Colors.white),
               shape: WidgetStatePropertyAll(
