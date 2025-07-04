@@ -93,16 +93,14 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
     try {
       // Initialize MediaKit Player
-      _player = Player(
-        configuration: PlayerConfiguration(
-         
-        ),
-      );
+      _player = Player(configuration: PlayerConfiguration());
 
       // Create VideoController
       _controller = VideoController(
         _player!,
-        configuration: VideoControllerConfiguration(),
+        configuration: VideoControllerConfiguration(
+          enableHardwareAcceleration: true,
+        ),
       );
 
       // Add listeners for track changes
@@ -245,13 +243,14 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   }
 
   void _showPipNotSupportedMessage() {
+    l.error("Picture-in-Picture mode not supported on this device");
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Picture-in-Picture mode not supported on this device'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Picture-in-Picture mode not supported on this device'),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
     }
   }
 
@@ -396,93 +395,53 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       DeviceOrientation.landscapeRight,
     ]);
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        l.info("onPopInvokedWithResult: didPop: $didPop, result: $result");
-        if (!didPop) {
-          Navigator.of(context).pop();
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Stack(
-          children: [
-            Center(
-              child: _isInitialized && _controller != null
-                  ? Video(controller: _controller!)
-                  : const CircularProgressIndicator(color: Colors.red),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: _isInitialized && _controller != null
+                ? Video(controller: _controller!)
+                : const CircularProgressIndicator(color: Colors.red),
+          ),
+
+          // Quality/Audio selection button
+          if (_isInitialized &&
+              !_isPipMode &&
+              (_videoTracks.isNotEmpty || _audioTracks.isNotEmpty))
+            Positioned(
+              top: 50,
+              right: _isInitialized && !_isPipMode ? 80 : 20,
+              child: FloatingActionButton(
+                backgroundColor: Colors.black54,
+                onPressed: _showTrackSelection,
+                child: const Icon(Icons.settings, color: Colors.white),
+              ),
             ),
 
-            // Quality/Audio selection button
-            if (_isInitialized &&
-                (_videoTracks.isNotEmpty || _audioTracks.isNotEmpty))
-              Positioned(
-                top: 50,
-                right: _isInitialized && !_isPipMode ? 80 : 20,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.black54,
-                  onPressed: _showTrackSelection,
-                  child: const Icon(Icons.settings, color: Colors.white),
-                ),
-              ),
-
-            // PiP button (only show when not in PiP mode and on Android)
-            if (_isInitialized && !_isPipMode && !isDesk)
-              Positioned(
-                top: 50,
-                right: 20,
-                child: FutureBuilder<bool>(
-                  future: _isPipSupported(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data == true) {
-                      return FloatingActionButton(
-                        backgroundColor: Colors.black54,
-                        onPressed: _enterPipMode,
-                        child: const Icon(
-                          Icons.picture_in_picture_alt,
-                          color: Colors.white,
-                        ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-              ),
-
-            // PiP mode indicator (when in PiP mode)
-            if (_isPipMode)
-              Positioned(
-                top: 50,
-                left: 20,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
+          // PiP button (only show when not in PiP mode and on Android)
+          if (_isInitialized && !_isPipMode && !isDesk)
+            Positioned(
+              top: 50,
+              right: 20,
+              child: FutureBuilder<bool>(
+                future: _isPipSupported(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data == true) {
+                    return FloatingActionButton(
+                      backgroundColor: Colors.black54,
+                      onPressed: _enterPipMode,
+                      child: const Icon(
                         Icons.picture_in_picture_alt,
                         color: Colors.white,
-                        size: 16,
                       ),
-                      SizedBox(width: 4),
-                      Text(
-                        'PiP Mode',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
