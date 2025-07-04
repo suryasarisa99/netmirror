@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
@@ -11,7 +10,6 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/netmirror/nm_movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
-import 'package:netmirror/provider/AudioTrackProvider.dart';
 
 const l = L("player");
 
@@ -227,9 +225,11 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       if (!_isPipMode && !isDesk) {
         final bool supported = await _isPipSupported();
         if (!supported) {
+          l.error("PiP mode not supported on this device");
           _showPipNotSupportedMessage();
           return;
         }
+        l.success("pip supported, entering PiP mode");
 
         final bool success = await _pipChannel.invokeMethod('enterPip');
         if (!success) {

@@ -19,7 +19,7 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "enterPip" -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val aspectRatio = Rational(16, 9)
+                        val aspectRatio = Rational(400,237)
                         val params = PictureInPictureParams.Builder()
                             .setAspectRatio(aspectRatio)
                             .build()
