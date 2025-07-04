@@ -61,11 +61,11 @@ class _VideoControlsThemeDataInjectorState
       final theme = MaterialVideoControlsTheme.maybeOf(
         widget.context ?? context,
       );
-      final normal = theme?.normal ?? kDefaultMaterialVideoControlsThemeData;
+      // final normal = theme?.normal ?? kDefaultMaterialVideoControlsThemeData;
       final fullscreen =
           theme?.fullscreen ?? kDefaultMaterialVideoControlsThemeDataFullscreen;
       return MaterialVideoControlsTheme(
-        normal: normal,
+        normal: fullscreen,
         fullscreen: fullscreen,
         child: child,
       );

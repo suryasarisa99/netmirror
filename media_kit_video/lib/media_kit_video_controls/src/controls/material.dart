@@ -5,14 +5,18 @@
 /// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 // ignore_for_file: non_constant_identifier_names
 import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/extensions/duration.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/methods/video_state.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/widgets/video_controls_theme_data_injector.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
 import 'package:volume_controller/volume_controller.dart';
+import 'package:flutter/services.dart';
 
 /// {@template material_video_controls}
 ///
@@ -55,7 +59,7 @@ const kDefaultMaterialVideoControlsThemeDataFullscreen =
   horizontalGestureSensitivity: 1000,
   backdropColor: Color(0x66000000),
   padding: null,
-  controlsHoverDuration: Duration(seconds: 3),
+  controlsHoverDuration: Duration(seconds: 10),
   controlsTransitionDuration: Duration(milliseconds: 300),
   bufferingIndicatorBuilder: null,
   volumeIndicatorBuilder: null,
@@ -514,6 +518,18 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   // The default event stream in package:volume_controller is buggy.
   bool _volumeInterceptEventStream = false;
 
+  // Custom control variables
+  double _playbackSpeed = 1.0;
+  BoxFit _videoFit = BoxFit.contain;
+  bool _showSpeedControl = false;
+  bool _showFitControl = false;
+  bool _showAudioControl = false;
+  bool _showVideoControl = false;
+  List<VideoTrack> _videoTracks = [];
+  List<AudioTrack> _audioTracks = [];
+  VideoTrack? _selectedVideoTrack;
+  AudioTrack? _selectedAudioTrack;
+
   Offset _dragInitialDelta =
       Offset.zero; // Initial position for horizontal drag
   int swipeDuration = 0; // Duration to seek in video
@@ -589,6 +605,24 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
             (event) {
               setState(() {
                 buffering = event;
+              });
+            },
+          ),
+          // Add tracks listener
+          controller(context).player.stream.tracks.listen(
+            (event) {
+              log("tracks: ${event.video.length} video, ${event.audio.length} audio");
+              setState(() {
+                _videoTracks = event.video;
+                _audioTracks = event.audio;
+
+                // Auto-select the first track if none is selected
+                if (_selectedVideoTrack == null && _videoTracks.isNotEmpty) {
+                  _selectedVideoTrack = _videoTracks.first;
+                }
+                if (_selectedAudioTrack == null && _audioTracks.isNotEmpty) {
+                  _selectedAudioTrack = _audioTracks.first;
+                }
               });
             },
           ),
@@ -671,6 +705,10 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
     } else {
       setState(() {
         visible = false;
+        _showSpeedControl = false;
+        _showFitControl = false;
+        _showAudioControl = false;
+        _showVideoControl = false;
       });
       unshiftSubtitle();
       _timer?.cancel();
@@ -847,6 +885,567 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
       }
     });
     // --------------------------------------------------
+  }
+
+  // Custom control methods
+  Future<void> _enterPipMode() async {
+    if (Platform.isAndroid || Platform.isMacOS) {
+      try {
+        await SystemChannels.platform.invokeMethod('enterPictureInPictureMode');
+      } catch (e) {
+        // Handle PiP error
+      }
+    }
+  }
+
+  void _changePlaybackSpeed(double speed) {
+    setState(() {
+      _playbackSpeed = speed;
+      restartTimer();
+    });
+    controller(context).player.setRate(speed);
+  }
+
+  void _changeVideoFit(BoxFit fit) {
+    setState(() {
+      _videoFit = fit;
+    });
+    // Note: MediaKit doesn't support changing video fit directly
+    // This would need custom implementation in the video widget
+  }
+
+  void _selectVideoTrack(VideoTrack track) {
+    setState(() {
+      _selectedVideoTrack = track;
+    });
+    controller(context).player.setVideoTrack(track);
+  }
+
+  void _selectAudioTrack(AudioTrack track) {
+    setState(() {
+      _selectedAudioTrack = track;
+    });
+    controller(context).player.setAudioTrack(track);
+  }
+
+  Widget _buildCustomControls() {
+    // Only show in fullscreen mode and when controls are visible
+    if (!visible) return const SizedBox.shrink();
+
+    return Positioned(
+      bottom: 0, // Position at bottom above seek bar
+      right: 40,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // PiP Button
+          if (Platform.isAndroid || Platform.isMacOS) ...[
+            MaterialCustomButton(
+              icon: Icon(Icons.picture_in_picture_alt),
+              onPressed: _enterPipMode,
+              iconSize: 20,
+              iconColor: Colors.white,
+              // tooltip: 'Picture in Picture',
+            ),
+            const SizedBox(width: 8),
+          ],
+
+          // Video Fit Button
+          MaterialCustomButton(
+              icon: Icon(Icons.crop),
+              iconSize: 20,
+              onPressed: () {
+                setState(() {
+                  _showFitControl = !_showFitControl;
+                  // Close other panels
+                  _showSpeedControl = false;
+                  _showAudioControl = false;
+                  _showVideoControl = false;
+                });
+              }),
+
+          const SizedBox(width: 8),
+
+          // Playback Speed Button
+
+          MaterialCustomButton(
+            icon: Icon(Icons.speed),
+            iconSize: 20,
+            onPressed: () {
+              setState(() {
+                _showSpeedControl = !_showSpeedControl;
+                // Close other panels
+                _showFitControl = false;
+                _showAudioControl = false;
+                _showVideoControl = false;
+              });
+            },
+          ),
+          const SizedBox(width: 8),
+
+          // Audio Track Button
+          if (_audioTracks.isNotEmpty)
+            MaterialCustomButton(
+              icon: Icon(Icons.audiotrack),
+              onPressed: () {
+                setState(() {
+                  _showAudioControl = !_showAudioControl;
+                  // Close other panels
+                  _showFitControl = false;
+                  _showSpeedControl = false;
+                  _showVideoControl = false;
+                });
+              },
+              // tooltip: 'Audio Track (${_audioTracks.length})',
+            ),
+          if (_audioTracks.isNotEmpty) const SizedBox(width: 8),
+
+          // Video Quality Button
+          if (_videoTracks.isNotEmpty)
+            MaterialCustomButton(
+              icon: Icon(Icons.high_quality),
+              onPressed: () {
+                setState(() {
+                  _showVideoControl = !_showVideoControl;
+                  // Close other panels
+                  _showFitControl = false;
+                  _showSpeedControl = false;
+                  _showAudioControl = false;
+                });
+              },
+              // tooltip: 'Video Quality (${_videoTracks.length})',
+            ),
+        ],
+      ),
+    );
+  }
+
+  void restartTimer() {
+    log("Restarting timer");
+    _timer?.cancel();
+    _timer = Timer(_theme(context).controlsHoverDuration, () {
+      if (mounted) {
+        setState(() {
+          visible = true;
+        });
+      }
+    });
+  }
+
+  Widget _buildControlsBackground({
+    required Widget child,
+    double? width,
+    bool timerRestart = true,
+  }) {
+    return Positioned(
+      right: 10,
+      bottom: 50,
+      child: GestureDetector(
+        onTap: () {},
+        child: Container(
+            width: width,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.8),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withOpacity(0.2)),
+            ),
+            child: child),
+      ),
+    );
+  }
+
+  Widget _buildLargeControlsBackground({
+    required Widget child,
+    double? width,
+  }) {
+    return Positioned(
+      right: -5,
+      bottom: 50,
+      top: 5,
+      // top: -4,
+      child: GestureDetector(
+        onTap: () {
+          _timer?.cancel();
+          _timer = Timer(_theme(context).controlsHoverDuration, () {
+            if (mounted) {
+              setState(() {
+                // mount = true;
+                visible = true;
+              });
+              // unshiftSubtitle();
+            }
+          });
+        },
+        child: Hero(
+          tag: "controls_background",
+          child: Container(
+              width: width,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white.withOpacity(0.2)),
+              ),
+              child: child),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSpeedControl() {
+    if (!_showSpeedControl || !visible) return const SizedBox.shrink();
+
+    return _buildControlsBackground(
+      width: 250,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Playback Speed',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => _showSpeedControl = false),
+                child: const Icon(Icons.close, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${_playbackSpeed.toStringAsFixed(1)}x',
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+          ),
+          Slider(
+            value: _playbackSpeed,
+            min: 0.25,
+            max: 2.0,
+            // divisions: 7,
+            activeColor: Colors.red,
+            inactiveColor: Colors.grey,
+            onChanged: _changePlaybackSpeed,
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: [
+          //     _buildSpeedButton(0.5),
+          //     _buildSpeedButton(0.75),
+          //     _buildSpeedButton(1.0),
+          //     _buildSpeedButton(1.25),
+          //     _buildSpeedButton(1.5),
+          //     _buildSpeedButton(2.0),
+          //   ],
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSpeedButton(double speed) {
+    return IgnorePointer(
+      child: GestureDetector(
+        onTap: () => _changePlaybackSpeed(speed),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: _playbackSpeed == speed
+                ? Colors.red
+                : Colors.grey.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            '${speed}x',
+            style: const TextStyle(color: Colors.white, fontSize: 10),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFitControl() {
+    if (!_showFitControl || !visible) {
+      return const SizedBox.shrink();
+    }
+
+    return _buildControlsBackground(
+      width: 200,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Video Fit',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => _showFitControl = false),
+                child: const Icon(Icons.close, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _buildFitOption(BoxFit.contain, 'Contain'),
+          _buildFitOption(BoxFit.cover, 'Cover'),
+          _buildFitOption(BoxFit.fill, 'Fill'),
+          _buildFitOption(BoxFit.fitWidth, 'Fit Width'),
+          _buildFitOption(BoxFit.fitHeight, 'Fit Height'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFitOption(BoxFit fit, String label) {
+    return GestureDetector(
+      onTap: () => _changeVideoFit(fit),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: _videoFit == fit
+              ? Colors.red.withOpacity(0.3)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: _videoFit == fit ? Colors.white : Colors.grey,
+            fontSize: 12,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAudioControl() {
+    if (!_showAudioControl || !visible || _audioTracks.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return _buildLargeControlsBackground(
+      width: 250,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Audio Track (${_audioTracks.length})',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => _showAudioControl = false),
+                child: const Icon(Icons.close, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (_audioTracks.isNotEmpty)
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _audioTracks.length,
+                itemBuilder: (context, index) {
+                  final track = _audioTracks[index];
+                  final isSelected = _selectedAudioTrack?.id == track.id;
+
+                  return GestureDetector(
+                    onTap: () {
+                      _selectAudioTrack(track);
+                      setState(() => _showAudioControl = false);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.red.withOpacity(0.3)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.red.withOpacity(0.5)
+                              : Colors.transparent,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_unchecked,
+                            color: isSelected ? Colors.red : Colors.grey,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              track.language ??
+                                  track.title ??
+                                  'Track ${index + 1}',
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.grey[300],
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          if (track.channels != null)
+                            Text(
+                              '${track.channels}ch',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 12,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          else
+            const Text(
+              'No audio tracks available',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVideoControl() {
+    if (!_showVideoControl || !visible || _videoTracks.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return _buildLargeControlsBackground(
+      width: 250,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Video Quality (${_videoTracks.length})',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                GestureDetector(
+                  onTap: () => setState(() => _showVideoControl = false),
+                  child: const Icon(Icons.close, color: Colors.white, size: 20),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (_videoTracks.isNotEmpty)
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _videoTracks.length,
+                  itemBuilder: (context, index) {
+                    final track = _videoTracks[index];
+                    final isSelected = _selectedVideoTrack?.id == track.id;
+
+                    return GestureDetector(
+                      onTap: () {
+                        _selectVideoTrack(track);
+                        setState(() => _showVideoControl = false);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
+                        margin: const EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? Colors.red.withOpacity(0.3)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isSelected
+                                ? Colors.red.withOpacity(0.5)
+                                : Colors.transparent,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              isSelected
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: isSelected ? Colors.red : Colors.grey,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${track.w ?? 'Unknown'}x${track.h ?? 'Unknown'}',
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.grey[300],
+                                      fontSize: 14,
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                  if (track.bitrate != null)
+                                    Text(
+                                      '${track.bitrate} kbps',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            else
+              const Text(
+                'No video tracks available',
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -1030,6 +1629,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                             Stack(
                               alignment: Alignment.bottomCenter,
                               children: [
+                                _buildCustomControls(),
                                 if (_theme(context).displaySeekBar)
                                   MaterialSeekBar(
                                     onSeekStart: () {
@@ -1473,6 +2073,11 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                       ],
                     ),
                   ),
+              // Add custom controls panels
+              _buildFitControl(),
+              _buildAudioControl(),
+              _buildVideoControl(),
+              _buildSpeedControl(),
             ],
           ),
         ),
@@ -1950,7 +2555,7 @@ class MaterialCustomButton extends StatelessWidget {
 
 // POSITION INDICATOR
 
-/// Material design position indicator.
+/// Material design position indicator. ( current duration / total duration )
 class MaterialPositionIndicator extends StatefulWidget {
   /// Overriden [TextStyle] for the [MaterialPositionIndicator].
   final TextStyle? style;

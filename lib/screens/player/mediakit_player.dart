@@ -72,11 +72,24 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
     try {
       // Initialize MediaKit Player
-      _player = Player(configuration: PlayerConfiguration());
+      _player = Player(
+        configuration: PlayerConfiguration(logLevel: MPVLogLevel.debug),
+      );
+
+      // _player?.platform?.configuration.s
+      // _player?.state?.videoParams?.
+      // _player?.stream?.videoParams?.first.then((v){
+      //   v.
+      // })
+
+      _player?.stream.log.listen((log) {
+        print('MediaKit: [${log.level}] ${log.text}');
+      });
 
       // Create VideoController
       _controller = VideoController(
         _player!,
+
         configuration: VideoControllerConfiguration(
           enableHardwareAcceleration: true,
         ),
@@ -378,52 +391,13 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Center(
-            child: _isInitialized && _controller != null
-                ? Video(controller: _controller!)
-                : const CircularProgressIndicator(color: Colors.red),
-          ),
-
-          // // Quality/Audio selection button
-          if (_isInitialized &&
-              !_isPipMode &&
-              (_videoTracks.isNotEmpty || _audioTracks.isNotEmpty))
-            Positioned(
-              top: 50,
-              right: _isInitialized && !_isPipMode ? 80 : 20,
-              child: FloatingActionButton(
-                backgroundColor: Colors.black54,
-                onPressed: _showTrackSelection,
-                child: const Icon(Icons.settings, color: Colors.white),
-              ),
-            ),
-
-          // PiP button (only show when not in PiP mode and on Android)
-          if (_isInitialized && !_isPipMode && !isDesk)
-            Positioned(
-              top: 50,
-              right: 20,
-              child: FutureBuilder<bool>(
-                future: _isPipSupported(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data == true) {
-                    return FloatingActionButton(
-                      backgroundColor: Colors.black54,
-                      onPressed: _enterPipMode,
-                      child: const Icon(
-                        Icons.picture_in_picture_alt,
-                        color: Colors.white,
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
-        ],
-      ),
+      body: _isInitialized && _controller != null
+          ? Video(
+              controller: _controller!,
+              fit: BoxFit.cover,
+              // fill: Colors.green,
+            )
+          : Center(child: const CircularProgressIndicator(color: Colors.red)),
     );
   }
 
