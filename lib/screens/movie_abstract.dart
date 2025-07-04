@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:netmirror/data/cookies_manager.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -25,6 +27,8 @@ import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:shared_code/models/ott.dart';
+
+const l = L("moivie_abstract");
 
 abstract class MovieScreen extends ConsumerStatefulWidget {
   const MovieScreen(this.id, {super.key});
@@ -228,8 +232,15 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   void playMovie() async {
+    if (!CookiesManager.isValidResourceKey) {
+      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
+      await getSource(id: movie!.id, ott: movie!.ott);
+    }
+    if (!CookiesManager.isValidResourceKey) {
+      l.error("Resource key is still invalid after fetching source");
+      return;
+    }
     goToPlayer(movie: movie!);
-    // final x = await getSource(id: movie!.id, ott: ott);
     // if (!isDesk) {
     //   // log("resource id: ${x.resourceKey}");
     //   if (SettingsOptions.externalPlayer) {
@@ -245,12 +256,17 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   void playEpisode(int episodeIndex) async {
     final videoId = movie!.seasons[seasonIndex].episodes![episodeIndex].id;
-    log("play episode: $episodeIndex, videoId: $videoId");
-
+    l.info("play episode: $episodeIndex, videoId: $videoId");
+    if (!CookiesManager.isValidResourceKey) {
+      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
+      await getSource(id: movie!.id, ott: movie!.ott);
+    }
+    if (!CookiesManager.isValidResourceKey) {
+      l.error("Resource key is still invalid after fetching source");
+      return;
+    }
     if (SettingsOptions.externalPlayer || isDesk) {
-      final x = await getSource(id: videoId, ott: ott);
-      log("resource id: ${x.resourceKey}");
-      launchExternalPlayer(videoId, x.resourceKey);
+      launchExternalPlayer(videoId, CookiesManager.resourceKey!);
     } else {
       goToPlayer(movie: movie!, eIndex: episodeIndex);
     }
@@ -262,6 +278,10 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     int? sIndex,
     int? eIndex,
   }) {
+    if (movie.isShow && eIndex == null) {
+      l.error("Episode index is null for show");
+      return;
+    }
     GoRouter.of(context).push(
       "/nm-player",
       extra: (

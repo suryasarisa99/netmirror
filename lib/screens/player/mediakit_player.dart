@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:netmirror/api/playlist/get_source.dart';
 import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
@@ -55,35 +54,15 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   }
 
   Future<void> _initializeVideo() async {
-    if (widget.data.isShow && widget.episodeIndex == null) {
-      l.error("Episode index is null");
-    }
-    l.info("resourceKey before: ${CookiesManager.resourceKey}");
-    if (!CookiesManager.isValidResourceKey) {
-      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
-      await getSource(id: widget.data.id, ott: widget.data.ott);
-    }
-    final resourceKey = CookiesManager.resourceKey;
-    if (!CookiesManager.isValidResourceKey) {
-      l.error("Invalid resource key after fetching, may t_hash_t is expired");
-      return;
-    }
-    l.info("resourceKey after : $resourceKey");
     late String videoId;
-    try {
-      videoId = widget.data.isMovie
-          ? widget.data.id
-          : widget
-                .data
-                .seasons[widget.seasonIndex ?? 0]
-                .episodes![widget.episodeIndex ?? 0]
-                .id;
-    } catch (e) {
-      l.error(
-        "Error episodes is null ${widget.data.seasons[widget.episodeIndex!]}, for season ${widget.seasonIndex}",
-      );
-      return;
-    }
+    final resourceKey = CookiesManager.resourceKey;
+    videoId = widget.data.isMovie
+        ? widget.data.id
+        : widget
+              .data
+              .seasons[widget.seasonIndex!]
+              .episodes![widget.episodeIndex!]
+              .id;
 
     final url =
         '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
