@@ -48,31 +48,12 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _setupPipListener();
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom],
     );
     _initializeVideo();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
-      // App is going to background, attempt to enter PiP mode
-      if (_player != null && _player!.state.playing) {
-        _enterPipMode();
-        l.info("Attempting to enter PiP mode due to app lifecycle change");
-      }
-    } else if (state == AppLifecycleState.resumed) {
-      // App is back in foreground
-      setState(() {
-        _isPipMode = false;
-      });
-      l.info("App resumed from background");
-    }
   }
 
   Future<void> _initializeVideo() async {
@@ -112,10 +93,17 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
     try {
       // Initialize MediaKit Player
-      _player = Player();
+      _player = Player(
+        configuration: PlayerConfiguration(
+         
+        ),
+      );
 
       // Create VideoController
-      _controller = VideoController(_player!);
+      _controller = VideoController(
+        _player!,
+        configuration: VideoControllerConfiguration(),
+      );
 
       // Add listeners for track changes
       _player!.stream.tracks.listen((tracks) {
@@ -146,9 +134,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
       // Listen for errors
       _player!.stream.error.listen((error) {
-        if (error != null) {
-          l.error("Player error: $error");
-        }
+        l.error("Player error: $error");
       });
 
       // Open media with headers
@@ -211,6 +197,78 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           ),
         ),
       );
+    }
+  } // PiP Mode Methods
+
+  static const MethodChannel _pipChannel = MethodChannel('netmirror.pip');
+
+  void _setupPipListener() {
+    _pipChannel.setMethodCallHandler((call) async {
+      if (call.method == 'onPipModeChanged') {
+        final bool isInPip = call.arguments as bool;
+        setState(() {
+          _isPipMode = isInPip;
+        });
+        l.info("PiP mode changed: $isInPip");
+      }
+    });
+  }
+
+  Future<bool> _isPipSupported() async {
+    try {
+      final bool supported = await _pipChannel.invokeMethod('isPipSupported');
+      return supported;
+    } catch (e) {
+      l.error("Error checking PiP support: $e");
+      return false;
+    }
+  }
+
+  Future<void> _enterPipMode() async {
+    try {
+      if (!_isPipMode && !isDesk) {
+        final bool supported = await _isPipSupported();
+        if (!supported) {
+          _showPipNotSupportedMessage();
+          return;
+        }
+
+        final bool success = await _pipChannel.invokeMethod('enterPip');
+        if (!success) {
+          _showPipNotSupportedMessage();
+        }
+      }
+    } catch (e) {
+      l.error("Failed to enter PiP mode: $e");
+      _showPipNotSupportedMessage();
+    }
+  }
+
+  void _showPipNotSupportedMessage() {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Picture-in-Picture mode not supported on this device'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      // App is going to background, attempt to enter PiP mode
+      if (_player != null && _player!.state.playing) {
+        _enterPipMode();
+        l.info("Attempting to enter PiP mode due to app lifecycle change");
+      }
+    } else if (state == AppLifecycleState.resumed) {
+      // App is back in foreground
+      l.info("App resumed from background");
     }
   }
 
@@ -361,11 +419,66 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
                 (_videoTracks.isNotEmpty || _audioTracks.isNotEmpty))
               Positioned(
                 top: 50,
-                right: 20,
+                right: _isInitialized && !_isPipMode ? 80 : 20,
                 child: FloatingActionButton(
                   backgroundColor: Colors.black54,
                   onPressed: _showTrackSelection,
                   child: const Icon(Icons.settings, color: Colors.white),
+                ),
+              ),
+
+            // PiP button (only show when not in PiP mode and on Android)
+            if (_isInitialized && !_isPipMode && !isDesk)
+              Positioned(
+                top: 50,
+                right: 20,
+                child: FutureBuilder<bool>(
+                  future: _isPipSupported(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == true) {
+                      return FloatingActionButton(
+                        backgroundColor: Colors.black54,
+                        onPressed: _enterPipMode,
+                        child: const Icon(
+                          Icons.picture_in_picture_alt,
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+
+            // PiP mode indicator (when in PiP mode)
+            if (_isPipMode)
+              Positioned(
+                top: 50,
+                left: 20,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.picture_in_picture_alt,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'PiP Mode',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
                 ),
               ),
           ],

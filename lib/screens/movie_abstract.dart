@@ -228,18 +228,19 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   void playMovie() async {
-    final x = await getSource(id: movie!.id, ott: ott);
-    if (!isDesk) {
-      // log("resource id: ${x.resourceKey}");
-      if (SettingsOptions.externalPlayer) {
-        launchExternalPlayer(movie!.id, x.resourceKey);
-        // launchExternalPlayer(movie!.id, "");
-      } else {
-        goToPlayer(movie: movie!);
-      }
-    } else {
-      launchExternalPlayer(movie!.id, x.resourceKey);
-    }
+    goToPlayer(movie: movie!);
+    // final x = await getSource(id: movie!.id, ott: ott);
+    // if (!isDesk) {
+    //   // log("resource id: ${x.resourceKey}");
+    //   if (SettingsOptions.externalPlayer) {
+    //     launchExternalPlayer(movie!.id, x.resourceKey);
+    //     // launchExternalPlayer(movie!.id, "");
+    //   } else {
+    //     goToPlayer(movie: movie!);
+    //   }
+    // } else {
+    //   launchExternalPlayer(movie!.id, x.resourceKey);
+    // }
   }
 
   void playEpisode(int episodeIndex) async {
