@@ -156,6 +156,7 @@ typedef PlayerScreenData = ({
 });
 
 final routes = GoRouter(
+  navigatorKey: GlobalKey(),
   initialLocation: "/initial-screen",
   routes: [
     GoRoute(
