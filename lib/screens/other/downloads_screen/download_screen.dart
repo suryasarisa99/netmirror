@@ -304,8 +304,44 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
   //   );
   // }
 
+  Widget _buildProgressAudioOrVideo(
+    DownloadItem item,
+    int firstNonDownloadAudioIndex,
+  ) {
+    int fndaIndex = firstNonDownloadAudioIndex;
+    bool isAudioDownloading = fndaIndex != -1;
+    bool showAudioCount = isAudioDownloading && item.audioLangs.length > 1;
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: isAudioDownloading
+                ? "Progress: Audio ${showAudioCount ? "${fndaIndex + 1}/${item.audioLangs.length}" : ""} $Dot  "
+                : "Progress: Video $Dot  ",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+            ), // Default color for the prefix
+          ),
+          TextSpan(
+            text: isAudioDownloading
+                ? "${item.audioProgress}%"
+                : "${item.videoProgress}%",
+            style: TextStyle(fontSize: 14), // Color for the status
+          ),
+        ],
+      ),
+    );
+    // return Text(
+    //   "Progress:  ${fndaIndex != -1 ? "${firstNonDownloadAudioIndex + 1}/${item.audioLangs.length}" : "Video  $Dot ${item.videoProgress}%"}",
+    // );
+  }
+
   GestureDetector buildDownloadItem(DownloadItem item, int i) {
-    final firstFalseIndex = item.audioLangs.indexWhere((e) => !e.status);
+    final firstNonDownloadAudioIndex = item.audioLangs.indexWhere(
+      (e) => !e.status,
+    );
+    final isAudioDownloading = firstNonDownloadAudioIndex != -1;
     return GestureDetector(
       onTap: () async {
         if (item.type == "series") {
@@ -324,7 +360,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        // padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        padding: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 0),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 30, 30, 30),
           borderRadius: BorderRadius.circular(8),
@@ -339,8 +376,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                   child: Image.network(
                     item.thumbnail,
                     fit: BoxFit.cover,
-                    width: 165,
-                    height: 95,
+                    width: 160,
+                    height: 92,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         color: Colors.grey[800],
@@ -391,22 +428,11 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                         ),
                         // Text("id: ${item.id}"),
                         // if (item.status == "downloading")
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Progress: ',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ), // Default color for the prefix
-                              ),
-                            ],
-                          ),
+                        _buildProgressAudioOrVideo(
+                          item,
+                          firstNonDownloadAudioIndex,
                         ),
-                        Text(
-                          "Progress:  ${firstFalseIndex != -1 ? "Audio ${firstFalseIndex + 1}/${item.audioLangs.length}  $Dot ${item.audioProgress}%" : "Video  $Dot ${item.videoProgress}%"}",
-                        ),
+
                         // else
                         Text.rich(
                           TextSpan(
@@ -441,6 +467,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                   ),
               ],
             ),
+            if (item.status != "completed") SizedBox(height: 2),
             if (item.status != "completed")
               Padding(
                 padding: const EdgeInsets.only(top: 0),
@@ -448,40 +475,14 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (item.status == "paused" || item.status == "failed")
-                      IconButton.filledTonal(
-                        color: Colors.white,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            Colors.white10,
-                          ),
-                        ),
-                        onPressed: () {
-                          // setState(() {
-                          //   downloads[i].status = "downloading";
-                          // });
-                          Downloader.instance.resumeDownload(item.id);
-                        },
-                        iconSize: 18,
-                        icon: Icon(Icons.play_arrow),
-                      ),
+                      _buildIconButton(Icons.play_arrow, () {
+                        Downloader.instance.resumeDownload(item.id);
+                      }),
                     if (item.status == "downloading" ||
                         item.status == "pending")
-                      IconButton.filledTonal(
-                        color: Colors.white,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            Colors.white10,
-                          ),
-                        ),
-                        onPressed: () {
-                          // setState(() {
-                          //   downloads[i].status = "paused";
-                          // });
-                          Downloader.instance.pauseDownload(item.id);
-                        },
-                        iconSize: 18,
-                        icon: Icon(Icons.pause),
-                      ),
+                      _buildIconButton(Icons.pause, () {
+                        Downloader.instance.pauseDownload(item.id);
+                      }),
                     SizedBox(width: 8),
                     Expanded(
                       child: LinearProgressIndicator(
@@ -492,20 +493,33 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                                 : item.videoProgress) /
                             100,
                         backgroundColor: Colors.grey[800],
-                        // color: const Color.fromARGB(255, 214, 214, 214),
-                        // color: const Color.fromARGB(255, 214, 214, 214),
-                        // color: item.audioPrefix.isNotEmpty &&
-                        //         item.audioProgress < 100
-                        color: firstFalseIndex != -1
+                        color: isAudioDownloading
                             ? Color.fromARGB(255, 116, 116, 116)
                             : Colors.white,
                       ),
                     ),
                   ],
                 ),
-              ),
+              )
+            else
+              SizedBox(height: 8),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return SizedBox.square(
+      dimension: 34,
+      child: IconButton(
+        color: Colors.white,
+        // style: ButtonStyle(
+        //   backgroundColor: WidgetStatePropertyAll(Colors.white10),
+        // ),
+        onPressed: onPressed,
+        iconSize: 18,
+        icon: Icon(Icons.play_arrow),
       ),
     );
   }
