@@ -158,11 +158,12 @@ typedef PlayerScreenData = ({
 final routes = GoRouter(
   initialLocation: "/initial-screen",
   routes: [
-    // GoRoute(
-    //     path: '/search',
-    //     pageBuilder: (context, state) {
-    //       return MaterialPage(child: CupertinoContextMenuDemo());
-    // }),
+    GoRoute(
+      path: "/initial-screen",
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: InitialScreen());
+      },
+    ),
     GoRoute(
       path: '/search',
       pageBuilder: (context, state) {
@@ -172,60 +173,27 @@ final routes = GoRouter(
       },
     ),
     GoRoute(
-      path: "/pv-movie",
+      path: "/downloads",
       pageBuilder: (context, state) {
-        return MaterialPage(child: PVMovieScreen(state.extra as String));
+        return MaterialPage(
+          child: DownloadsScreen(seriesId: state.extra as String?),
+        );
       },
     ),
-    StatefulShellRoute.indexedStack(
-      key: nfMainHomeKey,
-      builder: (context, state, shell) => NfMainHomeScreen(shell),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/nf-home',
-              pageBuilder: (context, state) {
-                final tab = state.extra == null ? 0 : state.extra as int;
-                return MaterialPage(child: NfHomeScreen(tab));
-              },
-            ),
-          ],
-        ),
-      ],
-    ),
-    StatefulShellRoute.indexedStack(
-      key: pvMainHomeKey,
-      builder: (context, state, shell) => PvMainHomeScreen(shell),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/pv-home',
-              pageBuilder: (context, state) {
-                final tab = state.extra == null ? 0 : state.extra as int;
-                log(("navigating to pv-home with tab $tab"));
-                return MaterialPage(child: PvHomeScreen(tab: tab));
-              },
-            ),
-          ],
-        ),
-      ],
-    ),
-    // GoRoute(
-    //     path: "/pv-home",
-    //     pageBuilder: (context, state) {
-    //       final tab = state.extra == null ? 0 : state.extra as int;
-    //       return MaterialPage(child: PvHomeScreen(tab: tab));
-    //     }),
-    // GoRoute(
-    //     path: "/nf-home",
-    //     pageBuilder: (context, state) {
-    //       // final tab = state.extra == null ? 0 : state.extra as int;
-    //       return MaterialPage(child: NfHomeScreen());
-    //     }),
     GoRoute(
-      path: "/nm-player",
+      path: "/settings",
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: SettingsScreen());
+      },
+    ),
+    GoRoute(
+      path: "/settings-audio-tracks",
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: AudioTrackSelectionScreen());
+      },
+    ),
+    GoRoute(
+      path: "/player",
       pageBuilder: (context, state) {
         // final data = state.extra as PlayerScreenData;
         return MaterialPage(
@@ -240,118 +208,59 @@ final routes = GoRouter(
       },
     ),
 
-    GoRoute(
-      path: "/initial-screen",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: InitialScreen());
-      },
+    /// Netflix Routes
+    StatefulShellRoute.indexedStack(
+      key: nfMainHomeKey,
+      builder: (context, state, shell) => NfMain(shell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/nf-home',
+              pageBuilder: (context, state) {
+                final tab = state.extra == null ? 0 : state.extra as int;
+                return MaterialPage(child: NfHomeScreen(tab));
+              },
+            ),
+            GoRoute(
+              path: "/nf-movie",
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  child: NfMovieScreen(state.extra as String),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     ),
-    // GoRoute(
-    //   path: "/source-picker",
-    //   pageBuilder: (context, state) {
-    //     return MaterialPage(
-    //       child: SourcePicker(state.extra as BetterPlayerController),
-    //     );
-    //     // return const MaterialPage(child: BetterPlayerPage(title: "Sample"));
-    //   },
-    // ),
-    GoRoute(
-      path: "/downloads",
-      pageBuilder: (context, state) {
-        return MaterialPage(
-          child: DownloadsScreen(seriesId: state.extra as String?),
-        );
-      },
-    ),
-    // GoRoute(
-    //     path: "/downloads-episodes",
-    //     pageBuilder: (context, state) {
-    //       return const MaterialPage(child: DownloadsScreen());
-    //     }),
-    // GoRoute(
-    //     path: "/profile",
-    //     pageBuilder: (context, state) {
-    //       return const MaterialPage(child: ProfileScreen());
-    //     }),
-    // GoRoute(
-    //     path: "/offline-player",
-    //     pageBuilder: (context, state) {
-    //       return MaterialPage(child: OfflinePlayer(id: state.extra as int));
-    //       // return MaterialPage(child: BetterPlayerPage(id: state.extra as int));
-    //     }),
-    GoRoute(
-      path: "/settings",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: SettingsScreen());
-      },
-    ),
-    GoRoute(
-      path: "/settings-audio-tracks",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: AudioTrackSelectionScreen());
-      },
-    ),
-    // GoRoute(
-    //   path: "/player",
-    //   pageBuilder: (context, state) {
-    //     final (playerData, watchHistory) =
-    //         state.extra as (PlayerData, WatchHistoryModel?);
-    //     return MaterialPage(
-    //       child: BetterPlayerScreen(data: playerData, wh: watchHistory),
-    //     );
-    //   },
-    // ),
-    // GoRoute(
-    //   path: "/",
-    //   pageBuilder: (context, state) {
-    //     int id = 0;
-    //     String? genre;
-    //     String? genreName;
 
-    //     try {
-    //       var (a, b, c) = state.extra as (int, String?, String?);
-    //       id = a;
-    //       genre = b;
-    //       genreName = c;
-    //     } catch (_) {}
-
-    //     final isHome = id == 0;
-    //     final isTvShows = id == 1;
-    //     final isMovies = id == 2;
-    //     final isCategory = id == 3;
-
-    //     return MaterialPage(
-    //         child: HomeScreen(
-    //       isCategory: isCategory,
-    //       isMovies: isMovies,
-    //       isTvshows: isTvShows,
-    //       categoryId: genre,
-    //       isHome: isHome,
-    //       categoryName: genreName,
-    //       index: id,
-    //     ));
-    //   },
-    // ),
-    GoRoute(
-      path: "/nf-movie",
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          child: NfMovieScreen(state.extra as String),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset(0.0, 0.0);
-            const curve = Curves.ease;
-
-            var tween = Tween(
-              begin: begin,
-              end: end,
-            ).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(position: offsetAnimation, child: child);
-          },
-        );
-      },
+    /// Prime Video Routes
+    StatefulShellRoute.indexedStack(
+      key: pvMainHomeKey,
+      builder: (context, state, shell) => PvMain(shell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/pv-home',
+              pageBuilder: (context, state) {
+                final tab = state.extra == null ? 0 : state.extra as int;
+                log(("navigating to pv-home with tab $tab"));
+                return MaterialPage(child: PvHomeScreen(tab: tab));
+              },
+            ),
+            GoRoute(
+              path: "/pv-movie",
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  child: PVMovieScreen(state.extra as String),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );

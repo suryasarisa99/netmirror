@@ -14,8 +14,8 @@ import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 
-class NfMainHomeScreen extends StatelessWidget {
-  const NfMainHomeScreen(this.shell, {super.key});
+class NfMain extends StatelessWidget {
+  const NfMain(this.shell, {super.key});
   final StatefulNavigationShell shell;
 
   @override

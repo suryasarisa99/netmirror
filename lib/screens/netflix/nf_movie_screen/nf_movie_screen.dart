@@ -58,12 +58,10 @@ class NfMovieScreenState extends MovieScreenState {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      bottomNavigationBar: const NfNavBar(current: 0),
       appBar: AppBar(
         backgroundColor: Colors.black,
         surfaceTintColor: Colors.black,
         toolbarHeight: 48,
-        automaticallyImplyLeading: false,
         title: windowDragAreaWithChild(
           [],
           actions: [

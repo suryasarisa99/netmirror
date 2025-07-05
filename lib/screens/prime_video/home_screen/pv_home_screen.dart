@@ -16,8 +16,8 @@ import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 
-class PvMainHomeScreen extends StatelessWidget {
-  const PvMainHomeScreen(this.shell, {super.key});
+class PvMain extends StatelessWidget {
+  const PvMain(this.shell, {super.key});
   final StatefulNavigationShell shell;
 
   @override

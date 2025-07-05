@@ -285,7 +285,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       return;
     }
     // GoRouter.of(context).push(
-    //   "/nm-player",
+    //   "/player",
     //   extra: (
     //     movie: movie,
     //     watchHistory: wh,
@@ -327,10 +327,10 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       }
       final file = File("${basedir.path}/$videoId.m3u8");
       await file.writeAsString(simplifiedPlaylist);
-      GoRouter.of(context).push("/nm-player", extra: file.path);
+      GoRouter.of(context).push("/player", extra: file.path);
     } else {
       String url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-      GoRouter.of(context).push("/nm-player", extra: url);
+      GoRouter.of(context).push("/player", extra: url);
     }
   }
 
