@@ -5,8 +5,13 @@ import 'package:collection/collection.dart';
 import 'package:netmirror/constants.dart';
 import 'package:shared_code/models/ott.dart';
 
-Future<String> getMasterHls(String id, String key, OTT ott, {hd = true}) async {
-  final url = Uri.parse('$API_URL/${ott.url}hls/$id.m3u8?in=$key');
+Future<String> getMasterHls(
+  String videoId,
+  String key,
+  OTT ott, {
+  hd = true,
+}) async {
+  final url = Uri.parse('$API_URL/${ott.url}hls/$videoId.m3u8?in=$key');
   log("getMasterHls url: $url, key: $key", name: "http");
 
   final res = await http.get(url, headers: headers);
@@ -16,7 +21,7 @@ Future<String> getMasterHls(String id, String key, OTT ott, {hd = true}) async {
       .split("\n")
       .where((line) => line.contains('::ni'))
       .toList();
-  // log(videoUrls.toString());
+  log(videoUrls.toString());
   // log(res.body);
   return res.body;
 }

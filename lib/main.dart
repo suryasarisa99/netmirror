@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:netmirror/constants.dart';
 // import 'package:netmirror/better_player/better_player.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/downloader.dart';
@@ -34,21 +35,23 @@ void main() async {
   // Initialize MediaKit for video playback
   MediaKit.ensureInitialized();
 
+  if (isDesk) {
+    await windowManager.ensureInitialized();
+    const WindowOptions windowOptions = WindowOptions(
+      size: Size(800, 600),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
+
   // if (isDesk) {
   //   databaseFactory = databaseFactoryFfi;
-  //   // await windowManager.ensureInitialized();
-
-  //   const WindowOptions windowOptions = WindowOptions(
-  //     size: Size(800, 600),
-  //     center: true,
-  //     backgroundColor: Colors.transparent,
-  //     skipTaskbar: false,
-  //     titleBarStyle: TitleBarStyle.hidden,
-  //   );
-  //   windowManager.waitUntilReadyToShow(windowOptions, () async {
-  //     await windowManager.show();
-  //     await windowManager.focus();
-  //   });
   // }
 
   await DBHelper.instance.database;

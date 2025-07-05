@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:netmirror/api/playlist/fast_playlist.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/provider/AudioTrackProvider.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
@@ -277,7 +279,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     WatchHistoryModel? wh,
     int? sIndex,
     int? eIndex,
-  }) {
+  }) async {
     if (movie.isShow && eIndex == null) {
       l.error("Episode index is null for show");
       return;
@@ -297,8 +299,39 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         ? movie.id
         : movie.seasons[sIndex ?? seasonIndex].episodes![eIndex!].id;
     final resourceKey = CookiesManager.resourceKey!;
-    final url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-    GoRouter.of(context).push("/nm-player", extra: url);
+    if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
+      final masterPlaylist = await getMasterHls(videoId, resourceKey, ott);
+      final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
+          ? ref
+                .read(audioTrackProvider)
+                .map((e) => e["language"]! as String)
+                .toList()
+          : [];
+      final String? resolution = SettingsOptions.fastModeByVideo
+          ? SettingsOptions.defaultResolution
+          : null;
+      final simplifiedPlaylist = fastPlaylist(
+        masterPlaylist,
+        audiosCodecs,
+        resolution,
+      );
+      log("sourceStr: \n$simplifiedPlaylist");
+      // write to file
+      final basedir = Directory(
+        isDesk
+            ? p.join((await getDownloadsDirectory())!.path, "netmirror", "temp")
+            : "/storage/emulated/0/Download/netmirror/temp",
+      );
+      if (!await basedir.exists()) {
+        await basedir.create(recursive: true);
+      }
+      final file = File("${basedir.path}/$videoId.m3u8");
+      await file.writeAsString(simplifiedPlaylist);
+      GoRouter.of(context).push("/nm-player", extra: file.path);
+    } else {
+      String url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+      GoRouter.of(context).push("/nm-player", extra: url);
+    }
   }
 
   void downloadMovie() async {

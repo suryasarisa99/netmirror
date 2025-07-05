@@ -75,7 +75,10 @@ class CookiesManager {
       _resourceExpire!.isAfter(DateTime.now()) &&
       !_resourceKey!.contains("unknown");
 
-  static Future<void> validate() async {
+  static Future<void> validate({
+    Function(String)? onAddOpen,
+    Function()? onAddVerify,
+  }) async {
     if (isExpired) {
       log("t_hash_t is expired");
       addHash = await getInitial();

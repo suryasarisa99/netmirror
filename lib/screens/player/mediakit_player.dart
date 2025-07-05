@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/services.dart';
+import 'package:netmirror/api/playlist/get_master_hls.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
@@ -61,6 +62,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   }
 
   Future<void> _initializeVideo() async {
+    l.success("Playing video: ${widget.url}");
     late String videoId;
     final resourceKey = CookiesManager.resourceKey;
     // videoId = widget.data.isMovie
@@ -80,6 +82,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       _player = Player(
         configuration: PlayerConfiguration(
           logLevel: MPVLogLevel.debug,
+          // bufferSize: 1024 * 300,
           ready: () {
             // _player?.state.
           },
@@ -92,7 +95,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       // })
 
       _player?.stream.log.listen((log) {
-        print('MediaKit: [${log.level}] ${log.text}');
+        l.info('MediaKit: [${log.level}] ${log.text}');
       });
 
       // Create VideoController
@@ -111,6 +114,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
             .toList();
         l.info("xxxxxxxxxxxxxxxxxxxx tracks length: ${tracks.audio.length}");
         if (tracks.audio.isNotEmpty) {
+          l.log("${tracks.audio.map((e) => e.language).join(', ')}");
           _selectPreferredAudioTrack(audioTracks);
         }
 

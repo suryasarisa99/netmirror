@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 List<Widget> windowItems() {
-  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+  if (Platform.isLinux || Platform.isWindows) {
     return [
       WindowButton(
         icon: Icons.remove,
@@ -30,6 +30,7 @@ List<Widget> windowItems() {
       ),
     ];
   } else {
+    // return [SizedBox(width: 100)];
     return [];
   }
 }
@@ -51,12 +52,7 @@ Widget windowDragArea({withWindowItems = true}) {
       color: Colors.transparent,
       // color: Colors.red,
       child: withWindowItems
-          ? Row(
-              children: [
-                const Spacer(),
-                ...windowItems(),
-              ],
-            )
+          ? Row(children: [const Spacer(), ...windowItems()])
           : null,
     ),
   );
@@ -67,7 +63,7 @@ Widget windowDragAreaWithChild(
   withWindowItems = true,
   List<Widget> actions = const [],
 }) {
-  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+  if (Platform.isLinux || Platform.isWindows) {
     return GestureDetector(
       onPanStart: (details) {
         windowManager.startDragging();
@@ -83,22 +79,25 @@ Widget windowDragAreaWithChild(
         height: kToolbarHeight,
         color: Colors.transparent,
         // color: Colors.red,
-        child: Row(children: [
-          ...children,
-          if (withWindowItems) ...[
-            const Spacer(),
-            ...actions,
-            ...windowItems(),
-          ]
-        ]),
+        child: Row(
+          children: [
+            ...children,
+            if (withWindowItems) ...[
+              const Spacer(),
+              ...actions,
+              ...windowItems(),
+            ],
+          ],
+        ),
       ),
     );
   } else {
-    return Row(children: [
-      ...children,
-      const Spacer(),
-      ...actions,
-    ]);
+    return Row(
+      children: [
+        if (Platform.isMacOS) SizedBox(width: 60), // For macOS titlebar spacing
+        ...children, const Spacer(), ...actions,
+      ],
+    );
   }
 }
 
@@ -110,9 +109,6 @@ class WindowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(icon, size: 16),
-      onPressed: onPressed,
-    );
+    return IconButton(icon: Icon(icon, size: 16), onPressed: onPressed);
   }
 }

@@ -63,6 +63,7 @@ class NfMovieScreenState extends MovieScreenState {
         backgroundColor: Colors.black,
         surfaceTintColor: Colors.black,
         toolbarHeight: 48,
+        automaticallyImplyLeading: false,
         title: windowDragAreaWithChild(
           [],
           actions: [

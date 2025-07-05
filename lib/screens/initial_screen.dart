@@ -27,7 +27,7 @@ class _InitialScreenState extends ConsumerState<InitialScreen> {
     ref.read(audioTrackProvider.notifier).initial();
     SettingsOptions.initialize(sp!);
     CookiesManager.initialize();
-    await CookiesManager.validate();
+    await CookiesManager.validate(onAddOpen: (String addLink) {});
     Future.delayed(const Duration(milliseconds: 300)).then((_) {
       // GoRouter.of(context).go("/");
       // GoRouter.of(context).go("/pv-home");
@@ -46,12 +46,16 @@ class _InitialScreenState extends ConsumerState<InitialScreen> {
         title: windowDragArea(),
         elevation: 0,
       ),
-      body: Center(
-        child: Image.asset(
-          "assets/logos/netflix.png",
-          height: 120,
-          width: 120,
-        ),
+      body: Column(
+        children: [
+          Center(
+            child: Image.asset(
+              "assets/logos/netflix.png",
+              height: 120,
+              width: 120,
+            ),
+          ),
+        ],
       ),
     );
   }

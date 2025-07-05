@@ -887,8 +887,10 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   Future<void> _enterPipMode() async {
     if (Platform.isAndroid || Platform.isMacOS) {
       try {
-        await SystemChannels.platform.invokeMethod('enterPictureInPictureMode');
+        log("Entering PiP mode");
+        await SystemChannels.platform.invokeMethod('netmirror.pip');
       } catch (e) {
+        log("Error entering PiP mode: $e");
         // Handle PiP error
       }
     }
@@ -1089,7 +1091,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
     if (!_showSpeedControl || !visible) return const SizedBox.shrink();
 
     return _buildControlsBackground(
-      width: 250,
+      width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -1117,7 +1119,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
           Slider(
             value: _playbackSpeed,
             min: 0.25,
-            max: 2.0,
+            max: 6.0,
             // divisions: 7,
             activeColor: Colors.red,
             inactiveColor: Colors.grey,

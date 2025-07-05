@@ -1,191 +1,191 @@
 [
   {
     "label": "English",
-    "language": "eng"
+    "language": ["eng", "en"]
   },
   {
     "label": "Hindi",
-    "language": "hin"
+    "language": ["hin", "hi"]
   },
   {
     "label": "Bengali",
-    "language": "bn"
+    "language": ["bn"]
   },
   {
     "label": "Telugu",
-    "language": "tel"
+    "language": ["tel", "te"]
   },
   {
     "label": "Tamil",
-    "language": "tam"
+    "language": ["tam", "ta"]
   },
   {
     "label": "Kannada",
-    "language": "kn"
+    "language": ["kn"]
   },
   {
     "label": "Marathi",
-    "language": "mr"
+    "language": ["mr"]
   },
   {
     "label": "Gujarati",
-    "language": "gu"
+    "language": ["gu"]
   },
   {
     "label": "Malayalam",
-    "language": "ml"
+    "language": ["ml"]
   },
   {
     "label": "Punjabi",
-    "language": "pa"
+    "language": ["pa"]
   },
   {
     "label": "Urdu",
-    "language": "ur"
+    "language": ["ur"]
   },
   {
     "label": "Oriya",
-    "language": "or"
+    "language": ["or"]
   },
   {
     "label": "Assamese",
-    "language": "as"
+    "language": ["as"]
   },
   {
     "label": "Nepali",
-    "language": "ne"
+    "language": ["ne"]
   },
   {
     "label": "Bhojpuri",
-    "language": "bho"
+    "language": ["bho"]
   },
   {
     "label": "Maithili",
-    "language": "mai"
+    "language": ["mai"]
   },
   {
     "label": "Sanskrit",
-    "language": "sa"
+    "language": ["sa"]
   },
   {
     "label": "French",
-    "language": "fra"
+    "language": ["fra", "fr", "fre"]
   },
   {
     "label": "Spanish",
-    "language": "spa"
+    "language": ["span", "es"]
   },
   {
     "label": "German",
-    "language": "deu"
+    "language": ["deu", "de"]
   },
   {
     "label": "Italian",
-    "language": "ita"
+    "language": ["ita", "it"]
   },
   {
     "label": "Japanese",
-    "language": "ja"
+    "language": ["ja"]
   },
   {
     "label": "Portuguese",
-    "language": "por"
+    "language": ["por", "pt"]
   },
   {
     "label": "Russian",
-    "language": "rus"
+    "language": ["rus", "ru"]
   },
   {
     "label": "Chinese Mandarin",
-    "language": "zh"
+    "language": ["zh"]
   },
   {
     "label": "Korean",
-    "language": "ko"
+    "language": ["ko"]
   },
 
   {
     "label": "Dutch",
-    "language": "nl"
+    "language": ["nl"]
   },
   {
     "label": "Polish",
-    "language": "pol"
+    "language": ["pol", "pl"]
   },
   {
     "label": "Turkish",
-    "language": "tur"
+    "language": ["tur", "tr"]
   },
   {
     "label": "Greek",
-    "language": "el"
+    "language": ["el"]
   },
   {
     "label": "Swedish",
-    "language": "sv"
+    "language": ["sv"]
   },
   {
     "label": "Norwegian",
-    "language": "no"
+    "language": ["no"]
   },
   {
     "label": "Finnish",
-    "language": "fi"
+    "language": ["fi"]
   },
   {
     "label": "Danish",
-    "language": "da"
+    "language": ["da"]
   },
   {
     "label": "Hebrew",
-    "language": "he"
+    "language": ["he"]
   },
   {
     "label": "Czech",
-    "language": "ces"
+    "language": ["ces", "cs", "cze"]
   },
   {
     "label": "Hungarian",
-    "language": "hun"
+    "language": ["hun", "hu"]
   },
   {
     "label": "Thai",
-    "language": "tha"
+    "language": ["tha", "th"]
   },
   {
     "label": "Indonesian",
-    "language": "ind"
+    "language": ["ind", "id"]
   },
   {
     "label": "Malay",
-    "language": "ms"
+    "language": ["ms"]
   },
   {
     "label": "Arabic",
-    "language": "ar"
+    "language": ["ar"]
   },
   {
     "label": "Pashto",
-    "language": "ps"
+    "language": ["ps"]
   },
   {
     "label": "Sinhala",
-    "language": "si"
+    "language": ["si"]
   },
   {
     "label": "Tagalog",
-    "language": "tl"
+    "language": ["tl"]
   },
   {
     "label": "Burmese",
-    "language": "my"
+    "language": ["my"]
   },
   {
     "label": "Vietnamese",
-    "language": "vi"
+    "language": ["vi"]
   },
   {
     "label": "Lao",
-    "language": "lo"
+    "language": ["lo"]
   }
 ]
