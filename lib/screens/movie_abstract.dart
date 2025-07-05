@@ -22,7 +22,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/downloader/downloader.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/netmirror/movie_model.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -49,11 +49,20 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   int seasonIndex = -1;
   bool repeat = false;
   bool episodesLoading = false;
+  WatchHistoryModel? watchHistory;
+  List<WatchHistoryModel> seasonWatchHistory = [];
 
   @override
   void initState() {
     super.initState();
     loadData();
+  }
+
+  String? get videoId {
+    if (movie == null) return null;
+    return movie!.isMovie
+        ? movie!.id
+        : movie!.seasons[seasonIndex].episodes![0].id;
   }
 
   Future<void> loadDownloads() async {
@@ -67,9 +76,14 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   Future<void> loadData() async {
     log("surya abstract class: loadData()");
     var localMovie = await DBHelper.instance.getMovie(widget.id);
+
     loadDownloads();
 
     if (localMovie != null) {
+      watchHistory = await getWatchHistory(localMovie);
+      log(
+        "watch history: ${watchHistory?.id}, ${watchHistory?.current}, si: ${watchHistory?.seasonIndex}, ei: ${watchHistory?.episodeIndex}",
+      );
       int tabLen = 0;
       if (localMovie.isShow) tabLen++;
       if (localMovie.suggest.isNotEmpty) tabLen++;
@@ -113,12 +127,29 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     DBHelper.instance.addMovie(widget.id, onlineMovie);
   }
 
+  getWatchHistory(Movie? m, [int? sIndex]) async {
+    if (m == null) return null;
+    if (m.isMovie) {
+      final result = await DBHelper.instance.getWatchHistory(m.id);
+      watchHistory = result;
+    } else {
+      final result = await DBHelper.instance.getShowWatchHistory(
+        m.id,
+        sIndex ?? m.seasons.length - 1,
+      );
+      l.success("season watch history: ${result.length}");
+      seasonWatchHistory = result;
+    }
+  }
+
   void handleSeasonChange(int index) async {
     log("surya abstract class: handleSeasonChange()");
 
     setState(() {
       seasonIndex = index;
     });
+    watchHistory = await getWatchHistory(movie, index);
+    log("watch history: ${watchHistory?.id}, ${watchHistory?.current}");
 
     if (movie!.seasons[index].episodes == null) {
       log("episodes are loading");
@@ -299,6 +330,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         ? movie.id
         : movie.seasons[sIndex ?? seasonIndex].episodes![eIndex!].id;
     final resourceKey = CookiesManager.resourceKey!;
+    late String url;
     if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
       final masterPlaylist = await getMasterHls(videoId, resourceKey, ott);
       final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
@@ -327,11 +359,28 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       }
       final file = File("${basedir.path}/$videoId.m3u8");
       await file.writeAsString(simplifiedPlaylist);
-      GoRouter.of(context).push("/player", extra: file.path);
+      url = file.path;
     } else {
-      String url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-      GoRouter.of(context).push("/player", extra: url);
+      url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
     }
+    GoRouter.of(context)
+        .push(
+          "/player",
+          extra: (
+            movie: movie,
+            watchHistory: wh ?? watchHistory,
+            seasonIndex: sIndex ?? seasonIndex,
+            episodeIndex: eIndex,
+            url: url,
+          ),
+        )
+        .then((val) {
+          Future.delayed(Duration(milliseconds: 400)).then((_) {
+            getWatchHistory(movie).then(() {
+              setState(() {});
+            });
+          });
+        });
   }
 
   void downloadMovie() async {
@@ -416,6 +465,60 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         repeat = false;
       }
     });
+  }
+
+  Widget buildMainPlayBtn(Widget Function(String text) builder) {
+    late String text;
+    if (watchHistory != null) {
+      text = "Resume";
+    } else if (seasonWatchHistory.isNotEmpty) {
+      final episode = movie!
+          .seasons[seasonIndex]
+          .episodes![seasonWatchHistory.first.episodeIndex!];
+      text = "Resume ${episode.s}:${episode.ep}}";
+    } else {
+      text = "Play";
+    }
+    return builder(text);
+  }
+
+  Widget? buildProgressBar(Color color) {
+    WatchHistoryModel? currWatchHistory;
+
+    if (movie!.isMovie) {
+      currWatchHistory = watchHistory;
+    } else {
+      currWatchHistory = seasonWatchHistory.firstOrNull;
+    }
+    if (currWatchHistory == null) {
+      return null;
+    }
+    final double progress =
+        currWatchHistory.current / currWatchHistory.duration;
+    int inMinutes =
+        ((currWatchHistory.duration - currWatchHistory.current) / 1000 / 60)
+            .toInt();
+    if (inMinutes <= 0) return null;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: LinearProgressIndicator(
+              value: progress,
+              backgroundColor: Colors.grey[800],
+              color: color,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            "$inMinutes min left",
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
+          ),
+        ],
+      ),
+    );
   }
 }
 

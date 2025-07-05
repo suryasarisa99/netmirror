@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/downloader/download_db.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/watch_model.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -14,13 +14,29 @@ class EpisodeWidget extends StatelessWidget {
     required this.downloadEpisode,
     required this.playEpisode,
     rq,
+    this.wh,
   });
 
   final Episode episode;
   final String ott;
   final MiniDownloadItem? dEpisode;
+  final WatchHistoryModel? wh;
   final VoidCallback downloadEpisode;
   final VoidCallback playEpisode;
+
+  Widget? buildProgressBar() {
+    if (wh == null || wh!.current == 0 || wh!.duration == 0) return null;
+    return Positioned(
+      bottom: -1,
+      left: 0,
+      right: 0,
+      child: LinearProgressIndicator(
+        value: wh!.current / wh!.duration,
+        backgroundColor: Colors.grey[800],
+        color: Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +90,7 @@ class EpisodeWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+                  ?buildProgressBar(),
                 ],
               ),
             ),

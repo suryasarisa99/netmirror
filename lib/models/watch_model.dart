@@ -22,8 +22,8 @@ class WatchItemModel {
 }
 
 class WatchHistoryModel {
-  final int id;
-  final int videoId;
+  final String id;
+  final String videoId;
   final bool isShow;
   final String title;
   final String url;

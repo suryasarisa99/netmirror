@@ -1630,7 +1630,20 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: _theme(context).topButtonBar,
+                                children: [
+                                  MaterialCustomButton(
+                                      icon: Icon(
+                                        Icons.arrow_back_ios_new,
+                                        size: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        if (Navigator.canPop(context)) {
+                                          Navigator.pop(context);
+                                        }
+                                      }),
+                                  ..._theme(context).topButtonBar,
+                                ],
                               ),
                             ),
                             // Only display [primaryButtonBar] if [buffering] is false.

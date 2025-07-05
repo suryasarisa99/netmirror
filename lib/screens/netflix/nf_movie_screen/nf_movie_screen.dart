@@ -196,10 +196,14 @@ class NfMovieScreenState extends MovieScreenState {
           }
           final episode = movie!.seasons[seasonIndex].episodes![index];
           final depisode = downloads[episode.id];
+          final whEpisode = seasonWatchHistory
+              .where((wh) => wh.episodeIndex == index)
+              .firstOrNull;
           return EpisodeWidget(
             episode: episode,
             dEpisode: depisode,
             ott: movie!.ott.value,
+            wh: whEpisode,
             playEpisode: () => playEpisode(index),
             downloadEpisode: () => downloadEpisode(index, seasonIndex),
           );
@@ -290,33 +294,36 @@ class NfMovieScreenState extends MovieScreenState {
         children: [
           const SizedBox(height: 20),
           // Play Button
-          FilledButton(
-            onPressed: playMovieOrEpisode,
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.white),
-              shape: WidgetStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(3),
-                  ), // Removes the border radius
+          buildMainPlayBtn((text) {
+            return FilledButton(
+              onPressed: playMovieOrEpisode,
+              style: const ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.white),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(3),
+                    ), // Removes the border radius
+                  ),
+                ),
+                padding: WidgetStatePropertyAll(
+                  EdgeInsets.symmetric(vertical: 10),
                 ),
               ),
-              padding: WidgetStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.play_arrow, size: 28, color: Colors.black),
+                  SizedBox(width: 5),
+                  Text(
+                    text,
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ],
               ),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.play_arrow, size: 28, color: Colors.black),
-                SizedBox(width: 5),
-                Text(
-                  "Play",
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
-              ],
-            ),
-          ),
+            );
+          }),
+          ?buildProgressBar(Colors.red),
           const SizedBox(height: 6),
           // Download Button
           FilledButton(

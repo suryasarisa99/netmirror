@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/netmirror/movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

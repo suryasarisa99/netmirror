@@ -7,8 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:netmirror/api/playlist/get_master_hls.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
+import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/log.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/netmirror/movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 
@@ -17,16 +18,16 @@ const l = L("player");
 class MediaKitPlayer extends ConsumerStatefulWidget {
   const MediaKitPlayer({
     super.key,
-    // required this.data,
-    // required this.wh,
-    // this.seasonIndex,
-    // this.episodeIndex,
+    required this.data,
+    required this.wh,
+    this.seasonIndex,
+    this.episodeIndex,
     required this.url,
   });
-  // final Movie data;
-  // final WatchHistoryModel? wh;
-  // final int? seasonIndex;
-  // final int? episodeIndex;
+  final Movie data;
+  final WatchHistoryModel? wh;
+  final int? seasonIndex;
+  final int? episodeIndex;
   final String url;
 
   @override
@@ -40,10 +41,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   bool controlsVisible = true;
   bool _isInitialized = false;
   bool _isPipMode = false;
-  List<VideoTrack> _videoTracks = [];
-  List<AudioTrack> _audioTracks = [];
-  VideoTrack? _selectedVideoTrack;
-  AudioTrack? _selectedAudioTrack;
+  bool _seeked = false;
 
   @override
   void initState() {
@@ -61,22 +59,21 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
     );
   }
 
+  void seekToCurrentPosition() {}
+
+  String get videoId {
+    return widget.data.isMovie
+        ? widget.data.id
+        : widget
+              .data
+              .seasons[widget.seasonIndex!]
+              .episodes![widget.episodeIndex!]
+              .id;
+  }
+
   Future<void> _initializeVideo() async {
     l.success("Playing video: ${widget.url}");
-    late String videoId;
-    final resourceKey = CookiesManager.resourceKey;
-    // videoId = widget.data.isMovie
-    //     ? widget.data.id
-    //     : widget
-    //           .data
-    //           .seasons[widget.seasonIndex!]
-    //           .episodes![widget.episodeIndex!]
-    //           .id;
-
-    // final url =
-    //     '$API_URL/${widget.data.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-    // l.info("${widget.data.title} (${widget.data.id}) : video url: $url");
-
+    final futureWatchHistory = DBHelper.instance.getWatchHistory(videoId);
     try {
       // Initialize MediaKit Player
       _player = Player(
@@ -84,58 +81,86 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           logLevel: MPVLogLevel.debug,
           // bufferSize: 1024 * 300,
           ready: () {
-            // _player?.state.
+            // Player is ready but video might not be loaded yet
+            l.info("Player is ready");
           },
         ),
       );
 
-      // _player?.platform?.configuration.
-      // _player?.stream?.videoParams?.first.then((v){
-      //   v.
-      // })
-
-      _player?.stream.log.listen((log) {
-        l.info('MediaKit: [${log.level}] ${log.text}');
-      });
+      // _player?.stream.log.listen((log) {
+      //   // l.info('MediaKit: [${log.level}] ${log.text}');
+      // });
 
       // Create VideoController
       _controller = VideoController(
         _player!,
-
         configuration: VideoControllerConfiguration(
           enableHardwareAcceleration: true,
         ),
       );
+
+      _player!.stream.duration.listen((duration) async {
+        if (duration.inMicroseconds <= 0 || _seeked) {
+          l.info("Video duration is invalid or seeked, skipping seek");
+          return;
+        }
+
+        final wh = await futureWatchHistory;
+        // Video is now loaded and has a valid duration, safe to seek
+        if (wh != null) {
+          final seekPosition = Duration(milliseconds: wh.current);
+
+          // Only seek if the position is valid and less than duration
+          if (seekPosition.inMilliseconds > 0 &&
+              seekPosition.inMilliseconds < duration.inMilliseconds) {
+            _seeked = true;
+            _player!
+                .seek(seekPosition)
+                .then((_) {
+                  l.info(
+                    "Seeking to saved position: ${seekPosition.inMinutes}:${(seekPosition.inSeconds % 60).toString().padLeft(2, '0')}",
+                  );
+                })
+                .catchError((error) {
+                  l.error("Error seeking to saved position: $error");
+                });
+          }
+        }
+      });
 
       // Add listeners for track changes
       _player!.stream.tracks.listen((tracks) {
         final audioTracks = tracks.audio
             .where((track) => track.channels != null)
             .toList();
-        l.info("xxxxxxxxxxxxxxxxxxxx tracks length: ${tracks.audio.length}");
-        if (tracks.audio.isNotEmpty) {
-          l.log("${tracks.audio.map((e) => e.language).join(', ')}");
+        l.info("tracks length: ${tracks.audio.length}");
+        if (audioTracks.isNotEmpty) {
           _selectPreferredAudioTrack(audioTracks);
         }
-
-        l.info(
-          "Available tracks - Video: ${_videoTracks.length}, Audio: ${_audioTracks.length}",
-        );
       });
 
       // Listen for playback state changes
       _player!.stream.playing.listen((playing) {
         l.info("Player state changed - Playing: $playing");
+        if (!playing) {
+          // Video stopped/paused - save progress
+          _savePlaybackProgress();
+        }
       });
 
-      // Listen for position changes
-      _player!.stream.position.listen((position) {
-        // You can save watch progress here
+      // Listen for completion
+      _player!.stream.completed.listen((completed) {
+        if (completed) {
+          l.info("Video completed - saving final progress");
+          _savePlaybackProgress(isCompleted: true);
+        }
       });
 
       // Listen for errors
       _player!.stream.error.listen((error) {
         l.error("Player error: $error");
+        // Save progress before handling error
+        _savePlaybackProgress();
       });
 
       // Open media with headers
@@ -146,13 +171,6 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         ),
         play: true,
       );
-
-      // Handle watch history if available
-      // if (widget.wh != null) {
-      //   final seekPosition = Duration(milliseconds: widget.wh!.current);
-      //   await _player!.seek(seekPosition);
-      //   l.info("Seeking to position: ${seekPosition.inMinutes} minutes");
-      // }
 
       setState(() {
         _isInitialized = true;
@@ -255,33 +273,83 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.detached ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.hidden) {
+      l.info("App detached - saving playback progress");
+      _savePlaybackProgress();
+    }
+
+    if (state == AppLifecycleState.paused) {
       // App is going to background, attempt to enter PiP mode
       if (_player != null && _player!.state.playing) {
         _enterPipMode();
         l.info("Attempting to enter PiP mode due to app lifecycle change");
       }
-    } else if (state == AppLifecycleState.resumed) {
-      // App is back in foreground
-      l.info("App resumed from background");
     }
-  }
-
-  void _selectVideoTrack(VideoTrack track) {
-    _player!.setVideoTrack(track);
-    setState(() {
-      _selectedVideoTrack = track;
-    });
-    l.info("Selected video track: ${track.id} - ${track.title}");
   }
 
   void _selectAudioTrack(AudioTrack track) {
     _player!.setAudioTrack(track);
-    setState(() {
-      _selectedAudioTrack = track;
-    });
     l.info("Selected audio track: ${track.id} - ${track.title}");
+  }
+
+  // Save playback progress method
+  void _savePlaybackProgress({bool isCompleted = false}) async {
+    if (_player == null) return;
+
+    try {
+      final position = _player!.state.position;
+      final duration = _player!.state.duration;
+
+      if (duration.inMilliseconds > 0) {
+        final progressPercentage =
+            (position.inMilliseconds / duration.inMilliseconds * 100).clamp(
+              0.0,
+              100.0,
+            );
+
+        l.info(
+          "Saving playback progress: ${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')} / ${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')} (${progressPercentage.toStringAsFixed(1)}%)",
+        );
+
+        // // Create WatchHistoryModel
+        final watchHistory = WatchHistoryModel(
+          id: widget.data.id,
+          videoId: widget.data.isMovie
+              ? widget.data.id
+              : widget
+                    .data
+                    .seasons[widget.seasonIndex!]
+                    .episodes![widget.episodeIndex!]
+                    .id,
+          title: widget.data.title,
+          url: widget.url,
+          isShow: !widget.data.isMovie,
+          duration: duration.inMilliseconds,
+          current: isCompleted
+              ? duration.inMilliseconds
+              : position.inMilliseconds,
+          scaleX: 1.0,
+          scaleY: 1.0,
+          speed: _player!.state.rate,
+          fit: 'contain',
+          episodeIndex: widget.episodeIndex,
+          seasonIndex: widget.seasonIndex,
+        );
+
+        // // Save to database
+        await DBHelper.instance.saveWatchHistory(watchHistory);
+
+        if (isCompleted) {
+          l.success("Video completed - marked as watched");
+        } else {
+          l.info("Progress saved to database");
+        }
+      }
+    } catch (e) {
+      l.error("Error saving playback progress: $e");
+    }
   }
 
   @override
@@ -308,6 +376,9 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
   @override
   void dispose() {
+    // Save progress before disposing
+    _savePlaybackProgress();
+
     WidgetsBinding.instance.removeObserver(this);
     _player?.dispose();
     // Restore system UI when leaving the player

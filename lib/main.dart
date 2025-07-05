@@ -7,7 +7,7 @@ import 'package:netmirror/constants.dart';
 // import 'package:netmirror/better_player/better_player.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/downloader.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/netmirror/movie_model.dart';
 import 'package:netmirror/models/watch_model.dart';
 // import 'package:netmirror/old/netflix/home_screen/home_screen.dart';
 import 'package:netmirror/screens/initial_screen.dart';
@@ -151,6 +151,7 @@ final GlobalKey<StatefulNavigationShellState> nfMainHomeKey =
 typedef PlayerScreenData = ({
   Movie movie,
   WatchHistoryModel? watchHistory,
+  String url,
   int? seasonIndex,
   int? episodeIndex,
 });
@@ -196,14 +197,14 @@ final routes = GoRouter(
     GoRoute(
       path: "/player",
       pageBuilder: (context, state) {
-        // final data = state.extra as PlayerScreenData;
+        final data = state.extra as PlayerScreenData;
         return MaterialPage(
           child: MediaKitPlayer(
-            url: state.extra as String,
-            // data: data.movie,
-            // wh: data.watchHistory,
-            // seasonIndex: data.seasonIndex,
-            // episodeIndex: data.episodeIndex,
+            url: data.url as String,
+            data: data.movie,
+            wh: data.watchHistory,
+            seasonIndex: data.seasonIndex,
+            episodeIndex: data.episodeIndex,
           ),
         );
       },

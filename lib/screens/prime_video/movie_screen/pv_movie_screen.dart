@@ -171,45 +171,46 @@ class _PVMovieScreenState extends MovieScreenState {
               ),
               const SizedBox(height: 5),
               // play button
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () async {
-                    playMovieOrEpisode();
-                  },
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
-                    shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
-                        ), // Removes the border radius
-                      ),
-                    ),
-                    padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(vertical: 13),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.play_arrow, color: Colors.black),
-                      SizedBox(width: 5),
-                      Text(
-                        "Play",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Roboto",
+              buildMainPlayBtn((text) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: playMovieOrEpisode,
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ), // Removes the border radius
                         ),
                       ),
-                    ],
+                      padding: WidgetStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 13),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.play_arrow, color: Colors.black),
+                        SizedBox(width: 5),
+                        Text(
+                          text,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Roboto",
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
+              if (seasonWatchHistory.isNotEmpty)
+                ?buildProgressBar(Colors.white),
               const SizedBox(height: 12),
-
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -252,6 +253,8 @@ class _PVMovieScreenState extends MovieScreenState {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -504,9 +507,13 @@ class _PVMovieScreenState extends MovieScreenState {
           }
           final episode = movie!.seasons[seasonIndex].episodes![index];
           final depisode = downloads[episode.id];
+          final whEpisode = seasonWatchHistory
+              .where((wh) => wh.episodeIndex == index)
+              .firstOrNull;
           return EpisodeWidget(
             episode: episode,
             dEpisode: depisode,
+            wh: whEpisode,
             playEpisode: () => playEpisode(index),
             ott: movie!.ott.value,
             downloadEpisode: () => downloadEpisode(index, seasonIndex),

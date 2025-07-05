@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/netmirror/nm_movie_model.dart';
+import 'package:netmirror/models/netmirror/movie_model.dart';
 import 'package:shared_code/models/ott.dart';
 
 Future<Movie> getMovie(String id, {OTT ott = OTT.none}) async {
