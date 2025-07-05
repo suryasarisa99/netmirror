@@ -9,25 +9,28 @@ class PvHeaderTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      const SizedBox(width: 15),
-      if (tab == 0)
-        ...["Movies", "Tv Shows"].mapIndexed((i, e) {
-          return PvHeaderTab(
+    return Row(
+      children: [
+        const SizedBox(width: 15),
+        if (tab == 0)
+          ...["Movies", "Tv Shows"].mapIndexed((i, e) {
+            return PvHeaderTab(
               name: e,
               isSelected: i + 1 == tab,
               onTap: () {
                 context.push("/pv-home", extra: i + 1);
                 // changeTab(i + 1);
-              });
-        })
-      else
-        PvHeaderTab(
-          name: tab == 1 ? "Movies" : "Tv Shows",
-          isSelected: true,
-          onTap: () => {},
-        ),
-    ]);
+              },
+            );
+          })
+        else
+          PvHeaderTab(
+            name: tab == 1 ? "Movies" : "Tv Shows",
+            isSelected: true,
+            onTap: () => {},
+          ),
+      ],
+    );
   }
 }
 
@@ -54,7 +57,7 @@ class PvHeaderTab extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.white30),
-            color: isSelected ? Colors.white : Colors.transparent,
+            color: isSelected ? Colors.white : Colors.black,
           ),
           child: isSelected
               ? Row(
@@ -63,16 +66,20 @@ class PvHeaderTab extends StatelessWidget {
                     Text(
                       name,
                       style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(width: 8),
-                    const Icon(Icons.close, color: Colors.black, size: 16)
+                    const Icon(Icons.close, color: Colors.black, size: 16),
                   ],
                 )
               : Text(
                   name,
                   style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
         ),
       ),
