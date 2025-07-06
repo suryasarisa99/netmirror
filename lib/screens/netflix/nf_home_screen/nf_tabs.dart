@@ -23,56 +23,73 @@ class _NfHeaderTabsState extends State<NfHeaderTabs> {
 
   void _showCloseBtn() {
     Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _isVisible = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isVisible = true;
+        });
+      }
     });
+  }
+
+  void _hideCloseBtn() {
+    if (mounted) {
+      setState(() {
+        _isVisible = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     const tabs = ["Tv Shows", "Movies"];
-    return Row(children: [
-      const SizedBox(width: 15),
-      if (widget.tab == 0)
-        ...tabs.mapIndexed((i, e) {
-          return NfHeaderTab(
+    return Row(
+      children: [
+        const SizedBox(width: 15),
+        if (widget.tab == 0)
+          ...tabs.mapIndexed((i, e) {
+            return NfHeaderTab(
               name: e,
               isSelected: false,
               onTap: () {
                 log("naviagting to /nf-home/$i");
                 context.push("/nf-home", extra: i + 1);
-              });
-        })
-      else
-        buildCloseBtn(),
-      if (widget.tab == 1)
-        NfHeaderTab(name: "Tv Shows", isSelected: true, onTap: () {})
-      else if (widget.tab == 2)
-        NfHeaderTab(name: "Movies", isSelected: true, onTap: () {}),
-    ]);
+              },
+            );
+          })
+        else
+          buildCloseBtn(),
+        if (widget.tab == 1)
+          NfHeaderTab(name: "Tv Shows", isSelected: true, onTap: () {})
+        else if (widget.tab == 2)
+          NfHeaderTab(name: "Movies", isSelected: true, onTap: () {}),
+      ],
+    );
   }
 
   Widget buildCloseBtn() {
     return AnimatedOpacity(
       opacity: _isVisible ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 500),
+      duration: _isVisible
+          ? const Duration(milliseconds: 500)
+          : const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       child: InkWell(
         onTap: () {
-          try {
-            GoRouter.of(context).pop();
-          } catch (_) {}
+          // Hide the button immediately when tapped
+          _hideCloseBtn();
+          Future.delayed(const Duration(milliseconds: 100), () {
+            try {
+              GoRouter.of(context).pop();
+            } catch (_) {}
+          });
         },
         child: Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 0.5, color: Colors.white)),
-          child: const Icon(
-            Icons.close,
-            color: Colors.white70,
-            size: 22,
+            shape: BoxShape.circle,
+            border: Border.all(width: 0.5, color: Colors.white),
           ),
+          child: const Icon(Icons.close, color: Colors.white70, size: 22),
         ),
       ),
     );
@@ -103,13 +120,16 @@ class NfHeaderTab extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.white70),
-            color:
-                isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
+            color: isSelected
+                ? Colors.white.withOpacity(0.2)
+                : Colors.transparent,
           ),
           child: Text(
             name,
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w500),
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),

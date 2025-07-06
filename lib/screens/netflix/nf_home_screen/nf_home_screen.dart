@@ -34,10 +34,15 @@ class NfHomeScreen extends ConsumerStatefulWidget {
   ConsumerState<NfHomeScreen> createState() => _NfHomeScreenState();
 }
 
-class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
+class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
+    with SingleTickerProviderStateMixin {
   // List<NfHomeModel?> dataList = [null, null, null];
   NfHomeModel? data;
   final _controller = ScrollController();
+
+  // Animation controller for the entrance animation
+  late AnimationController _animationController;
+  late Animation<double> _slideAnimation;
 
   // Scroll and color related variables
   double scrollProgress = 0.0;
@@ -48,8 +53,37 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Initialize animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    // Create slide animation that goes up then comes back down
+    _slideAnimation =
+        Tween<double>(
+          begin: -50.0, // Start 50px up
+          end: 0.0, // End at normal position
+        ).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeInOut,
+          ),
+        );
+
     loadData();
     _controller.addListener(_handleScroll);
+
+    // Start the animation when the screen opens
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _controller.dispose();
+    super.dispose();
   }
 
   String get currentTabName {
@@ -108,6 +142,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
     final Color backgroundColor = baseColor != null
         ? Color.lerp(baseColor, Colors.black, backgroundOpacity)!
         : Colors.black;
+    final paddingTop = MediaQuery.paddingOf(context).top;
 
     return RefreshIndicator(
       onRefresh: loadDataFromOnline,
@@ -121,7 +156,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
           controller: _controller,
           slivers: [
             SliverAppBar(
-              backgroundColor: Colors.black.withOpacity(appBarOpacity),
+              backgroundColor: Colors.black.withValues(alpha: appBarOpacity),
               surfaceTintColor: Colors.transparent,
               pinned: true,
               floating: true,
@@ -147,7 +182,8 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
               ),
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
-                  padding: EdgeInsets.only(top: isDesk ? 55 : 105),
+                  // padding: EdgeInsets.only(top: isDesk ? 55 : 105),
+                  padding: EdgeInsets.only(top: kToolbarHeight + paddingTop),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -186,12 +222,20 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
                     ),
                   )
                 : SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        buildSpotlight(backgroundColor, baseColor),
-                        const SizedBox(height: 20),
-                        ...data!.trays.map((e) => NfHomeRow(tray: e)),
-                      ],
+                    child: AnimatedBuilder(
+                      animation: _slideAnimation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, _slideAnimation.value),
+                          child: Column(
+                            children: [
+                              buildSpotlight(backgroundColor, baseColor),
+                              const SizedBox(height: 20),
+                              ...data!.trays.map((e) => NfHomeRow(tray: e)),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                   ),
           ],
@@ -206,9 +250,9 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
         GoRouter.of(context).push("/nf-movie", extra: data!.spotlightId);
       },
       child: Container(
-        height: 480,
+        height: 500,
         width: double.infinity,
-        margin: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 0),
+        margin: const EdgeInsets.only(left: 25, right: 25, top: 8, bottom: 0),
         decoration: BoxDecoration(
           color: baseColor,
           borderRadius: BorderRadius.circular(8),

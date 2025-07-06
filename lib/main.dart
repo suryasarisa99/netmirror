@@ -221,14 +221,16 @@ final routes = GoRouter(
               path: '/nf-home',
               pageBuilder: (context, state) {
                 final tab = state.extra == null ? 0 : state.extra as int;
-                return MaterialPage(child: NfHomeScreen(tab));
+                // return NoTransitionPage(child: NfHomeScreen(tab));
+                return instantTransition(NfHomeScreen(tab), state);
               },
             ),
             GoRoute(
               path: "/nf-movie",
               pageBuilder: (context, state) {
-                return MaterialPage(
-                  child: NfMovieScreen(state.extra as String),
+                return slideFromRightTransition(
+                  NfMovieScreen(state.extra as String),
+                  state,
                 );
               },
             ),
@@ -249,14 +251,15 @@ final routes = GoRouter(
               pageBuilder: (context, state) {
                 final tab = state.extra == null ? 0 : state.extra as int;
                 log(("navigating to pv-home with tab $tab"));
-                return MaterialPage(child: PvHomeScreen(tab: tab));
+                return instantTransition(PvHomeScreen(tab: tab), state);
               },
             ),
             GoRoute(
               path: "/pv-movie",
               pageBuilder: (context, state) {
-                return MaterialPage(
-                  child: PVMovieScreen(state.extra as String),
+                return slideFromRightTransition(
+                  PVMovieScreen(state.extra as String),
+                  state,
                 );
               },
             ),
@@ -266,3 +269,44 @@ final routes = GoRouter(
     ),
   ],
 );
+
+CustomTransitionPage<T> slideFromRightTransition<T extends Object?>(
+  Widget child,
+  GoRouterState state, {
+  Duration duration = const Duration(milliseconds: 300),
+  Curve curve = Curves.easeInOut,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0); // Start from right
+      const end = Offset.zero; // End at center
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(position: animation.drive(tween), child: child);
+    },
+    transitionDuration: duration,
+  );
+}
+
+// by default,there is NoTransitionPage, for instant transition(without animation between screens), but disables hero widget animation between screens
+// so this animatin takes transitionDuration,but no visual transition
+CustomTransitionPage<T> instantTransition<T extends Object?>(
+  Widget child,
+  GoRouterState state, {
+  Duration duration = const Duration(
+    milliseconds: 500,
+  ), // Duration for Hero animations
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      // Return child directly without any visual transition
+      return child;
+    },
+    transitionDuration: duration, // Keep duration for Hero animations
+  );
+}
