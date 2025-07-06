@@ -1,7 +1,6 @@
 # bugs
 
 - watch history for primve video movies is not showing progress bar
-- change season and play episode and back, shows watch history for previous season
 - searching same movie on current platoform navigation not working
 - netflix card too long,and large shadows,actions for play btn,mylist btn on card.
 - netflix top row bars fix

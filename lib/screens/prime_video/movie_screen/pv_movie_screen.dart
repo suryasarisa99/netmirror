@@ -208,8 +208,7 @@ class _PVMovieScreenState extends MovieScreenState {
                   ),
                 );
               }),
-              if (seasonWatchHistory.isNotEmpty)
-                ?buildProgressBar(Colors.white),
+              ?buildProgressBar(Colors.white),
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,

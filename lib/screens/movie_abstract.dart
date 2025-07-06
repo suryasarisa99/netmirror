@@ -376,7 +376,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         )
         .then((val) {
           Future.delayed(Duration(milliseconds: 400)).then((_) {
-            getWatchHistory(movie).then(() {
+            getWatchHistory(movie, seasonIndex).then(() {
               setState(() {});
             });
           });
@@ -475,7 +475,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       final episode = movie!
           .seasons[seasonIndex]
           .episodes![seasonWatchHistory.first.episodeIndex!];
-      text = "Resume ${episode.s}:${episode.ep}}";
+      text = "Resume ${episode.s}:${episode.ep}";
     } else {
       text = "Play";
     }
