@@ -80,7 +80,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     loadDownloads();
 
     if (localMovie != null) {
-      watchHistory = await getWatchHistory(localMovie);
+      await getWatchHistory(localMovie);
       log(
         "watch history: ${watchHistory?.id}, ${watchHistory?.current}, si: ${watchHistory?.seasonIndex}, ei: ${watchHistory?.episodeIndex}",
       );
@@ -148,9 +148,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     setState(() {
       seasonIndex = index;
     });
-    watchHistory = await getWatchHistory(movie, index);
+    final watchHistoryFuture = getWatchHistory(movie, index);
     log("watch history: ${watchHistory?.id}, ${watchHistory?.current}");
-
     if (movie!.seasons[index].episodes == null) {
       log("episodes are loading");
       Season season = movie!.seasons[seasonIndex];
@@ -159,6 +158,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         series: widget.id,
         ott: movie!.ott,
       );
+      await watchHistoryFuture;
 
       setState(() {
         movie!.seasons[index].episodes = moreEpisodes;
