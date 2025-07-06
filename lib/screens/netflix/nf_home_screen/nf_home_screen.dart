@@ -56,34 +56,30 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
 
     // Initialize animation controller
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 150),
       vsync: this,
     );
 
-    // Create slide animation that starts at normal position, goes up, then comes back down
-    _slideAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: 0.0,
-          end: -60.0,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: 50, // 40% of animation time to go up
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: -60.0,
-          end: 0.0,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: 50, // 60% of animation time to come back down with bounce
-      ),
-    ]).animate(_animationController);
+    // Create slide animation that starts from -50px (top) and moves to 0 (normal position)
+    _slideAnimation = Tween<double>(begin: -80.0, end: 0.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
 
     loadData();
     _controller.addListener(_handleScroll);
 
-    // Start the animation when the screen opens
+    // Start the animation when the screen opens (from -50px to 0px)
     _animationController.forward();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // Restart animation when coming back to this screen
+  //   if (_animationController.value == 0.0) {
+  //     _animationController.forward();
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -128,6 +124,15 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
       data = temp;
     });
     DBHelper.instance.addNfHomePage(currentTabName, temp);
+  }
+
+  void goToNewTab() {
+    // Animation to move content to -50px (up) when tab is about to change
+    _animationController.reverse().then((_) {
+      // After animation completes, keep it at the reset position
+      // The new screen will handle animating from -50px to 0px
+      _animationController.forward();
+    });
   }
 
   @override
@@ -216,7 +221,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
                       end: Alignment.bottomCenter,
                     ),
                   ),
-                  child: NfHeaderTabs(widget.tab),
+                  child: NfHeaderTabs(widget.tab, goToNewTab),
                 ),
               ),
             ),

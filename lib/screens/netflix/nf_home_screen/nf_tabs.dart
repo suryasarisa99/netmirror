@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 
 class NfHeaderTabs extends StatefulWidget {
   final int tab;
-  const NfHeaderTabs(this.tab, {super.key});
+  final void Function()? goToNewTab;
+  const NfHeaderTabs(this.tab, this.goToNewTab, {super.key});
 
   @override
   State<NfHeaderTabs> createState() => _NfHeaderTabsState();
@@ -59,7 +60,10 @@ class _NfHeaderTabsState extends State<NfHeaderTabs> {
                 isSelected: false,
                 onTap: () {
                   log("naviagting to /nf-home/$i");
-                  context.push("/nf-home", extra: i + 1);
+                  widget.goToNewTab?.call();
+                  Future.delayed(const Duration(milliseconds: 150)).then((_) {
+                    context.push("/nf-home", extra: i + 1);
+                  });
                 },
               );
             })
