@@ -32,7 +32,7 @@ Future<Movie> getMovie(String id, {OTT ott = OTT.none}) async {
   final params = {'id': id, 't': '1734872811'};
 
   final url = Uri.parse(
-    'https://a.netfree2.cc/mobile/${ott.url}post.php',
+    '$NEW_API_URL/${ott.url}post.php',
   ).replace(queryParameters: params);
   // log("getMovie: $url", name: "http");
 

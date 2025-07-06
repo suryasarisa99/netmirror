@@ -29,6 +29,7 @@ const double kMbMovieItemHeight = 170;
 const double kMbMovieItemWidth = 120;
 
 const API_URL = "https://netfree2.cc/mobile";
+const NEW_API_URL = "https://a.netfree2.cc/mobile";
 
 final audioM3u8Exp = RegExp(
   r'https://(?<prefix>[\w\.-]+)\.top/files/(?<id>[\w]+)/a/(?<index>\d+)/\d+\.m3u8',

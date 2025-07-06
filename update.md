@@ -2,7 +2,6 @@
 
 - searching same movie on current platoform navigation not working
 - download screen actions by long press
-- some movies not playing (ex:baby john,venom)
 
 # add
 

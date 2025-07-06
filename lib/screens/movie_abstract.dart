@@ -361,7 +361,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       await file.writeAsString(simplifiedPlaylist);
       url = file.path;
     } else {
-      url = '$API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+      url = '$NEW_API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
     }
     GoRouter.of(context)
         .push(

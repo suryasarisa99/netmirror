@@ -468,6 +468,7 @@ class Downloader {
       src: masterPlaylist.videos[qualityIndex],
       isShow: !isMovie,
     );
+    log("video hls data:\n$videoHlsData");
     final lines = videoHlsData.split('\n');
     final videoUrls = lines.where((line) => line.endsWith('.jpg')).toList();
     if (videoUrls.isEmpty) {

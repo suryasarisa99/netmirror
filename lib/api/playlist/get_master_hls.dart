@@ -11,7 +11,7 @@ Future<String> getMasterHls(
   OTT ott, {
   hd = true,
 }) async {
-  final url = Uri.parse('$API_URL/${ott.url}hls/$videoId.m3u8?in=$key');
+  final url = Uri.parse('$NEW_API_URL/${ott.url}hls/$videoId.m3u8?in=$key');
   log("getMasterHls url: $url, key: $key", name: "http");
 
   final res = await http.get(url, headers: headers);
