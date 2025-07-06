@@ -519,7 +519,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
         // ),
         onPressed: onPressed,
         iconSize: 18,
-        icon: Icon(Icons.play_arrow),
+        icon: Icon(icon),
       ),
     );
   }
