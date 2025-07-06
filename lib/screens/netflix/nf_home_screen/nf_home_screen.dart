@@ -206,23 +206,25 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
         GoRouter.of(context).push("/nf-movie", extra: data!.spotlightId);
       },
       child: Container(
-        height: 520,
+        height: 480,
         width: double.infinity,
         margin: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 0),
         decoration: BoxDecoration(
+          color: baseColor,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.white54, width: 0.5),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: Colors.black.withOpacity(0.42),
+              color: Colors.black.withValues(alpha: 0.25),
               spreadRadius: 12,
-              blurRadius: 25,
-              offset: const Offset(0, 22), // Offset for bottom left corner
+              blurRadius: 40,
+              offset: const Offset(0, 15), // Offset for bottom left corner
             ),
           ],
         ),
         child: Stack(
           children: [
+            // Background Image
             Positioned.fill(
               bottom: 70,
               child: ClipRRect(
@@ -240,26 +242,27 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
               left: 0,
               right: 0,
               child: Container(
-                height: 220,
+                height: 300,
                 decoration: BoxDecoration(
                   color: Colors.red,
                   gradient: LinearGradient(
                     colors: [
                       Colors.transparent,
-                      // baseColor?.withOpacity(0.5) ?? Colors.black,
+                      baseColor?.withValues(alpha: 0.8) ??
+                          Colors.black.withValues(alpha: 0.95),
                       baseColor ?? Colors.black,
-                      // Colors.red,
-                      // Colors.green,
-                      // Colors.blue,
+                      baseColor ?? Colors.black,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: [0.0, 0.65],
+                    stops: [0.0, 0.65, 0.75, 1.0],
+                    // 0.75 to 1.0, complete base color
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),
+            // Title and Genre
             Positioned(
               left: 0,
               right: 0,
@@ -270,14 +273,14 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen> {
                     imageUrl:
                         "https://imgcdn.media/poster/n/${data!.spotlightId}.jpg",
                     cacheManager: NfSpotLightCacheManager.instance,
-                    height: 125,
+                    height: 115,
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 12),
                   Text(
                     data!.genre.join("  $Dot  "),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 25),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
