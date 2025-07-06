@@ -56,20 +56,17 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
 
     // Initialize animation controller
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
     // Create slide animation that goes up then comes back down
     _slideAnimation =
         Tween<double>(
-          begin: -50.0, // Start 50px up
+          begin: -70.0, // Start 50px up
           end: 0.0, // End at normal position
         ).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeInOut,
-          ),
+          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
         );
 
     loadData();

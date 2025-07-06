@@ -42,27 +42,35 @@ class _NfHeaderTabsState extends State<NfHeaderTabs> {
   @override
   Widget build(BuildContext context) {
     const tabs = ["Tv Shows", "Movies"];
-    return Row(
-      children: [
-        const SizedBox(width: 15),
-        if (widget.tab == 0)
-          ...tabs.mapIndexed((i, e) {
-            return NfHeaderTab(
-              name: e,
-              isSelected: false,
-              onTap: () {
-                log("naviagting to /nf-home/$i");
-                context.push("/nf-home", extra: i + 1);
-              },
-            );
-          })
-        else
-          buildCloseBtn(),
-        if (widget.tab == 1)
-          NfHeaderTab(name: "Tv Shows", isSelected: true, onTap: () {})
-        else if (widget.tab == 2)
-          NfHeaderTab(name: "Movies", isSelected: true, onTap: () {}),
-      ],
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        // Hide button when back navigation is invoked
+        if (didPop) {
+          _hideCloseBtn();
+        }
+      },
+      child: Row(
+        children: [
+          const SizedBox(width: 15),
+          if (widget.tab == 0)
+            ...tabs.mapIndexed((i, e) {
+              return NfHeaderTab(
+                name: e,
+                isSelected: false,
+                onTap: () {
+                  log("naviagting to /nf-home/$i");
+                  context.push("/nf-home", extra: i + 1);
+                },
+              );
+            })
+          else
+            buildCloseBtn(),
+          if (widget.tab == 1)
+            NfHeaderTab(name: "Tv Shows", isSelected: true, onTap: () {})
+          else if (widget.tab == 2)
+            NfHeaderTab(name: "Movies", isSelected: true, onTap: () {}),
+        ],
+      ),
     );
   }
 
