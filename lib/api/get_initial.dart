@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:netmirror/models/search_results_model.dart';
 import 'package:shared_code/models/ott.dart';
 // import 'dart:developer' as d;
 
@@ -54,9 +54,7 @@ Future<void> openAdd(String addhash) async {
   // final url2Str =
   //     'https://userverify.netmirror.app/?fr3=$addhash&a=y&t=0.2822303821745413';
   log("openAdd params: addhash=$addhash", name: "http");
-  final url2Str =
-      'https://userver.netfree2.cc/?heyyst=$addhash&a=y&t=0.2822303821745413';
-  final url = Uri.parse(url2Str);
+  final url = Uri.parse('$ADD_URL$addhash&a=y&t=0.2822303821745413');
   log("add link: $url");
   await http.get(url);
 }
@@ -108,7 +106,7 @@ Future<String?> verifyAdd(String addhash) async {
   }
 }
 
-Future<String> getPv({int id = 0, OTT ott = OTT.none}) async {
+Future<String> getPv({int id = 0, OTT ott = OTT.netflix}) async {
   final path = switch (id) {
     0 => 'home',
     1 => 'movies',

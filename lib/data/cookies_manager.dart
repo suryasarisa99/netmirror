@@ -76,8 +76,10 @@ class CookiesManager {
       !_resourceKey!.contains("unknown");
 
   static Future<void> validate({
-    Function(String)? onAddOpen,
-    Function()? onAddVerify,
+    Function()? onAddOpen,
+    Function(String)? handleAddOpenError,
+    Function()? onSuccess,
+    Function()? onFailure,
   }) async {
     if (isExpired) {
       log("t_hash_t is expired");
@@ -85,20 +87,26 @@ class CookiesManager {
 
       try {
         await openAdd(_addhash!);
+        onAddOpen?.call();
+        await Future.delayed(const Duration(seconds: 35), () async {
+          try {
+            final newTHashT = await verifyAdd(_addhash!);
+            log("new t_hash_t $newTHashT");
+            if (newTHashT != null) {
+              tHashT = newTHashT;
+              onSuccess?.call();
+            }
+          } catch (e) {
+            log("exception in getting verify add $e");
+            onFailure?.call();
+          }
+        });
       } catch (e) {
         log("Error opening add link: $e");
+        handleAddOpenError?.call(_addhash!);
       }
-      await Future.delayed(const Duration(seconds: 35), () async {
-        try {
-          final newTHashT = await verifyAdd(_addhash!);
-          log("new t_hash_t $newTHashT");
-          if (newTHashT != null) {
-            tHashT = newTHashT;
-          }
-        } catch (e) {
-          log("exception in getting verify add $e");
-        }
-      });
+    } else {
+      onSuccess?.call();
     }
   }
 

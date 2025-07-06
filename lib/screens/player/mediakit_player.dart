@@ -4,13 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/services.dart';
-import 'package:netmirror/api/playlist/get_master_hls.dart';
 import 'package:netmirror/constants.dart';
-import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/log.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/movie_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 
 const l = L("player");
@@ -25,7 +23,7 @@ class MediaKitPlayer extends ConsumerStatefulWidget {
     required this.url,
   });
   final Movie data;
-  final WatchHistoryModel? wh;
+  final WatchHistory? wh;
   final int? seasonIndex;
   final int? episodeIndex;
   final String url;
@@ -73,7 +71,11 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
   Future<void> _initializeVideo() async {
     l.success("Playing video: ${widget.url}");
-    final futureWatchHistory = DBHelper.instance.getWatchHistory(videoId);
+    final futureWatchHistory = DBHelper.instance.getWatchHistory(
+      videoId: videoId,
+      ottId: widget.data.ott.id,
+      id: widget.data.id,
+    );
     try {
       // Initialize MediaKit Player
       _player = Player(
@@ -314,8 +316,9 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         );
 
         // // Create WatchHistoryModel
-        final watchHistory = WatchHistoryModel(
+        final watchHistory = WatchHistory(
           id: widget.data.id,
+          ottId: widget.data.ott.id,
           videoId: widget.data.isMovie
               ? widget.data.id
               : widget

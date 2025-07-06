@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
@@ -258,10 +259,33 @@ class _PVMovieScreenState extends MovieScreenState {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  MovieScreenActionItem(
-                    const Icon(Icons.add, size: 26, color: Colors.white),
-                    "Watchlist",
-                    () {},
+                  // MovieScreenActionItem(
+                  //   const Icon(Icons.add, size: 26, color: Colors.white),
+                  //   "Watchlist",
+                  //   () {},
+                  // ),
+                  SizedBox.square(
+                    // dimension: 80,
+                    child: MovieScreenActionItem(
+                      LottieBuilder.asset(
+                        // "assets/lottie/hotstar/watchlist_animation_blue.json",
+                        "assets/lottie/my-list-plus-to-check.json",
+                        controller: watchlistAnimationController,
+                        height: 40,
+                        onLoaded: (composition) {
+                          // Set initial state based on inWatchlist
+                          if (inWatchlist) {
+                            log("Setting watchlist animation to 1.0");
+                            watchlistAnimationController.value = 1.0;
+                          } else {
+                            log("Setting watchlist animation to 0.0");
+                            watchlistAnimationController.value = 0.0;
+                          }
+                        },
+                      ),
+                      "My List",
+                      handleAddWatchlist,
+                    ),
                   ),
                   MovieScreenActionItem(
                     const Icon(

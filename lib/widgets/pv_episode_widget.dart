@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/downloader/download_db.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -20,7 +20,7 @@ class EpisodeWidget extends StatelessWidget {
   final Episode episode;
   final String ott;
   final MiniDownloadItem? dEpisode;
-  final WatchHistoryModel? wh;
+  final WatchHistory? wh;
   final VoidCallback downloadEpisode;
   final VoidCallback playEpisode;
 

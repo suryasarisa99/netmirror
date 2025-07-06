@@ -27,7 +27,7 @@ class NfMovieScreen extends MovieScreen {
 
 class NfMovieScreenState extends MovieScreenState {
   @override
-  OTT ott = OTT.none;
+  OTT ott = OTT.netflix;
   @override
   bool extraTabForCast = false;
 
@@ -226,7 +226,7 @@ class NfMovieScreenState extends MovieScreenState {
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: isDesk ? 2 : 3,
-              childAspectRatio: OTT.none.aspectRatio,
+              childAspectRatio: OTT.netflix.aspectRatio,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
@@ -461,13 +461,22 @@ class NfMovieScreenState extends MovieScreenState {
         children: [
           _MovieScreenActionItem(
             LottieBuilder.asset(
+              // "assets/lottie/hotstar/watchlist_animation_blue.json",
               "assets/lottie/my-list-plus-to-check.json",
-              reverse: true,
-              animate: inWatchlist,
-              repeat: repeat,
-              // controller: _animationController,
+              controller: watchlistAnimationController,
+              height: 40,
+              onLoaded: (composition) {
+                // Set initial state based on inWatchlist
+                if (inWatchlist) {
+                  log("Setting watchlist animation to 1.0");
+                  watchlistAnimationController.value = 1.0;
+                } else {
+                  log("Setting watchlist animation to 0.0");
+                  watchlistAnimationController.value = 0.0;
+                }
+              },
             ),
-            "Movie List",
+            "My List",
             handleAddWatchlist,
           ),
           _MovieScreenActionItem(

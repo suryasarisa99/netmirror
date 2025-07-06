@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_search.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:netmirror/models/search_results_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -30,7 +30,7 @@ class _NmSearchState extends ConsumerState<Search>
   );
   late final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
-  final List<NmSearchResults?> searchResults = [null, null, null, null, null];
+  final List<SearchResults?> searchResults = [null, null, null, null, null];
   final focusNode = FocusNode();
 
   @override
@@ -192,7 +192,7 @@ class _NmSearchState extends ConsumerState<Search>
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: isDesk ? getCrossAxisCount(size.width) : 3,
         // childAspectRatio: OTT.none.vImgRatio,
-        childAspectRatio: OTT.none.aspectRatio,
+        childAspectRatio: OTT.netflix.aspectRatio,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),

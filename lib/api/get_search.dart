@@ -4,10 +4,10 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:netmirror/models/search_results_model.dart';
 import 'package:shared_code/models/ott.dart';
 
-Future<NmSearchResults> getNmSearch(String query, {OTT ott = OTT.none}) async {
+Future<SearchResults> getNmSearch(String query, {OTT ott = OTT.netflix}) async {
   // final tHashT = await CookiesManager.validTHashT;
   final tHashT = CookiesManager.tHashT;
   final headers = {
@@ -40,7 +40,7 @@ Future<NmSearchResults> getNmSearch(String query, {OTT ott = OTT.none}) async {
   final status = res.statusCode;
   if (status != 200) throw Exception('http.get error: statusCode= $status');
   log("response: ${res.body}");
-  return NmSearchResults.fromJson(jsonDecode(res.body), ott, query);
+  return SearchResults.fromJson(jsonDecode(res.body), ott, query);
 }
 
 

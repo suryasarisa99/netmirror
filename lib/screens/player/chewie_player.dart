@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/movie_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:video_player/video_player.dart';
 
 const l = L("player");
@@ -22,7 +22,7 @@ class ChewiePlayer extends ConsumerStatefulWidget {
     this.episodeIndex,
   });
   final Movie data;
-  final WatchHistoryModel? wh;
+  final WatchHistory? wh;
   final int? seasonIndex;
   final int? episodeIndex;
 

@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
+import 'package:netmirror/db/db_tables.dart';
+import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/prime_video/pv_home_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/watch_list_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
+import 'package:shared_code/models/ott.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 import 'package:path/path.dart' as p;
@@ -29,62 +34,28 @@ class DBHelper {
     String path = p.join(await getDatabasesPath(), 'netmirror.db');
     return await openDatabase(
       path,
-      version: 5,
+      version: 8,
       onCreate: (db, version) async {
-        await db.execute(
-          'CREATE TABLE ott_pv_home (key TEXT PRIMARY KEY, value TEXT)',
-        );
-        await db.execute(
-          'CREATE TABLE ott_nf_home (key TEXT PRIMARY KEY, value TEXT)',
-        );
-        await db.execute(
-          'CREATE TABLE movie (key TEXT PRIMARY KEY, value TEXT)',
-        );
-        await db.execute('''CREATE TABLE watch_history (
-            video_id TEXT PRIMARY KEY,
-            id TEXT NOT NULL,
-            title TEXT NOT NULL,
-            url TEXT NOT NULL,
-            is_show INTEGER NOT NULL,
-            duration INTEGER NOT NULL,
-            current INTEGER NOT NULL,
-            scale_x REAL NOT NULL DEFAULT 1.0,
-            scale_y REAL NOT NULL DEFAULT 1.0,
-            speed REAL NOT NULL DEFAULT 1.0,
-            fit TEXT NOT NULL DEFAULT 'contain',
-            episode_index INTEGER,
-            season_index INTEGER,
-            last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
-          )''');
-        // for (final statement in DownloadTables.createStatements) {
-        //   await db.execute(statement);
-        // }
+        // Iterate over all queries using named record destructuring
+        for (final query in Tables.queriesList) {
+          await db.execute(query);
+        }
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
-          await db.execute(
-            'CREATE TABLE IF NOT EXISTS ott_nf_home (key TEXT PRIMARY KEY, value TEXT)',
-          );
-          print('Table ott_nf_home created during upgrade');
-        }
         if (oldVersion < 5) {
-          await db.execute('''CREATE TABLE IF NOT EXISTS watch_history (
-              video_id TEXT PRIMARY KEY,
-              id TEXT NOT NULL,
-              title TEXT NOT NULL,
-              url TEXT NOT NULL,
-              is_show INTEGER NOT NULL,
-              duration INTEGER NOT NULL,
-              current INTEGER NOT NULL,
-              scale_x REAL NOT NULL DEFAULT 1.0,
-              scale_y REAL NOT NULL DEFAULT 1.0,
-              speed REAL NOT NULL DEFAULT 1.0,
-              fit TEXT NOT NULL DEFAULT 'contain',
-              episode_index INTEGER,
-              season_index INTEGER,
-              last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
-            )''');
-          print('Table watch_history created during upgrade');
+          await db.execute(Tables.queries.watchHistory);
+        }
+        if (oldVersion < 6) {
+          await db.execute(Tables.queries.watchList);
+        }
+        if (oldVersion < 8) {
+          log("dropping tables and recreating");
+          for (final table in Tables.tableNames) {
+            await db.execute('DROP TABLE IF EXISTS $table');
+          }
+          for (final query in Tables.queriesList) {
+            await db.execute(query);
+          }
         }
       },
       // onOpen: (Database db) async {
@@ -101,7 +72,7 @@ class DBHelper {
 
   Future<void> addPvHomePage(String key, PvHomeModel data) async {
     final db = await database;
-    db.insert("ott_pv_home", {
+    db.insert(Tables.ottPvHome, {
       'key': key,
       'value': jsonEncode(data.toJson()),
     }, conflictAlgorithm: ConflictAlgorithm.replace);
@@ -109,7 +80,7 @@ class DBHelper {
 
   Future<void> addNfHomePage(String key, NfHomeModel data) async {
     final db = await database;
-    db.insert("ott_nf_home", {
+    db.insert(Tables.ottNfHome, {
       'key': key,
       'value': jsonEncode(data.toJson()),
     }, conflictAlgorithm: ConflictAlgorithm.replace);
@@ -118,7 +89,7 @@ class DBHelper {
   Future<PvHomeModel?> getPvHomePage(String key) async {
     final db = await database;
     final res = await db.query(
-      "ott_pv_home",
+      Tables.ottPvHome,
       where: 'key = ?',
       whereArgs: [key],
     );
@@ -129,7 +100,7 @@ class DBHelper {
   Future<NfHomeModel?> getNfHomePage(String key) async {
     final db = await database;
     final res = await db.query(
-      "ott_nf_home",
+      Tables.ottNfHome,
       where: 'key = ?',
       whereArgs: [key],
     );
@@ -137,17 +108,22 @@ class DBHelper {
     return NfHomeModel.fromJson(jsonDecode(res.first['value']! as String));
   }
 
-  Future<void> addMovie(String key, Movie data) async {
+  Future<void> addMovie(String key, int ottId, Movie data) async {
     final db = await database;
-    db.insert("movie", {
+    db.insert(Tables.movie, {
       'key': key,
+      'ott_id': ottId,
       'value': jsonEncode(data.toJson()),
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<Movie?> getMovie(String key) async {
+  Future<Movie?> getMovie(String key, int ottId) async {
     final db = await database;
-    final res = await db.query("movie", where: 'key = ?', whereArgs: [key]);
+    final res = await db.query(
+      "movie",
+      where: 'key = ? AND ott_Id = ?',
+      whereArgs: [key, ottId],
+    );
     if (res.isEmpty) return null;
     return Movie.fromJson(jsonDecode(res.first['value']! as String), key, null);
   }
@@ -155,11 +131,12 @@ class DBHelper {
   // Watch History Methods
 
   /// Save or update watch history for a video
-  Future<void> saveWatchHistory(WatchHistoryModel watchHistory) async {
+  Future<void> saveWatchHistory(WatchHistory watchHistory) async {
     final db = await database;
-    await db.insert("watch_history", {
+    await db.insert(Tables.watchHistory, {
       'id': watchHistory.id,
       'video_id': watchHistory.videoId.toString(),
+      'ott_id': watchHistory.ottId,
       'title': watchHistory.title,
       'url': watchHistory.url,
       'is_show': watchHistory.isShow ? 1 : 0,
@@ -176,18 +153,23 @@ class DBHelper {
   }
 
   /// Get watch history by video ID
-  Future<WatchHistoryModel?> getWatchHistory(String videoId) async {
+  Future<WatchHistory?> getWatchHistory({
+    required String videoId,
+    required int ottId,
+    required String id,
+  }) async {
     final db = await database;
     final res = await db.query(
-      "watch_history",
-      where: 'video_id = ?',
-      whereArgs: [videoId],
+      Tables.watchHistory,
+      where: 'video_id = ? AND id = ? AND ott_id = ?',
+      whereArgs: [videoId, id, ottId],
     );
     if (res.isEmpty) return null;
 
     final data = res.first;
-    return WatchHistoryModel(
+    return WatchHistory(
       id: data['id'] as String,
+      ottId: data['ott_id'] as int,
       videoId: data['video_id'] as String,
       title: data['title'] as String,
       url: data['url'] as String,
@@ -204,15 +186,16 @@ class DBHelper {
   }
 
   /// Get watch history for shows by series ID and season index, ordered by last updated
-  Future<List<WatchHistoryModel>> getShowWatchHistory(
-    String seriesId,
-    int seasonIndex,
-  ) async {
+  Future<List<WatchHistory>> getShowWatchHistory({
+    required String seriesId,
+    required int ottId,
+    required int seasonIndex,
+  }) async {
     final db = await database;
     final res = await db.query(
-      "watch_history",
-      where: 'id = ? AND season_index = ? And is_show = 1',
-      whereArgs: [seriesId, seasonIndex],
+      Tables.watchHistory,
+      where: 'id = ? AND ott_id = ?  AND season_index = ? And is_show = 1',
+      whereArgs: [seriesId, ottId, seasonIndex],
       // orderBy: 'episode_index ASC',
       orderBy: 'last_updated DESC',
       // limit: 1,
@@ -220,8 +203,9 @@ class DBHelper {
 
     final result = res
         .map(
-          (data) => WatchHistoryModel(
+          (data) => WatchHistory(
             id: data['id'] as String,
+            ottId: data['ott_id'] as int,
             videoId: data['video_id'] as String,
             title: data['title'] as String,
             url: data['url'] as String,
@@ -242,14 +226,18 @@ class DBHelper {
   }
 
   /// Get all watch history ordered by last updated
-  Future<List<WatchHistoryModel>> getAllWatchHistory() async {
+  Future<List<WatchHistory>> getAllWatchHistory() async {
     final db = await database;
-    final res = await db.query("watch_history", orderBy: 'last_updated DESC');
+    final res = await db.query(
+      Tables.watchHistory,
+      orderBy: 'last_updated DESC',
+    );
 
     return res
         .map(
-          (data) => WatchHistoryModel(
+          (data) => WatchHistory(
             id: data['id'] as String,
+            ottId: data['ott_id'] as int,
             videoId: data['video_id'] as String,
             title: data['title'] as String,
             url: data['url'] as String,
@@ -268,18 +256,23 @@ class DBHelper {
   }
 
   /// Delete watch history by video ID
-  Future<void> deleteWatchHistory(String videoId) async {
+  Future<void> deleteWatchHistory({
+    required String videoId,
+    required String id,
+    required String ottId,
+  }) async {
     final db = await database;
     await db.delete(
-      "watch_history",
-      where: 'video_id = ?',
-      whereArgs: [videoId],
+      Tables.watchHistory,
+      where: 'video_id = ? AND id = ? AND ott_id = ?',
+      whereArgs: [videoId, id, ottId],
     );
   }
 
   /// Update progress for existing watch history
   Future<void> updateWatchProgress({
     required String videoId,
+    required int ottId,
     required int current,
     int? duration,
   }) async {
@@ -294,10 +287,46 @@ class DBHelper {
     }
 
     await db.update(
-      "watch_history",
+      Tables.watchHistory,
       updateData,
-      where: 'video_id = ?',
-      whereArgs: [videoId],
+      where: 'video_id = ? AND ott_id = ?',
+      whereArgs: [videoId, ottId],
+    );
+  }
+
+  // <===================== Watch List Methods ===============>
+
+  Future<void> addToWatchList(WatchList item) async {
+    final db = await database;
+    await db.insert(
+      Tables.watchList,
+      item.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<bool> isInWatchList(String id, int ottId) async {
+    final db = await database;
+    final res = await db.query(
+      Tables.watchList,
+      where: 'id = ? AND ott_id = ?',
+      whereArgs: [id, ottId],
+    );
+    return res.isNotEmpty;
+  }
+
+  Future<List<WatchList>> getWatchList() async {
+    final db = await database;
+    final res = await db.query(Tables.watchList);
+    return res.map((data) => WatchList.fromJson(data)).toList();
+  }
+
+  Future<void> removeFromWatchList(String id, int ottId) async {
+    final db = await database;
+    await db.delete(
+      Tables.watchList,
+      where: 'id = ? AND ott_id = ?',
+      whereArgs: [id, ottId],
     );
   }
 }

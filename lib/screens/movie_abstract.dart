@@ -5,7 +5,8 @@ import 'dart:io';
 import 'package:netmirror/api/playlist/fast_playlist.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/watch_list_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -22,7 +23,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/downloader/downloader.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
+import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -38,7 +39,7 @@ abstract class MovieScreen extends ConsumerStatefulWidget {
 }
 
 abstract class MovieScreenState extends ConsumerState<MovieScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   abstract OTT ott;
   abstract bool extraTabForCast;
 
@@ -49,13 +50,25 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   int seasonIndex = -1;
   bool repeat = false;
   bool episodesLoading = false;
-  WatchHistoryModel? watchHistory;
-  List<WatchHistoryModel> seasonWatchHistory = [];
+  WatchHistory? watchHistory;
+  List<WatchHistory> seasonWatchHistory = [];
+  late AnimationController watchlistAnimationController;
 
   @override
   void initState() {
     super.initState();
+    watchlistAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
     loadData();
+  }
+
+  @override
+  void dispose() {
+    watchlistAnimationController.dispose();
+    tabController?.dispose();
+    super.dispose();
   }
 
   String? get videoId {
@@ -75,12 +88,17 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   Future<void> loadData() async {
     log("surya abstract class: loadData()");
-    var localMovie = await DBHelper.instance.getMovie(widget.id);
+    var localMovie = await DBHelper.instance.getMovie(widget.id, ott.id);
 
     loadDownloads();
 
     if (localMovie != null) {
-      await getWatchHistory(localMovie);
+      final List<dynamic> results = await Future.wait([
+        getWatchHistory(localMovie),
+        DBHelper.instance.isInWatchList(localMovie.id, ott.id),
+      ]);
+      log("in watchlist: ${results[1]}");
+
       log(
         "watch history: ${watchHistory?.id}, ${watchHistory?.current}, si: ${watchHistory?.seasonIndex}, ei: ${watchHistory?.episodeIndex}",
       );
@@ -91,6 +109,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       tabController = TabController(length: tabLen, vsync: this);
 
       setState(() {
+        inWatchlist = results[1] as bool;
         movie = localMovie;
         seasonIndex = localMovie.seasons.length - 1;
       });
@@ -105,7 +124,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   Future<void> loadDataFromOnline() async {
     log("surya abstract class: loadDataFromOnline()");
 
-    var onlineMovie = await getMovie(widget.id, ott: ott);
+    var onlineMovie = await getMovie(widget.id, ott);
     log("movie got from online: ${onlineMovie.id}");
     if (tabController == null) {
       int tabLen = 0;
@@ -124,18 +143,23 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       });
     }
 
-    DBHelper.instance.addMovie(widget.id, onlineMovie);
+    DBHelper.instance.addMovie(widget.id, ott.id, onlineMovie);
   }
 
-  getWatchHistory(Movie? m, [int? sIndex]) async {
+  Future<void> getWatchHistory(Movie? m, [int? sIndex]) async {
     if (m == null) return null;
     if (m.isMovie) {
-      final result = await DBHelper.instance.getWatchHistory(m.id);
+      final result = await DBHelper.instance.getWatchHistory(
+        id: m.id,
+        ottId: ott.id,
+        videoId: m.id,
+      );
       watchHistory = result;
     } else {
       final result = await DBHelper.instance.getShowWatchHistory(
-        m.id,
-        sIndex ?? m.seasons.length - 1,
+        ottId: ott.id,
+        seasonIndex: sIndex ?? m.seasons.length - 1,
+        seriesId: m.id,
       );
       l.success("season watch history: ${result.length}");
       seasonWatchHistory = result;
@@ -163,7 +187,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       setState(() {
         movie!.seasons[index].episodes = moreEpisodes;
       });
-      DBHelper.instance.addMovie(widget.id, movie!);
+      DBHelper.instance.addMovie(widget.id, ott.id, movie!);
     } else {
       log("episodes already loaded");
     }
@@ -189,7 +213,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     setState(() {
       movie!.seasons[seasonIndex].episodes!.addAll(moreEpisodes);
       episodesLoading = false;
-      DBHelper.instance.addMovie(widget.id, movie!);
+      DBHelper.instance.addMovie(widget.id, ott.id, movie!);
     });
   }
 
@@ -307,7 +331,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   void goToPlayer({
     required Movie movie,
-    WatchHistoryModel? wh,
+    WatchHistory? wh,
     int? sIndex,
     int? eIndex,
   }) async {
@@ -376,7 +400,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         )
         .then((val) {
           Future.delayed(Duration(milliseconds: 400)).then((_) {
-            getWatchHistory(movie, seasonIndex).then(() {
+            getWatchHistory(movie, seasonIndex).then((_) {
               setState(() {});
             });
           });
@@ -442,29 +466,55 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     );
   }
 
-  void handleAddWatchlist() {
+  // void handleAddWatchlist() {
+  //   if (inWatchlist) {
+  //     log("Removing from watchlist");
+  //     Timer(const Duration(milliseconds: 500), () {
+  //       setState(() {
+  //         inWatchlist = false;
+  //       });
+  //     });
+  //     DBHelper.instance.removeFromWatchList(movie!.id);
+  //   } else {
+  //     DBHelper.instance.addToWatchList(
+  //       WatchList(id: movie!.id, title: movie!.title, isShow: movie!.isShow),
+  //     );
+  //   }
+  //   setState(() {
+  //     if (inWatchlist) {
+  //       repeat = true;
+  //     } else {
+  //       inWatchlist = true;
+  //       repeat = false;
+  //     }
+  //   });
+  // }
+
+  void handleAddWatchlist() async {
     if (inWatchlist) {
-      Timer(const Duration(milliseconds: 500), () {
-        setState(() {
-          inWatchlist = false;
-        });
+      log("Removing from watchlist");
+      // Animate from added state to removed state (1.0 to 0.0)
+      await watchlistAnimationController.reverse();
+      setState(() {
+        inWatchlist = false;
       });
-      // DatabaseHelper.instance.removeWatchListItem(movieDetails!.id);
+      DBHelper.instance.removeFromWatchList(movie!.id, ott.id);
     } else {
-      // DatabaseHelper.instance.addWatchListItem(
-      //     movieDetails!.id,
-      //     movieDetails!.title,
-      //     movieDetails!.boxshot.url,
-      //     movieDetails!.isShow);
-    }
-    setState(() {
-      if (inWatchlist) {
-        repeat = true;
-      } else {
+      log("Adding to watchlist");
+      // Animate from removed state to added state (0.0 to 1.0)
+      await watchlistAnimationController.forward();
+      setState(() {
         inWatchlist = true;
-        repeat = false;
-      }
-    });
+      });
+      DBHelper.instance.addToWatchList(
+        WatchList(
+          id: movie!.id,
+          ottId: ott.id,
+          title: movie!.title,
+          isShow: movie!.isShow,
+        ),
+      );
+    }
   }
 
   Widget buildMainPlayBtn(Widget Function(String text) builder) {
@@ -483,7 +533,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   Widget? buildProgressBar(Color color) {
-    WatchHistoryModel? currWatchHistory;
+    WatchHistory? currWatchHistory;
 
     if (movie!.isMovie) {
       currWatchHistory = watchHistory;

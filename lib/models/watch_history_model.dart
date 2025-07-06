@@ -1,29 +1,7 @@
-class WatchItemModel {
-  final String title;
-  final String url;
-  final int id;
-  final bool isShow;
-
-  WatchItemModel({
-    required this.title,
-    required this.url,
-    required this.id,
-    required this.isShow,
-  });
-
-  factory WatchItemModel.fromJson(Map<String, dynamic> json) {
-    return WatchItemModel(
-      id: json['id'],
-      title: json['title'],
-      url: json['url'],
-      isShow: json['is_show'] == 1 ? true : false,
-    );
-  }
-}
-
-class WatchHistoryModel {
+class WatchHistory {
   final String id;
   final String videoId;
+  final int ottId;
   final bool isShow;
   final String title;
   final String url;
@@ -36,9 +14,10 @@ class WatchHistoryModel {
   final int? episodeIndex;
   final int? seasonIndex;
 
-  WatchHistoryModel({
+  WatchHistory({
     required this.id,
     required this.videoId,
+    required this.ottId,
     required this.episodeIndex,
     required this.seasonIndex,
     required this.title,
@@ -52,10 +31,11 @@ class WatchHistoryModel {
     required this.speed,
   });
 
-  factory WatchHistoryModel.fromJson(Map<String, dynamic> json) {
-    return WatchHistoryModel(
+  factory WatchHistory.fromJson(Map<String, dynamic> json) {
+    return WatchHistory(
       id: json['id'],
       videoId: json['video_id'],
+      ottId: json['ott_id'] as int,
       episodeIndex: json['episode_index'],
       seasonIndex: json['season_index'],
       title: json['title'],
@@ -70,17 +50,3 @@ class WatchHistoryModel {
     );
   }
 }
-
-      // id,
-      // video_id,
-      // episode_index,
-      // season_index,
-      // title,
-      // url,
-      // is_show,
-      // scale_x,
-      // scale_y,
-      // duration,
-      // current,
-      // fit,
-      // speed

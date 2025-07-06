@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
+import 'package:netmirror/models/search_results_model.dart';
 import 'package:shared_code/models/ott.dart';
 
 Future<Sources> getSource({required String id, required OTT ott}) async {

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/movie_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late final SharedPreferences? sp;
@@ -30,7 +30,7 @@ const double kMbMovieItemWidth = 120;
 
 const API_URL = "https://netfree2.cc/mobile";
 const NEW_API_URL = "https://a.netfree2.cc/mobile";
-
+const ADD_URL = "https://userver.netfree2.cc/?heyyst=";
 final audioM3u8Exp = RegExp(
   r'https://(?<prefix>[\w\.-]+)\.top/files/(?<id>[\w]+)/a/(?<index>\d+)/\d+\.m3u8',
 );

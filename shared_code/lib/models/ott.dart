@@ -7,8 +7,9 @@ enum OTT {
   // lionGate("lg", name: "Lionsgate"),
   // hbo("hbo", name: "HBO");
 
-  none(
+  netflix(
     "",
+    0,
     name: "Netflix",
     vImgHeight: 233,
     vImgWidth: 166,
@@ -17,14 +18,21 @@ enum OTT {
   ),
   pv(
     "pv",
+    1,
     name: "Prime Video",
-    vImgHeight: 0,
-    vImgWidth: 0,
-    hImgHeight: 0,
-    hImgWidth: 0,
+    // vImgHeight: 0,
+    // vImgWidth: 0,
+    // hImgHeight: 0,
+    // hImgWidth: 0,
+    // todo: ,temporary using netflix aspect ratio
+    vImgHeight: 233,
+    vImgWidth: 166,
+    hImgHeight: 374,
+    hImgWidth: 665,
   ),
   dh(
     "dh",
+    2,
     name: "Disney + Hotstar",
     vImgHeight: 0,
     vImgWidth: 0,
@@ -33,6 +41,7 @@ enum OTT {
   ),
   lionGate(
     "lg",
+    3,
     name: "Lionsgate",
     vImgHeight: 0,
     vImgWidth: 0,
@@ -41,6 +50,7 @@ enum OTT {
   ),
   hbo(
     "hbo",
+    4,
     name: "HBO",
     vImgHeight: 0,
     vImgWidth: 0,
@@ -49,6 +59,7 @@ enum OTT {
   );
 
   final String value;
+  final int id;
   final String name;
   final double vImgHeight;
   final double vImgWidth;
@@ -57,8 +68,11 @@ enum OTT {
   final double vAspectRatio;
   final double hAspectRatio;
 
+  static final list = [netflix, pv, dh, lionGate, hbo];
+
   const OTT(
-    this.value, {
+    this.value,
+    this.id, {
     this.name = '',
     required this.vImgHeight,
     required this.vImgWidth,
@@ -70,7 +84,7 @@ enum OTT {
 
   get url => value.isEmpty ? '' : '$value/';
 
-  get aspectRatio => isDesk ? hAspectRatio : vAspectRatio;
+  double get aspectRatio => isDesk ? hAspectRatio : vAspectRatio;
 
   get cookie => value.isEmpty ? 'nf' : value;
 
@@ -80,7 +94,7 @@ enum OTT {
     bool forceHorizontal = false,
     bool forceVertical = false,
   }) {
-    if (this == OTT.none) {
+    if (this == OTT.netflix) {
       late String direction;
 
       if (forceHorizontal) {
@@ -99,5 +113,13 @@ enum OTT {
 
   factory OTT.fromValue(String value) {
     return OTT.values.firstWhere((element) => element.value == value);
+  }
+
+  factory OTT.fromId(int id) {
+    // return OTT.values.firstWhere((element) => element.id == id);
+    if (id < 0 || id >= OTT.values.length) {
+      throw ArgumentError("Invalid OTT id: $id");
+    }
+    return OTT.values[id];
   }
 }

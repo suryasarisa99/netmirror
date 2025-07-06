@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:netmirror/models/netmirror/netmirror_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -257,7 +256,7 @@ class Movie {
   PlayerData toPlayerData(
     int seasonIndex, {
     int? episodeIndex,
-    WatchHistoryModel? wh,
+    WatchHistory? wh,
   }) {
     return PlayerData(
       id: id,

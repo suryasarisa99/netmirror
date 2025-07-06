@@ -118,7 +118,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
   }
 
   Future<void> loadDataFromOnline() async {
-    final raw = await getNf(id: widget.tab, ott: OTT.none);
+    final raw = await getNf(id: widget.tab, ott: OTT.netflix);
     final temp = NfHomeModel.parse(raw);
     setState(() {
       data = temp;

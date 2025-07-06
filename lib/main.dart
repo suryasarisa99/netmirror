@@ -7,13 +7,14 @@ import 'package:netmirror/constants.dart';
 // import 'package:netmirror/better_player/better_player.dart';
 import 'package:netmirror/db/db_helper.dart';
 import 'package:netmirror/downloader/downloader.dart';
-import 'package:netmirror/models/netmirror/movie_model.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/movie_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 // import 'package:netmirror/old/netflix/home_screen/home_screen.dart';
 import 'package:netmirror/screens/initial_screen.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_screen.dart';
 import 'package:netmirror/screens/netflix/nf_movie_screen/nf_movie_screen.dart';
 import 'package:netmirror/screens/other/downloads_screen/download_screen.dart';
+import 'package:netmirror/screens/other/profile_screen/profile_screen.dart';
 import 'package:netmirror/screens/other/settings_screen/settings_screen.dart';
 // import 'package:netmirror/screens/player/chewie_player.dart';
 import 'package:netmirror/screens/player/mediakit_player.dart';
@@ -150,7 +151,7 @@ final GlobalKey<StatefulNavigationShellState> nfMainHomeKey =
 
 typedef PlayerScreenData = ({
   Movie movie,
-  WatchHistoryModel? watchHistory,
+  WatchHistory? watchHistory,
   String url,
   int? seasonIndex,
   int? episodeIndex,
@@ -195,12 +196,18 @@ final routes = GoRouter(
       },
     ),
     GoRoute(
+      path: "/profile",
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: ProfileScreen());
+      },
+    ),
+    GoRoute(
       path: "/player",
       pageBuilder: (context, state) {
         final data = state.extra as PlayerScreenData;
         return MaterialPage(
           child: MediaKitPlayer(
-            url: data.url as String,
+            url: data.url,
             data: data.movie,
             wh: data.watchHistory,
             seasonIndex: data.seasonIndex,

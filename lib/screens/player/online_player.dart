@@ -8,13 +8,13 @@ import 'package:netmirror/api/playlist/get_source.dart';
 import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/cookies_manager.dart';
-import 'package:netmirror/models/watch_model.dart';
+import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
 
 class BetterPlayerScreen extends ConsumerStatefulWidget {
   const BetterPlayerScreen({super.key, required this.data, required this.wh});
   final PlayerData data;
-  final WatchHistoryModel? wh;
+  final WatchHistory? wh;
 
   @override
   ConsumerState<BetterPlayerScreen> createState() => _BetterPlayerScreenState();

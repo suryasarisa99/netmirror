@@ -15,7 +15,7 @@ class NfHomeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double imageHeight = isDesk ? 120 : 185;
-    final imageWidth = imageHeight * OTT.none.aspectRatio;
+    final imageWidth = imageHeight * OTT.netflix.aspectRatio;
 
     return SizedBox(
       height: imageHeight + 23 + 38,
@@ -49,7 +49,7 @@ class NfHomeRow extends StatelessWidget {
                         ).push("/nf-movie", extra: tray.postIds[j]);
                       },
                       child: CachedNetworkImage(
-                        imageUrl: OTT.none.getImg(tray.postIds[j]),
+                        imageUrl: OTT.netflix.getImg(tray.postIds[j]),
                         // "https://imgcdn.media/poster/v/${tray.postIds[j]}.jpg",
                         // width: 208,
                         // height: 208 / 1.79, // 116.2
