@@ -92,31 +92,35 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
       displacement: 50,
       edgeOffset: 120,
       color: Colors.white,
-      child: data == null
-          ? const Center(child: CircularProgressIndicator(color: Colors.white))
-          : Scaffold(
-              backgroundColor: Colors.black,
-              body: SafeArea(
-                top: true,
-                child: CustomScrollView(
-                  controller: scrollController,
-                  slivers: [
-                    buildAppBar(),
-                    SliverToBoxAdapter(child: buildCarousel()),
-                    SliverList.builder(
-                      itemCount: data!.trays.length,
-                      itemBuilder: (context, i) {
-                        final tray = data!.trays[i];
-                        return tray.isTop10
-                            ? PvHomeTop10Row(tray: tray)
-                            : PvHomeRow(tray: tray);
-                      },
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  ],
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          top: true,
+          child: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              buildAppBar(),
+              if (data == null)
+                const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else ...[
+                SliverToBoxAdapter(child: buildCarousel()),
+                SliverList.builder(
+                  itemCount: data!.trays.length,
+                  itemBuilder: (context, i) {
+                    final tray = data!.trays[i];
+                    return tray.isTop10
+                        ? PvHomeTop10Row(tray: tray)
+                        : PvHomeRow(tray: tray);
+                  },
                 ),
-              ),
-            ),
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
+              ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 
