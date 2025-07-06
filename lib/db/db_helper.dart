@@ -6,7 +6,6 @@ import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/prime_video/pv_home_model.dart';
 import 'package:netmirror/models/watch_list_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
-import 'package:shared_code/models/ott.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 import 'package:path/path.dart' as p;
@@ -65,7 +64,7 @@ class DBHelper {
     );
   }
 
-  Future<void> disonnect() async {
+  Future<void> disconnect() async {
     _db?.close();
     _db = null;
   }
