@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/constants.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/prime_video/pv_home_model.dart';
+import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_rows.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_tabs.dart';
@@ -107,7 +107,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
   }
 
   void loadData() async {
-    final prvData = await DBHelper.instance.getNfHomePage(currentTabName);
+    final prvData = await DB.home.getNfHome(currentTabName);
     if (prvData == null || prvData.isStale) {
       loadDataFromOnline();
     } else {
@@ -123,7 +123,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
     setState(() {
       data = temp;
     });
-    DBHelper.instance.addNfHomePage(currentTabName, temp);
+    DB.home.addNfHome(currentTabName, temp);
   }
 
   void goToNewTab() {

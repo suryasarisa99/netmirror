@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:netmirror/constants.dart';
 // import 'package:netmirror/better_player/better_player.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
@@ -55,7 +55,7 @@ void main() async {
   //   databaseFactory = databaseFactoryFfi;
   // }
 
-  await DBHelper.instance.database;
+  await DB.instance.database;
   Downloader.instance;
 
   // if (!isDesk) {

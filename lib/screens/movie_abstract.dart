@@ -20,7 +20,7 @@ import 'package:netmirror/api/get_movie_details.dart';
 import 'package:netmirror/api/playlist/get_master_hls.dart';
 import 'package:netmirror/api/playlist/get_source.dart';
 import 'package:netmirror/constants.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/models/movie_model.dart';
@@ -88,14 +88,14 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   Future<void> loadData() async {
     log("surya abstract class: loadData()");
-    var localMovie = await DBHelper.instance.getMovie(widget.id, ott.id);
+    var localMovie = await DB.movie.get(widget.id, ott.id);
 
     loadDownloads();
 
     if (localMovie != null) {
       final List<dynamic> results = await Future.wait([
         getWatchHistory(localMovie),
-        DBHelper.instance.isInWatchList(localMovie.id, ott.id),
+        DB.watchList.isIn(localMovie.id, ott.id),
       ]);
       log("in watchlist: ${results[1]}");
 
@@ -143,20 +143,20 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       });
     }
 
-    DBHelper.instance.addMovie(widget.id, ott.id, onlineMovie);
+    DB.movie.add(widget.id, ott.id, onlineMovie);
   }
 
   Future<void> getWatchHistory(Movie? m, [int? sIndex]) async {
     if (m == null) return null;
     if (m.isMovie) {
-      final result = await DBHelper.instance.getWatchHistory(
+      final result = await DB.watchHistory.get(
         id: m.id,
         ottId: ott.id,
         videoId: m.id,
       );
       watchHistory = result;
     } else {
-      final result = await DBHelper.instance.getShowWatchHistory(
+      final result = await DB.watchHistory.getShowHistory(
         ottId: ott.id,
         seasonIndex: sIndex ?? m.seasons.length - 1,
         seriesId: m.id,
@@ -187,7 +187,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       setState(() {
         movie!.seasons[index].episodes = moreEpisodes;
       });
-      DBHelper.instance.addMovie(widget.id, ott.id, movie!);
+      DB.movie.add(widget.id, ott.id, movie!);
     } else {
       log("episodes already loaded");
     }
@@ -213,7 +213,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     setState(() {
       movie!.seasons[seasonIndex].episodes!.addAll(moreEpisodes);
       episodesLoading = false;
-      DBHelper.instance.addMovie(widget.id, ott.id, movie!);
+      DB.movie.add(widget.id, ott.id, movie!);
     });
   }
 
@@ -498,7 +498,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       setState(() {
         inWatchlist = false;
       });
-      DBHelper.instance.removeFromWatchList(movie!.id, ott.id);
+      DB.watchList.delete(movie!.id, ott.id);
     } else {
       log("Adding to watchlist");
       // Animate from removed state to added state (0.0 to 1.0)
@@ -506,7 +506,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       setState(() {
         inWatchlist = true;
       });
-      DBHelper.instance.addToWatchList(
+      DB.watchList.add(
         WatchList(
           id: movie!.id,
           ottId: ott.id,

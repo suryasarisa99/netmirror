@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_initial.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/prime_video/pv_home_model.dart';
+import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
@@ -64,7 +64,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
   }
 
   void loadData() async {
-    final prvData = await DBHelper.instance.getPvHomePage(currentTabName);
+    final prvData = await DB.home.getPvHome(currentTabName);
     if (prvData == null || prvData.isStale) {
       loadDataFromOnline();
     } else {
@@ -82,7 +82,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
     setState(() {
       data = temp;
     });
-    DBHelper.instance.addPvHomePage(currentTabName, temp);
+    DB.home.addPvHome(currentTabName, temp);
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/services.dart';
 import 'package:netmirror/constants.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
@@ -71,7 +71,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
 
   Future<void> _initializeVideo() async {
     l.success("Playing video: ${widget.url}");
-    final futureWatchHistory = DBHelper.instance.getWatchHistory(
+    final futureWatchHistory = DB.watchHistory.get(
       videoId: videoId,
       ottId: widget.data.ott.id,
       id: widget.data.id,
@@ -342,7 +342,7 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         );
 
         // // Save to database
-        await DBHelper.instance.saveWatchHistory(watchHistory);
+        await DB.watchHistory.save(watchHistory);
 
         if (isCompleted) {
           l.success("Video completed - marked as watched");

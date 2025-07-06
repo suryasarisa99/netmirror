@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/models/prime_video/pv_home_model.dart';
+import 'package:netmirror/models/home_models.dart';
 import 'package:shared_code/models/ott.dart';
 
 class NfHomeRow extends StatelessWidget {

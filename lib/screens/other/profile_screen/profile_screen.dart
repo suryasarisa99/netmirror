@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/constants.dart';
-import 'package:netmirror/db/db_helper.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/models/watch_list_model.dart';
@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _initial() async {
     final [x, y] = await Future.wait([
-      DBHelper.instance.getWatchList(),
-      DBHelper.instance.getAllWatchHistory(),
+      DB.watchList.getAll(),
+      DB.watchHistory.getAll(),
     ]);
 
     setState(() {

@@ -14,6 +14,8 @@ class WatchHistory {
   final int? episodeIndex;
   final int? seasonIndex;
 
+  final DateTime? lastUpdated;
+
   WatchHistory({
     required this.id,
     required this.videoId,
@@ -29,6 +31,7 @@ class WatchHistory {
     required this.scaleY,
     required this.fit,
     required this.speed,
+    this.lastUpdated,
   });
 
   factory WatchHistory.fromJson(Map<String, dynamic> json) {
@@ -48,5 +51,26 @@ class WatchHistory {
       fit: json['fit'],
       speed: json['speed'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'video_id': videoId,
+      'ott_id': ottId,
+      'episode_index': episodeIndex,
+      'season_index': seasonIndex,
+      'title': title,
+      'url': url,
+      'is_show': isShow ? 1 : 0,
+      'scale_x': scaleX,
+      'scale_y': scaleY,
+      'duration': duration,
+      'current': current,
+      'fit': fit,
+      'speed': speed,
+      'last_updated':
+          lastUpdated?.toIso8601String() ?? DateTime.now().toIso8601String(),
+    };
   }
 }
