@@ -56,18 +56,27 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
 
     // Initialize animation controller
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
-    // Create slide animation that goes up then comes back down
-    _slideAnimation =
-        Tween<double>(
-          begin: -70.0, // Start 50px up
-          end: 0.0, // End at normal position
-        ).animate(
-          CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-        );
+    // Create slide animation that starts at normal position, goes up, then comes back down
+    _slideAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(
+          begin: 0.0,
+          end: -60.0,
+        ).chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50, // 40% of animation time to go up
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(
+          begin: -60.0,
+          end: 0.0,
+        ).chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50, // 60% of animation time to come back down with bounce
+      ),
+    ]).animate(_animationController);
 
     loadData();
     _controller.addListener(_handleScroll);
@@ -227,7 +236,6 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
                           child: Column(
                             children: [
                               buildSpotlight(backgroundColor, baseColor),
-                              const SizedBox(height: 20),
                               ...data!.trays.map((e) => NfHomeRow(tray: e)),
                             ],
                           ),
