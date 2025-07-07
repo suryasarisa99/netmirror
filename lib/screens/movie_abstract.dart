@@ -8,6 +8,7 @@ import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_list_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/provider/AudioTrackProvider.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
@@ -339,79 +340,95 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     }
   }
 
+  // void goToPlayer({
+  //   required Movie movie,
+  //   WatchHistory? wh,
+  //   int? sIndex,
+  //   int? eIndex,
+  // }) async {
+  //   if (movie.isShow && eIndex == null) {
+  //     l.error("Episode index is null for show");
+  //     return;
+  //   }
+  //   // GoRouter.of(context).push(
+  //   //   "/player",
+  //   //   extra: (
+  //   //     movie: movie,
+  //   //     watchHistory: wh,
+  //   //     seasonIndex: sIndex ?? seasonIndex,
+  //   //     episodeIndex: eIndex,
+  //   //   ),
+  //   // );
+
+  //   // for testing, passing object doesn't supports hot reload, so url for testing purpose
+  //   final videoId = movie.isMovie
+  //       ? movie.id
+  //       : movie.seasons[sIndex ?? seasonIndex].episodes![eIndex!].id;
+  //   final resourceKey = CookiesManager.resourceKey!;
+  //   late String url;
+  //   if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
+  //     final masterPlaylist = await getMasterHls(videoId, resourceKey, ott);
+  //     final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
+  //         ? ref.read(audioTrackProvider).map((e) => e["language"]!).toList()
+  //         : [];
+  //     final String? resolution = SettingsOptions.fastModeByVideo
+  //         ? SettingsOptions.defaultResolution
+  //         : null;
+  //     final simplifiedPlaylist = fastPlaylist(
+  //       masterPlaylist,
+  //       audiosCodecs,
+  //       resolution,
+  //     );
+  //     log("sourceStr: \n$simplifiedPlaylist");
+  //     // write to file
+  //     final basedir = Directory(
+  //       isDesk
+  //           ? p.join((await getDownloadsDirectory())!.path, "netmirror", "temp")
+  //           : "/storage/emulated/0/Download/netmirror/temp",
+  //     );
+  //     if (!await basedir.exists()) {
+  //       await basedir.create(recursive: true);
+  //     }
+  //     final file = File("${basedir.path}/$videoId.m3u8");
+  //     await file.writeAsString(simplifiedPlaylist);
+  //     url = file.path;
+  //   } else {
+  //     url = '$newApiUrl/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+  //   }
+  //   GoRouter.of(context)
+  //       .push(
+  //         "/player",
+  //         extra: (
+  //           movie: movie,
+  //           watchHistory: wh ?? watchHistory,
+  //           seasonIndex: sIndex ?? seasonIndex,
+  //           episodeIndex: eIndex,
+  //           url: url,
+  //         ),
+  //       )
+  //       .then((val) {
+  //         Future.delayed(Duration(milliseconds: 400)).then((_) {
+  //           getWatchHistory(movie, seasonIndex).then((_) {
+  //             setState(() {});
+  //           });
+  //         });
+  //       });
+  // }
+
   void goToPlayer({
     required Movie movie,
     WatchHistory? wh,
     int? sIndex,
     int? eIndex,
-  }) async {
-    if (movie.isShow && eIndex == null) {
-      l.error("Episode index is null for show");
-      return;
-    }
-    // GoRouter.of(context).push(
-    //   "/player",
-    //   extra: (
-    //     movie: movie,
-    //     watchHistory: wh,
-    //     seasonIndex: sIndex ?? seasonIndex,
-    //     episodeIndex: eIndex,
-    //   ),
-    // );
-
-    // for testing, passing object doesn't supports hot reload, so url for testing purpose
-    final videoId = movie.isMovie
-        ? movie.id
-        : movie.seasons[sIndex ?? seasonIndex].episodes![eIndex!].id;
-    final resourceKey = CookiesManager.resourceKey!;
-    late String url;
-    if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
-      final masterPlaylist = await getMasterHls(videoId, resourceKey, ott);
-      final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
-          ? ref.read(audioTrackProvider).map((e) => e["language"]!).toList()
-          : [];
-      final String? resolution = SettingsOptions.fastModeByVideo
-          ? SettingsOptions.defaultResolution
-          : null;
-      final simplifiedPlaylist = fastPlaylist(
-        masterPlaylist,
-        audiosCodecs,
-        resolution,
-      );
-      log("sourceStr: \n$simplifiedPlaylist");
-      // write to file
-      final basedir = Directory(
-        isDesk
-            ? p.join((await getDownloadsDirectory())!.path, "netmirror", "temp")
-            : "/storage/emulated/0/Download/netmirror/temp",
-      );
-      if (!await basedir.exists()) {
-        await basedir.create(recursive: true);
-      }
-      final file = File("${basedir.path}/$videoId.m3u8");
-      await file.writeAsString(simplifiedPlaylist);
-      url = file.path;
-    } else {
-      url = '$newApiUrl/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
-    }
-    GoRouter.of(context)
-        .push(
-          "/player",
-          extra: (
-            movie: movie,
-            watchHistory: wh ?? watchHistory,
-            seasonIndex: sIndex ?? seasonIndex,
-            episodeIndex: eIndex,
-            url: url,
-          ),
-        )
-        .then((val) {
-          Future.delayed(Duration(milliseconds: 400)).then((_) {
-            getWatchHistory(movie, seasonIndex).then((_) {
-              setState(() {});
-            });
-          });
-        });
+  }) {
+    goToPlayerNew(
+      context: context,
+      ref: ref,
+      movie: movie,
+      wh: wh,
+      sIndex: sIndex ?? seasonIndex,
+      eIndex: eIndex,
+    );
   }
 
   void downloadMovie() async {
@@ -453,6 +470,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     final episodes = movie!.seasons[seasonIndex].episodes!
         .where((e) => !downloads.containsKey(e.id))
         .toList();
+    log("new episodes added: ${episodes.length}");
 
     final result = await seasonConfigure(
       movie!.toMinifyMovie(),

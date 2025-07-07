@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Tables {
   static const String movie = "movie";
   static const String ottPvHome = "ott_pv_home";
@@ -57,4 +59,6 @@ class Tables {
     watchHistory,
     watchList,
   ];
+
+  Tables._();
 }

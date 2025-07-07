@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/constants.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/screens/external_plyer.dart';
@@ -331,9 +332,6 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
         ],
       ),
     );
-    // return Text(
-    //   "Progress:  ${fndaIndex != -1 ? "${firstNonDownloadAudioIndex + 1}/${item.audioLangs.length}" : "Video  $Dot ${item.videoProgress}%"}",
-    // );
   }
 
   GestureDetector buildDownloadItem(DownloadItem item, int i) {
@@ -347,15 +345,36 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
           context.push("/downloads", extra: item.id);
           return;
         }
-        log("item id: ${item.downloadPath}");
+        log("item id: ${item.id}, download path: ${item.downloadPath}");
         log("item path: ${item.playlistPath}");
-        if (isDesk) {
-          ExternalPlayer.offlineFile.mpv(item.playlistPath);
-        } else {
-          final y = item.playlistPath;
-          final x = item.playlistPath.replaceFirst(".mp4", ".m3u8");
-          _launchFileWithExternalApp(item.playlistPath);
+        final id = item.seriesId;
+        final movie = await DB.movie.get(id!, 1);
+        if (movie == null) {
+          log("Movie not found in DB for id: $id");
+          return;
         }
+        log(
+          "movie: ${movie.title} ${movie.id} ${movie.ott.name}, s:e ${item.seasonNumber}:${item.episodeNumber}",
+        );
+        GoRouter.of(context).push(
+          "/player",
+          extra: (
+            url: item.playlistPath,
+            movie: movie,
+            watchHistory: null,
+            seasonIndex: item.seasonNumber! - 1,
+            episodeIndex: item.episodeNumber! - 1,
+          ),
+        );
+
+        // final movie = await DB.movie.get(item.id, 0);
+        // if (isDesk) {
+        //   ExternalPlayer.offlineFile.mpv(item.playlistPath);
+        // } else {
+        //   final y = item.playlistPath;
+        //   final x = item.playlistPath.replaceFirst(".mp4", ".m3u8");
+        //   _launchFileWithExternalApp(item.playlistPath);
+        // }
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),

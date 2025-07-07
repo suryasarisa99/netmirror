@@ -533,6 +533,8 @@ class Downloader {
     String resourceKey,
   ) async {
     final seasonNumber = movie.seasons[seasonIndex].s;
+
+    // its a dummy item, to show series image and title
     await DownloadDb.instance.insertSeries({
       'id': movie.id,
       'title': movie.title,

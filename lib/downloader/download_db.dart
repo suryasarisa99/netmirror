@@ -12,7 +12,7 @@ class DownloadDb {
   DownloadDb._internal();
 
   // properties
-  static const DOWNLOAD_TASK = "downloadTask";
+  static const downloadTask = "downloadTask";
   static Database? _db;
 
   //* getters
@@ -155,7 +155,7 @@ class DownloadDb {
     await db.insert(DownloadTables.downloads, {
       ...series,
       ...DownloadTables.dummyItems,
-    });
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<String> getDownloadStatus(String videoId) {

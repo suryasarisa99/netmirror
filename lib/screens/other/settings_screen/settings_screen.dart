@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/data/options.dart';
+import 'package:netmirror/db/db.dart';
+import 'package:netmirror/db/tables.dart';
+import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -138,6 +144,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 GoRouter.of(context).push('/settings-audio-tracks');
               },
               child: Text("Audio Tracks"),
+            ),
+            FilledButton(
+              onPressed: () async {
+                final db = await DB.instance.database;
+                final result = await db.query(Tables.movie);
+                log("result length: ${result.length}");
+                result.forEach((item) {
+                  final key = item['key'] as String;
+                  final val = Movie.fromJson(
+                    jsonDecode(item['value']! as String),
+                    key,
+                    null,
+                  );
+                  if (val.isMovie) return;
+                  for (final season in val.seasons) {
+                    if (season.episodes != null &&
+                        season.episodes!.isNotEmpty) {
+                      for (int i = 0; i < season.episodes!.length; i++) {
+                        final episode = season.episodes![i];
+                        if (int.parse(episode.ep.substring(1)) != i + 1) {
+                          log("error in ${val.title}, at season ${season.s} ");
+                        }
+                      }
+                    }
+                  }
+                });
+              },
+              child: Text("Subtitles"),
             ),
           ],
         ),
