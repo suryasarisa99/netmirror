@@ -9,6 +9,7 @@ import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/models/watch_list_model.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -113,9 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            GoRouter.of(
-                              context,
-                            ).push("/${ott.cookie}-movie", extra: e.id);
+                            goToMovie(context, ott.id, e.id);
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
@@ -154,9 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             child: InkWell(
                               onTap: () {
-                                GoRouter.of(
-                                  context,
-                                ).push("/${ott.cookie}-movie", extra: e.id);
+                                goToMovie(context, ott.id, e.id);
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
