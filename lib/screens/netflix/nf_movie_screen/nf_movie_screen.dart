@@ -9,7 +9,6 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/dialogs/category_dialog.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';

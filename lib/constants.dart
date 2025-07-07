@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:netmirror/models/movie_model.dart';
-import 'package:netmirror/models/watch_history_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late final SharedPreferences? sp;

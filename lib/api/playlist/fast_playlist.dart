@@ -1,4 +1,3 @@
-import 'package:media_kit/media_kit.dart';
 
 /// this function only keeps the first audio track found in audioLangs and removes the rest, if not found return all audio tracks.
 /// also for video resolution.

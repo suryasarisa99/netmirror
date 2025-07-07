@@ -1,4 +1,4 @@
-import 'package:netmirror/db/db_tables.dart';
+import 'package:netmirror/db/tables.dart';
 import 'package:netmirror/db/home_table.dart';
 import 'package:netmirror/db/movie_table.dart';
 import 'package:netmirror/db/watch_history_table.dart';

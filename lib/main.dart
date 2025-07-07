@@ -26,8 +26,6 @@ import 'package:netmirror/screens/prime_video/home_screen/pv_home_screen.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_movie_screen.dart';
 import 'package:netmirror/screens/other/search_screen/search_screen.dart';
 import 'package:netmirror/screens/other/settings_screen/audio_track_screen.dart';
-import 'package:shared_code/models/movie_model.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {

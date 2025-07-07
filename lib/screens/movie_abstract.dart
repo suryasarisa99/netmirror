@@ -147,7 +147,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   Future<void> getWatchHistory(Movie? m, [int? sIndex]) async {
-    if (m == null) return null;
+    if (m == null) return;
     if (m.isMovie) {
       final result = await DB.watchHistory.get(
         id: m.id,
@@ -360,7 +360,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
           ? ref
                 .read(audioTrackProvider)
-                .map((e) => e["language"]! as String)
+                .map((e) => e["language"]!)
                 .toList()
           : [];
       final String? resolution = SettingsOptions.fastModeByVideo

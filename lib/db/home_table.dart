@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:netmirror/db/db.dart';
-import 'package:netmirror/db/db_tables.dart';
+import 'package:netmirror/db/tables.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:sqflite/sqflite.dart';
 

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:netmirror/db/db.dart';
-import 'package:netmirror/db/db_tables.dart';
+import 'package:netmirror/db/tables.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:sqflite/sqflite.dart';
 
