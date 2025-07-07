@@ -88,7 +88,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         backgroundColor: Colors.black,
-        automaticallyImplyLeading: isLgScreen,
       ),
       backgroundColor: Colors.black,
       // bottomNavigationBar: isLgScreen ? null : const MyNavBar(current: 3),

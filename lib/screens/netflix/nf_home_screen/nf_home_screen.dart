@@ -10,6 +10,7 @@ import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_rows.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_tabs.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
@@ -188,7 +189,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
                 actions: [
                   TopbarButtons.settingsBtn(context),
                   TopbarButtons.downloadsBtn(context),
-                  TopbarButtons.searchBtn(context),
+                  TopbarButtons.searchBtn(context, 0),
                 ],
               ),
               flexibleSpace: FlexibleSpaceBar(
@@ -257,7 +258,7 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
   Widget buildSpotlight(Color? hsl, Color? baseColor) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push("/nf-movie", extra: data!.spotlightId);
+        goToMovie(context, 0, data!.spotlightId);
       },
       child: Container(
         height: 500,

@@ -9,6 +9,7 @@ import 'package:netmirror/api/get_search.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/search_results_model.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -200,7 +201,7 @@ class _NmSearchState extends ConsumerState<Search>
         final result = searchResult.results[index];
         return GestureDetector(
           onTap: () {
-            GoRouter.of(context).push("/nf-movie", extra: result.id);
+            goToMovie(context, 0, result.id);
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -240,7 +241,7 @@ class _NmSearchState extends ConsumerState<Search>
         final result = searchResult.results[index];
         return InkWell(
           onTap: () {
-            GoRouter.of(context).push("/pv-movie", extra: result.id);
+            goToMovie(context, 1, result.id);
           },
           child: Container(
             padding: const EdgeInsets.all(10),

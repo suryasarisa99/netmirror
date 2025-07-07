@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:shared_code/models/ott.dart';
 
 class NfHomeRow extends StatelessWidget {
@@ -44,9 +45,7 @@ class NfHomeRow extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     child: GestureDetector(
                       onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).push("/nf-movie", extra: tray.postIds[j]);
+                        goToMovie(context, 0, tray.postIds[j]);
                       },
                       child: CachedNetworkImage(
                         imageUrl: OTT.netflix.getImg(tray.postIds[j]),
@@ -110,9 +109,7 @@ class NfHomeTop10Row extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             child: GestureDetector(
                               onTap: () {
-                                GoRouter.of(
-                                  context,
-                                ).push("/nf-movie", extra: tray.postIds[j]);
+                                goToMovie(context, 0, tray.postIds[j]);
                               },
                               child: CachedNetworkImage(
                                 imageUrl:

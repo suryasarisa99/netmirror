@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
+import 'package:netmirror/utils/nav.dart';
 
 class PvHomeRow extends StatelessWidget {
   const PvHomeRow({super.key, required this.tray});
@@ -38,9 +39,7 @@ class PvHomeRow extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     child: GestureDetector(
                       onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).push("/pv-movie", extra: tray.postIds[j]);
+                        goToMovie(context, 1, tray.postIds[j]);
                       },
                       child: CachedNetworkImage(
                         imageUrl:
@@ -102,9 +101,7 @@ class PvHomeTop10Row extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             child: GestureDetector(
                               onTap: () {
-                                GoRouter.of(
-                                  context,
-                                ).push("/pv-movie", extra: tray.postIds[j]);
+                                goToMovie(context, 1, tray.postIds[j]);
                               },
                               child: CachedNetworkImage(
                                 imageUrl:

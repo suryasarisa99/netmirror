@@ -12,6 +12,7 @@ import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
@@ -149,7 +150,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
         actions: [
           TopbarButtons.settingsBtn(context),
           TopbarButtons.downloadsBtn(context),
-          TopbarButtons.searchBtn(context),
+          TopbarButtons.searchBtn(context, 1),
         ],
       ),
       toolbarHeight: toolbarHeight,
@@ -191,8 +192,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                 builder: (BuildContext context) {
                   return GestureDetector(
                     onTap: () {
-                      log("navigating to movie");
-                      GoRouter.of(context).push("/pv-movie", extra: item.id);
+                      goToMovie(context, 1, item.id);
                     },
                     child: CachedNetworkImage(
                       imageUrl: item.img,

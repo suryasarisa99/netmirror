@@ -37,33 +37,39 @@ class NfNavBar extends StatelessWidget {
 
     final items = [
       const _CustomNavItem(
-          icon: Icon(Icons.home, color: Colors.white),
-          uIcon: Icon(Icons.home_outlined, color: usClr),
-          label: "Home"),
+        icon: Icon(Icons.home, color: Colors.white),
+        uIcon: Icon(Icons.home_outlined, color: usClr),
+        label: "Home",
+      ),
       const _CustomNavItem(
-          uIcon: Icon(HugeIcons.strokeRoundedMenuSquare, color: usClr),
-          // icon: Icon(
-          //   HugeIcons.strokeRoundedGameController03,
-          //   color: Colors.white,
-          // ),
-          icon: Icon(HugeIcons.strokeRoundedGameController03, color: usClr),
-          label: "OTT"),
+        uIcon: Icon(HugeIcons.strokeRoundedMenuSquare, color: usClr),
+        // icon: Icon(
+        //   HugeIcons.strokeRoundedGameController03,
+        //   color: Colors.white,
+        // ),
+        icon: Icon(HugeIcons.strokeRoundedGameController03, color: usClr),
+        label: "OTT",
+      ),
       const _CustomNavItem(
-          icon: Icon(CupertinoIcons.add, color: Colors.white),
-          uIcon: Icon(Icons.search, color: usClr),
-          label: "New & Hot"),
+        icon: Icon(CupertinoIcons.add, color: Colors.white),
+        uIcon: Icon(Icons.search, color: usClr),
+        label: "New & Hot",
+      ),
       _CustomNavItem(
-          icon: Container(
-              margin: const EdgeInsets.only(bottom: 2),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.white),
-                  borderRadius: BorderRadius.circular(3)),
-              child: imgWidget),
-          uIcon: Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: imgWidget,
+        icon: Container(
+          margin: const EdgeInsets.only(bottom: 2),
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.white),
+            borderRadius: BorderRadius.circular(3),
           ),
-          label: "My Profile"),
+          child: imgWidget,
+        ),
+        uIcon: Padding(
+          padding: const EdgeInsets.only(bottom: 2),
+          child: imgWidget,
+        ),
+        label: "My Profile",
+      ),
       //     label: "New & Hot"),
       // CustomNavItem(
       //     icon: Icon(Icons.home, color: Colors.white),
@@ -93,18 +99,20 @@ class NfNavBar extends StatelessWidget {
               } else if (i == 3 && current != 3) {
                 GoRouter.of(context).push("/profile");
               } else if (i == 2) {
-                GoRouter.of(context).push("/search", extra: 0);
+                GoRouter.of(context).push("/search/0");
               }
             },
             icon: Column(
               children: [
                 isSelected ? item.icon : item.uIcon,
-                const SizedBox(
-                  height: 0,
+                const SizedBox(height: 0),
+                Text(
+                  item.label,
+                  style: TextStyle(
+                    fontSize: 9,
+                    color: isSelected ? sClr : usClr,
+                  ),
                 ),
-                Text(item.label,
-                    style: TextStyle(
-                        fontSize: 9, color: isSelected ? sClr : usClr))
               ],
             ),
           );

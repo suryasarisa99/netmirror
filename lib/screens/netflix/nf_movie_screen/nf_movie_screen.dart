@@ -10,6 +10,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/dialogs/category_dialog.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -78,7 +79,7 @@ class NfMovieScreenState extends MovieScreenState {
             ),
             IconButton(
               onPressed: () {
-                GoRouter.of(context).push("/search");
+                GoRouter.of(context).push("/search/${ott.id}");
               },
               icon: isDesk
                   ? Icon(Icons.search, size: 20)
@@ -233,7 +234,7 @@ class NfMovieScreenState extends MovieScreenState {
               final id = movie!.suggest[index].id;
               return GestureDetector(
                 onTap: () {
-                  GoRouter.of(context).push("/nf-movie", extra: id);
+                  goToMovie(context, ott.id, id);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4),

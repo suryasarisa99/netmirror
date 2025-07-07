@@ -20,10 +20,7 @@ class CustomBottomBar extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.black,
         border: Border(
-          top: BorderSide(
-            color: Color.fromRGBO(93, 93, 93, 1),
-            width: 2,
-          ),
+          top: BorderSide(color: Color.fromRGBO(93, 93, 93, 1), width: 2),
         ),
       ),
       child: Row(
@@ -82,7 +79,7 @@ class CustomBottomBar extends StatelessWidget {
                 GoRouter.of(c).push('/downloads');
                 break;
               case 4:
-                GoRouter.of(c).push('/search', extra: 1);
+                GoRouter.of(c).push('/search/1');
                 break;
             }
           },

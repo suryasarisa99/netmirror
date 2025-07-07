@@ -1,6 +1,5 @@
 # bugs
 
-- searching same movie on current platoform navigation not working
 - download screen actions by long press
 - pip mode not working
 

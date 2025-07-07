@@ -16,7 +16,6 @@ import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:super_context_menu/super_context_menu.dart';
 
 class DownloadsScreen extends StatefulWidget {
   const DownloadsScreen({super.key, this.seriesId});

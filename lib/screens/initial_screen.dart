@@ -137,16 +137,12 @@ class _InitialScreenState extends ConsumerState<InitialScreen> {
               Text(
                 "$counterSeconds",
                 style: TextStyle(
-                  color: Colors.red,
+                  color: const Color(0xFFEEEEEE),
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                "seconds remaining",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
-              ),
             ] else ...[
               const SizedBox(height: 30),
               const CircularProgressIndicator(color: Colors.red),
