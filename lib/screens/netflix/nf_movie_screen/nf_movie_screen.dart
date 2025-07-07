@@ -10,11 +10,11 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/dialogs/category_dialog.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -57,6 +57,7 @@ class NfMovieScreenState extends MovieScreenState {
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      bottomNavigationBar: NfNavBar(current: 0),
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -487,9 +488,7 @@ class NfMovieScreenState extends MovieScreenState {
           _MovieScreenActionItem(
             const Icon(Icons.share, color: Colors.white),
             "Share",
-            () {
-              Share.shareUri(Uri.parse("$apiUrl/watch/${movie!.id}"));
-            },
+            shareDeepLinkUrl,
           ),
           _MovieScreenActionItem(
             const Icon(

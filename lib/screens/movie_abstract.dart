@@ -28,6 +28,7 @@ import 'package:netmirror/data/options.dart';
 import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -191,6 +192,15 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     } else {
       log("episodes already loaded");
     }
+  }
+
+  void shareDeepLinkUrl() {
+    log("Sharing movie: ${movie!.id}");
+    SharePlus.instance.share(
+      ShareParams(
+        uri: Uri.parse("https://netmirror.com/movie/${ott.id}/${movie!.id}"),
+      ),
+    );
   }
 
   void loadMoreEpisodes() async {

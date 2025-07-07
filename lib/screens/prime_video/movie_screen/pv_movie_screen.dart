@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
+import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_season_selector_bottom_sheet.dart';
@@ -68,6 +69,10 @@ class _PVMovieScreenState extends MovieScreenState {
       displacement: 60,
       color: Colors.white,
       child: Scaffold(
+        bottomNavigationBar: CustomBottomBar(
+          selectedIndex: 0,
+          onItemSelected: (i) {},
+        ),
         backgroundColor: Colors.black,
         body: CustomScrollView(
           // no bounce
@@ -304,7 +309,7 @@ class _PVMovieScreenState extends MovieScreenState {
                       color: Colors.white,
                     ),
                     "Share",
-                    () {},
+                    shareDeepLinkUrl,
                   ),
                   MovieScreenActionItem(
                     const Icon(
