@@ -17,7 +17,7 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
     'cookie': 't_hash_t=$tHashT;',
     'pragma': 'no-cache',
     'priority': 'u=1, i',
-    'referer': '$API_URL/watch/$id',
+    'referer': '$apiUrl/watch/$id',
     'sec-ch-ua':
         '"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
     'sec-ch-ua-mobile': '?0',
@@ -36,7 +36,7 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
   };
 
   final url = Uri.parse(
-    '$API_URL/${ott.url}playlist.php',
+    '$apiUrl/${ott.url}playlist.php',
   ).replace(queryParameters: params);
   log("Source url: $url");
 

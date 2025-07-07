@@ -487,7 +487,7 @@ class NfMovieScreenState extends MovieScreenState {
             const Icon(Icons.share, color: Colors.white),
             "Share",
             () {
-              Share.shareUri(Uri.parse("$API_URL/watch/${movie!.id}"));
+              Share.shareUri(Uri.parse("$apiUrl/watch/${movie!.id}"));
             },
           ),
           _MovieScreenActionItem(

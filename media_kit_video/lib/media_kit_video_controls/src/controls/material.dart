@@ -1149,7 +1149,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
           decoration: BoxDecoration(
             color: _playbackSpeed == speed
                 ? Colors.red
-                : Colors.grey.withOpacity(0.3),
+                : Colors.grey.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Text(

@@ -13,9 +13,9 @@ Future<String> getAudioHls({
     'Accept-Language': 'en-US,en;q=0.9',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
-    'Origin': API_URL,
+    'Origin': apiUrl,
     'Pragma': 'no-cache',
-    'Referer': '$API_URL/',
+    'Referer': '$apiUrl/',
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'cross-site',
@@ -26,22 +26,10 @@ Future<String> getAudioHls({
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Linux"',
   };
-
-  final suffix = audioSrc.getSuffix(id);
-  // final smallSuffix = "a/${audioSrc.number}";
-
-  // log("audio src: Prefix: ${audioSrc.prefix} : Suffix: $suffix  : id: $id");
-  // final url = Uri.parse('https://${audioSrc.prefix}.top/files/$id$suffix.m3u8');
   final url = Uri.parse(audioSrc.url);
-  // log("url: $url");
-
-  // const prefixUrl =
-  //     'https://${audioSrc.prefix}.nfmirrorcdn.top/files/${id}/${smallSuffix}/';
-
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;
   if (status != 200) throw Exception('http.get error: statusCode= $status');
   // log("HLS Audio: ${res.body.substring(1, 80)} ...");
-
   return res.body;
 }

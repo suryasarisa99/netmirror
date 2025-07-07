@@ -3,9 +3,7 @@ import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 
 class NfCastPopupScreen extends StatelessWidget {
-  final Movie _movie;
-
-  const NfCastPopupScreen(this._movie, {super.key});
+  const NfCastPopupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

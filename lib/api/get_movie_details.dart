@@ -16,7 +16,7 @@ Future<Movie> getMovie(String id, OTT ott) async {
     'cookie': 't_hash_t=$tHashT;',
     'pragma': 'no-cache',
     'priority': 'u=1, i',
-    'referer': '$API_URL/movies',
+    'referer': '$apiUrl/movies',
     'sec-ch-ua':
         '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
     'sec-ch-ua-mobile': '?0',
@@ -32,7 +32,7 @@ Future<Movie> getMovie(String id, OTT ott) async {
   final params = {'id': id, 't': '1734872811'};
 
   final url = Uri.parse(
-    '$NEW_API_URL/${ott.url}post.php',
+    '$newApiUrl/${ott.url}post.php',
   ).replace(queryParameters: params);
   // log("getMovie: $url", name: "http");
 

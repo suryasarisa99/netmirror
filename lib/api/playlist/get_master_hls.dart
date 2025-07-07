@@ -11,7 +11,7 @@ Future<String> getMasterHls(
   OTT ott, {
   hd = true,
 }) async {
-  final url = Uri.parse('$NEW_API_URL/${ott.url}hls/$videoId.m3u8?in=$key');
+  final url = Uri.parse('$newApiUrl/${ott.url}hls/$videoId.m3u8?in=$key');
   log("getMasterHls url: $url, key: $key", name: "http");
 
   final res = await http.get(url, headers: headers);
@@ -89,22 +89,6 @@ class MyVideoPlaylist {
   final String prefix;
   final String key;
 
-  // String get quality {
-  //   return url.split("/")[5];
-  // }
-
-  // String get videoId {
-  //   return url.split("/")[4];
-  // }
-
-  // String get prefix {
-  //   return url.split("//").last.split(".").first;
-  // }
-
-  // String get key {
-  //   return url.split("=").last;
-  // }
-
   MyVideoPlaylist({
     required this.url,
     required this.key,
@@ -154,19 +138,9 @@ class MyAudioPlaylist {
     required this.number,
   });
 
-  // String get prefix {
-  //   log("prefix complete url: $url");
-  //   RegExp exp = RegExp("https://(.*).top/files/(.*)/a/(\d)/\d.m3u8");
-  //   return url.split("//").last.split(".").first;
-  // }
-
   String getSuffix(String id) {
     return url.split(id).last.split(".").first;
   }
-
-  // String get number {
-  //   return Uri.parse(url).pathSegments.sublist(2)[1];
-  // }
 
   factory MyAudioPlaylist.parse(List<String> items) {
     // log("Audio Items: $items");

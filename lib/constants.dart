@@ -26,9 +26,9 @@ const double kDSmMovieItemWidth = 183.34;
 const double kMbMovieItemHeight = 170;
 const double kMbMovieItemWidth = 120;
 
-const API_URL = "https://netfree2.cc/mobile";
-const NEW_API_URL = "https://a.netfree2.cc/mobile";
-const ADD_URL = "https://userver.netfree2.cc/?heyyst=";
+const apiUrl = "https://netfree2.cc/mobile";
+const newApiUrl = "https://a.netfree2.cc/mobile";
+const addUrl = "https://userver.netfree2.cc/?heyyst=";
 final audioM3u8Exp = RegExp(
   r'https://(?<prefix>[\w\.-]+)\.top/files/(?<id>[\w]+)/a/(?<index>\d+)/\d+\.m3u8',
 );
@@ -36,8 +36,8 @@ final audioM3u8Exp = RegExp(
 const key =
     "59a05b117809dbe6e0879acb3cac14c3::cb742acc402bbeeeaffbbb5ce48cb86e::1734859034::ni";
 const headers = {
-  'Origin': API_URL,
-  'Referer': '$API_URL/',
+  'Origin': apiUrl,
+  'Referer': '$apiUrl/',
   'Sec-Fetch-Mode': 'cors',
   'User-Agent':
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
@@ -56,8 +56,8 @@ const headers = {
 };
 
 final headers2 = [
-  'Origin: $API_URL',
-  'Referer: $API_URL/',
+  'Origin: $apiUrl',
+  'Referer: $apiUrl/',
   'Sec-Fetch-Mode: cors',
   'Accept: */*',
   'Accept-Language: *',
@@ -73,38 +73,6 @@ final headers2 = [
   // 'sec-ch-ua-mobile: ?0',
   // 'sec-ch-ua-platform: "Linux"',
 ];
-
-// PlayerData movieDetailsToEpisode(MovieModel data, WatchHistoryModel? wh,
-//     int seasonIndex, int? episodeIndex) {
-//   final isShow = data.isShow;
-//   final int? curentEpisodeIndex =
-//       isShow ? (episodeIndex ?? wh?.episodeIndex ?? 0) : null;
-//   final Episode? episode =
-//       isShow ? data.seasons[seasonIndex].episodes[curentEpisodeIndex!] : null;
-//   final int? movieId = isShow ? null : data.id;
-//   final int id = data.id;
-//   final img = data.boxshot.url;
-//   final title = data.title;
-//   final episodes = data.seasons.map((season) {
-//     return season.episodes.map((episode) {
-//       return EpisodeData(
-//           id: episode.videoId, title: episode.title, url: episode.boxart.url);
-//     }).toList();
-//   }).toList();
-//   final seasonsCount = data.isShow ? data.seasons.length : 0;
-
-//   return PlayerData(
-//     episodes: episodes,
-//     currentEpisodeIndex: curentEpisodeIndex,
-//     isShow: isShow,
-//     movieId: movieId,
-//     currentSeasonIndex: seasonIndex,
-//     seasonsCount: seasonsCount,
-//     title: title,
-//     img: img,
-//     id: id,
-//   );
-// }
 
 final bool isDesk = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
 const Dot = "•";

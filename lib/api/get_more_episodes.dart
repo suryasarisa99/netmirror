@@ -21,7 +21,7 @@ Future<List<Episode>> getMoreEpisodes({
     'cookie': 't_hash_t=$tHashT;',
     'pragma': 'no-cache',
     'priority': 'u=1, i',
-    'referer': '$API_URL/series',
+    'referer': '$apiUrl/series',
     'sec-ch-ua':
         '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
     'sec-ch-ua-mobile': '?0',
@@ -38,7 +38,7 @@ Future<List<Episode>> getMoreEpisodes({
   if (page != null) params['page'] = page.toString();
 
   final url = Uri.parse(
-    '$API_URL/${ott.url}episodes.php',
+    '$apiUrl/${ott.url}episodes.php',
   ).replace(queryParameters: params);
 
   final res = await http.get(url, headers: headers);

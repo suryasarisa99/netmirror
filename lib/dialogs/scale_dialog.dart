@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class ScaleDialog extends StatefulWidget {
-  const ScaleDialog({
-    super.key,
-    required this.onScale,
-    required this.scale,
-  });
+  const ScaleDialog({super.key, required this.onScale, required this.scale});
   final void Function(double, double) onScale;
   final Size scale;
 
@@ -66,14 +62,15 @@ class _ScaleDialogState extends State<ScaleDialog> {
           // crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: isHeightAndWidthEqual
-                    ? [_buildInput(singleC, "")]
-                    : [
-                        Expanded(child: _buildInput(widthC, "X")),
-                        const SizedBox(width: 8),
-                        _buildInput(heightC, "Y")
-                      ]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: isHeightAndWidthEqual
+                  ? [_buildInput(singleC, "")]
+                  : [
+                      Expanded(child: _buildInput(widthC, "X")),
+                      const SizedBox(width: 8),
+                      _buildInput(heightC, "Y"),
+                    ],
+            ),
             const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -92,36 +89,44 @@ class _ScaleDialogState extends State<ScaleDialog> {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      heightC.text = "1";
-                      widthC.text = "1";
-                      singleC.text = "1";
-                      widget.onScale(1, 1);
-                    },
-                    icon: const Icon(Icons.restore)),
+                  onPressed: () {
+                    heightC.text = "1";
+                    widthC.text = "1";
+                    singleC.text = "1";
+                    widget.onScale(1, 1);
+                  },
+                  icon: const Icon(Icons.restore),
+                ),
                 const SizedBox(width: 8),
                 SizedBox(
                   height: 30,
                   child: FilledButton(
-                      onPressed: () {
-                        if (isHeightAndWidthEqual) {
-                          final value = double.parse(singleC.text);
-                          widget.onScale(value, value);
-                        } else {
-                          final x = double.parse(widthC.text);
-                          final y = double.parse(heightC.text);
-                          widget.onScale(x, y);
-                        }
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              const WidgetStatePropertyAll(Colors.white),
-                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8))),
-                          padding: const WidgetStatePropertyAll(
-                              EdgeInsets.symmetric(vertical: 0))),
-                      child: const Text("Set")),
-                )
+                    onPressed: () {
+                      if (isHeightAndWidthEqual) {
+                        final value = double.parse(singleC.text);
+                        widget.onScale(value, value);
+                      } else {
+                        final x = double.parse(widthC.text);
+                        final y = double.parse(heightC.text);
+                        widget.onScale(x, y);
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: const WidgetStatePropertyAll(
+                        Colors.white,
+                      ),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      padding: const WidgetStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 0),
+                      ),
+                    ),
+                    child: const Text("Set"),
+                  ),
+                ),
               ],
             ),
           ],
@@ -130,6 +135,3 @@ class _ScaleDialogState extends State<ScaleDialog> {
     );
   }
 }
-
-// Usage example
-// void showPopup(BuildContext context

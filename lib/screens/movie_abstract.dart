@@ -358,10 +358,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
       final masterPlaylist = await getMasterHls(videoId, resourceKey, ott);
       final List<String> audiosCodecs = SettingsOptions.fastModeByAudio
-          ? ref
-                .read(audioTrackProvider)
-                .map((e) => e["language"]!)
-                .toList()
+          ? ref.read(audioTrackProvider).map((e) => e["language"]!).toList()
           : [];
       final String? resolution = SettingsOptions.fastModeByVideo
           ? SettingsOptions.defaultResolution
@@ -385,7 +382,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       await file.writeAsString(simplifiedPlaylist);
       url = file.path;
     } else {
-      url = '$NEW_API_URL/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+      url = '$newApiUrl/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
     }
     GoRouter.of(context)
         .push(
@@ -454,13 +451,13 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       context,
     );
     if (result == null) return;
-    final (qualityIndex, audioIndexs, sourceRaw) = result;
+    final (qualityIndex, audioIndexes, sourceRaw) = result;
     Downloader.instance.startSeasonDownload(
       movie!.toMinifyMovie(),
       seasonIndex,
       episodes,
       qualityIndex,
-      audioIndexs,
+      audioIndexes,
       sourceRaw,
       x.resourceKey,
     );

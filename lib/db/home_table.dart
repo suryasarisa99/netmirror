@@ -1,4 +1,3 @@
-// Home Database Operations
 import 'dart:convert';
 
 import 'package:netmirror/db/db.dart';

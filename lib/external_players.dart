@@ -23,7 +23,7 @@ void openPlayer(int videoId) {
 }
 
 Future<void> openVlc(int videoId) async {
-  final String url = '$API_URL/hls/$videoId.m3u8?in=$key';
+  final String url = '$apiUrl/hls/$videoId.m3u8?in=$key';
 
   const userAgent =
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36';
@@ -33,7 +33,7 @@ Future<void> openVlc(int videoId) async {
     '--network-caching=${20 * 60 * 60 * 1000}',
     '--fullscreen',
     '--http-user-agent=$userAgent',
-    '--http-referrer=$API_URL/',
+    '--http-referrer=$apiUrl/',
     '--file-caching=yes',
     url,
   ];
@@ -44,8 +44,11 @@ Future<void> openVlc(int videoId) async {
   if (Platform.isWindows) {
     process = await Process.start(command, arguments);
   } else {
-    process = await Process.start(command, arguments,
-        environment: {'LD_PRELOAD': '/lib/x86_64-linux-gnu/libpthread.so.0'});
+    process = await Process.start(
+      command,
+      arguments,
+      environment: {'LD_PRELOAD': '/lib/x86_64-linux-gnu/libpthread.so.0'},
+    );
   }
 
   process.stdout
@@ -59,7 +62,7 @@ Future<void> openVlc(int videoId) async {
 }
 
 Future<void> openMpv(int videoId, {proxy = false}) async {
-  final String url = '$API_URL/hls/$videoId.m3u8?in=$key';
+  final String url = '$apiUrl/hls/$videoId.m3u8?in=$key';
 
   const userAgent =
       'Mozilla/5.0 AppleWebKit/537.36 Chrome/127.0.0.0 Safari/537.36';
@@ -97,7 +100,7 @@ Future<void> openMpv(int videoId, {proxy = false}) async {
 }
 
 Future<void> openFfplay(int videoId) async {
-  final String url = '$API_URL/hls/$videoId.m3u8?in=$key';
+  final String url = '$apiUrl/hls/$videoId.m3u8?in=$key';
 
   const userAgent =
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36';
@@ -107,7 +110,7 @@ Future<void> openFfplay(int videoId) async {
     '-user_agent',
     userAgent,
     '-headers',
-    'Origin: $API_URL\r\nReferer: $API_URL/\r\nSec-Fetch-Mode: cors',
+    'Origin: $apiUrl\r\nReferer: $apiUrl/\r\nSec-Fetch-Mode: cors',
     '-protocol_whitelist',
     'file,http,https,tcp,tls,crypto',
     '-i',
@@ -127,7 +130,7 @@ Future<void> openFfplay(int videoId) async {
 }
 
 Future<void> mplayer(int videoId) async {
-  final String url = '$API_URL/hls/$videoId.m3u8?in=$key';
+  final String url = '$apiUrl/hls/$videoId.m3u8?in=$key';
 
   const userAgent =
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36';
@@ -160,13 +163,12 @@ Future<void> mplayer(int videoId) async {
 
 Future<void> startMitmProxy() async {
   const commandMitmproxy = 'mitmproxy';
-  final mitmproxyArguments = [
-    '-s',
-    '~/Desktop/test/mitm-script.py',
-  ];
+  final mitmproxyArguments = ['-s', '~/Desktop/test/mitm-script.py'];
 
-  final mitmproxyProcess =
-      await Process.start(commandMitmproxy, mitmproxyArguments);
+  final mitmproxyProcess = await Process.start(
+    commandMitmproxy,
+    mitmproxyArguments,
+  );
 
   await Future.delayed(const Duration(seconds: 2));
 }

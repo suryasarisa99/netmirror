@@ -117,8 +117,6 @@ class DownloadDb {
 
   Future<DownloadItem> getDownloadItem(String id) async {
     final db = await database;
-    final result1 = await db.query(DownloadTables.downloads);
-
     final result = await db.query(
       DownloadTables.downloads,
       where: 'id = ?',

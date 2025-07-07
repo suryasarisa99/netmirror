@@ -84,7 +84,7 @@ class _InitialScreenState extends ConsumerState<InitialScreen> {
           ),
         );
 
-        final url = Uri.parse('$ADD_URL$addHash&a=y&t=0.2822303821745413');
+        final url = Uri.parse('$addUrl$addHash&a=y&t=0.2822303821745413');
         await launchUrl(url);
         startCounter(
           onFinish: () async {
