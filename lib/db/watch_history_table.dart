@@ -36,13 +36,13 @@ class WatchHistoryTable {
   Future<List<WatchHistory>> getShowHistory({
     required String seriesId,
     required int ottId,
-    required int seasonIndex,
+    required int seasonNumber,
   }) async {
     final db = await _dbHelper.database;
     final res = await db.query(
       table,
-      where: 'id = ? AND ott_id = ?  AND season_index = ? And is_show = 1',
-      whereArgs: [seriesId, ottId, seasonIndex],
+      where: 'id = ? AND ott_id = ?  AND season_number= ? And is_show = 1',
+      whereArgs: [seriesId, ottId, seasonNumber],
       orderBy: 'last_updated DESC',
     );
 

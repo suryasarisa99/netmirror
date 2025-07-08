@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:netmirror/models/cache_model.dart';
@@ -44,9 +43,9 @@ class _PVMovieScreenState extends MovieScreenState {
         builder: (x) {
           return SeasonSelectorBottomSheet(
             seasons: movie!.seasons,
-            selectedSeason: seasonIndex,
+            selectedSeason: seasonNumber,
             onTap: (seasonNum) {
-              log("selected season index: $seasonNum");
+              log("selected season number: $seasonNum");
               handleSeasonChange(seasonNum);
             },
           );
@@ -452,7 +451,7 @@ class _PVMovieScreenState extends MovieScreenState {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "S${movie!.seasons[seasonIndex].s} E${movie!.seasons[seasonIndex].ep}",
+                            "S${movie!.getSeason(seasonNumber)?.s ?? seasonNumber} E${movie!.getSeason(seasonNumber)?.ep ?? '?'}",
                           ),
                           const SizedBox(width: 5),
                           const Icon(Icons.expand_more_rounded),
@@ -495,12 +494,14 @@ class _PVMovieScreenState extends MovieScreenState {
   }
 
   Widget buildEpisodes() {
-    if (seasonIndex == -1) {
+    if (seasonNumber == -1) {
       return const SliverToBoxAdapter(
-        child: Center(child: Text("Error:: Season Index is -1")),
+        child: Center(child: Text("Error:: Season Number is -1")),
       );
     }
-    if (movie!.seasons[seasonIndex].episodes == null) {
+
+    final season = movie!.getSeason(seasonNumber);
+    if (season?.episodes == null) {
       log("episodes is null");
 
       return Skeletonizer.sliver(
@@ -518,8 +519,11 @@ class _PVMovieScreenState extends MovieScreenState {
         ),
       );
     } else {
-      final currentEpisodesCount = movie!.seasons[seasonIndex].episodes!.length;
-      final extraThere = movie!.seasons[seasonIndex].ep > currentEpisodesCount;
+      final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
+      final episodes = episodesMap.values.toList()
+        ..sort((a, b) => a.epNum.compareTo(b.epNum));
+      final currentEpisodesCount = episodes.length;
+      final extraThere = season!.ep > currentEpisodesCount;
       final episodeCount = extraThere
           ? currentEpisodesCount + 1
           : currentEpisodesCount;
@@ -534,18 +538,19 @@ class _PVMovieScreenState extends MovieScreenState {
           if (index == episodeCount - 1 && extraThere) {
             return const Skeletonizer(child: SkeletonEpisodeWidget());
           }
-          final episode = movie!.seasons[seasonIndex].episodes![index];
+
+          final episode = episodes[index];
           final depisode = downloads[episode.id];
           final whEpisode = seasonWatchHistory
-              .where((wh) => wh.episodeIndex == index)
+              .where((wh) => wh.episodeNumber == episode.epNum)
               .firstOrNull;
           return EpisodeWidget(
             episode: episode,
             dEpisode: depisode,
             wh: whEpisode,
-            playEpisode: () => playEpisode(index),
+            playEpisode: () => playEpisode(episode.epNum),
             ott: movie!.ott.value,
-            downloadEpisode: () => downloadEpisode(index, seasonIndex),
+            downloadEpisode: () => downloadEpisode(episode.epNum, seasonNumber),
           );
         },
         separatorBuilder: (context, index) {

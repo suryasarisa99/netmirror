@@ -29,8 +29,8 @@ class Tables {
             scale_y REAL NOT NULL DEFAULT 1.0,
             speed REAL NOT NULL DEFAULT 1.0,
             fit TEXT NOT NULL DEFAULT 'contain',
-            episode_index INTEGER,
-            season_index INTEGER,
+            episode_number INTEGER,
+            season_number INTEGER,
             last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (video_id, ott_id)
           )''',

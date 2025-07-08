@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:netmirror/api/playlist/fast_playlist.dart';
 import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_list_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
-import 'package:netmirror/provider/AudioTrackProvider.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -49,7 +47,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   Movie? movie;
   Map<String, MiniDownloadItem> downloads = {};
   TabController? tabController;
-  int seasonIndex = -1;
+  int seasonNumber = -1;
   bool repeat = false;
   bool episodesLoading = false;
   WatchHistory? watchHistory;
@@ -73,11 +71,9 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     super.dispose();
   }
 
-  String? get videoId {
-    if (movie == null) return null;
-    return movie!.isMovie
-        ? movie!.id
-        : movie!.seasons[seasonIndex].episodes![0].id;
+  String get videoId {
+    if (movie!.isMovie) return movie!.id;
+    return movie!.getSeasonEpisodes(seasonNumber)!.entries.first.value.id;
   }
 
   Future<void> loadDownloads() async {
@@ -102,7 +98,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       log("in watchlist: ${results[1]}");
 
       log(
-        "watch history: ${watchHistory?.id}, ${watchHistory?.current}, si: ${watchHistory?.seasonIndex}, ei: ${watchHistory?.episodeIndex}",
+        "watch history: ${watchHistory?.id}, ${watchHistory?.current}, sn: ${watchHistory?.seasonNumber}, en: ${watchHistory?.episodeNumber}",
       );
       int tabLen = 0;
       if (localMovie.isShow) tabLen++;
@@ -113,7 +109,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       setState(() {
         inWatchlist = results[1] as bool;
         movie = localMovie;
-        seasonIndex = localMovie.seasons.length - 1;
+        seasonNumber =
+            localMovie.latestSeasonNumber; // Use latest season number
       });
       log(">>>>> movie got from db, the movie id is: ${localMovie.id}");
     }
@@ -137,7 +134,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       tabController = TabController(length: tabLen, vsync: this);
       setState(() {
         movie = onlineMovie;
-        seasonIndex = onlineMovie.seasons.length - 1;
+        seasonNumber =
+            onlineMovie.latestSeasonNumber; // Use latest season number
       });
     } else {
       setState(() {
@@ -148,7 +146,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     DB.movie.add(widget.id, ott.id, onlineMovie);
   }
 
-  Future<void> getWatchHistory(Movie? m, [int? sIndex]) async {
+  Future<void> getWatchHistory(Movie? m, [int? seasonNum]) async {
     if (m == null) return;
     if (m.isMovie) {
       final result = await DB.watchHistory.get(
@@ -160,7 +158,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     } else {
       final result = await DB.watchHistory.getShowHistory(
         ottId: ott.id,
-        seasonIndex: sIndex ?? m.seasons.length - 1,
+        seasonNumber: seasonNum ?? m.latestSeasonNumber, // Use season number
         seriesId: m.id,
       );
       l.success("season watch history: ${result.length}");
@@ -168,17 +166,18 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     }
   }
 
-  void handleSeasonChange(int index) async {
+  void handleSeasonChange(int newSeasonNumber) async {
     log("surya abstract class: handleSeasonChange()");
 
     setState(() {
-      seasonIndex = index;
+      seasonNumber = newSeasonNumber;
     });
-    final watchHistoryFuture = getWatchHistory(movie, index);
+    final watchHistoryFuture = getWatchHistory(movie, newSeasonNumber);
     log("watch history: ${watchHistory?.id}, ${watchHistory?.current}");
-    if (movie!.seasons[index].episodes == null) {
+
+    final season = movie!.getSeason(newSeasonNumber);
+    if (season?.episodes == null && season != null) {
       log("episodes are loading");
-      Season season = movie!.seasons[seasonIndex];
       final moreEpisodes = await getMoreEpisodes(
         s: season.id,
         series: widget.id,
@@ -187,7 +186,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       await watchHistoryFuture;
 
       setState(() {
-        movie!.seasons[index].episodes = moreEpisodes;
+        // Update the season with episodes
+        movie!.seasons[newSeasonNumber] = season.copyWithEpisodes(moreEpisodes);
       });
       DB.movie.add(widget.id, ott.id, movie!);
     } else {
@@ -210,9 +210,9 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
     log("loading more episodes");
     episodesLoading = true;
-    Season season = movie!.seasons[seasonIndex];
-
-    final pageNum = season.episodes!.length ~/ 10 + 1; // page number
+    final season = movie!.getSeason(seasonNumber);
+    final currentEpisodes = movie!.getSeasonEpisodes(seasonNumber);
+    final pageNum = currentEpisodes.length ~/ 10 + 1; // page number
 
     final moreEpisodes = await getMoreEpisodes(
       s: season.id,
@@ -222,7 +222,18 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     );
 
     setState(() {
-      movie!.seasons[seasonIndex].episodes!.addAll(moreEpisodes);
+      // Create new episodes map with existing and new episodes
+      final currentEpisodesMap = season.episodes ?? <int, Episode>{};
+      for (final episode in moreEpisodes) {
+        currentEpisodesMap[episode.epNum] = episode;
+      }
+
+      movie!.seasons[seasonNumber] = Season(
+        s: season.s,
+        ep: season.ep,
+        id: season.id,
+        episodes: currentEpisodesMap,
+      );
       episodesLoading = false;
       DB.movie.add(widget.id, ott.id, movie!);
     });
@@ -293,7 +304,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   void playMovieOrEpisode() {
     if (movie!.isShow) {
-      playEpisode(0);
+      playEpisode(movie!.getFirstEpisdoe(seasonNumber).epNum);
     } else {
       playMovie();
     }
@@ -322,9 +333,10 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     // }
   }
 
-  void playEpisode(int episodeIndex) async {
-    final videoId = movie!.seasons[seasonIndex].episodes![episodeIndex].id;
-    l.info("play episode: $episodeIndex, videoId: $videoId");
+  void playEpisode(int episodeNumber) async {
+    final episode = movie!.getEpisode(seasonNumber, episodeNumber);
+    final videoId = episode.id;
+    l.info("play episode: episode number $episodeNumber, videoId: $videoId");
     if (!CookiesManager.isValidResourceKey) {
       l.error("Invalid resource key, ${CookiesManager.resourceKey}");
       await getSource(id: movie!.id, ott: movie!.ott);
@@ -336,7 +348,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     if (SettingsOptions.externalPlayer || isDesk) {
       launchExternalPlayer(videoId, CookiesManager.resourceKey!);
     } else {
-      goToPlayer(movie: movie!, eIndex: episodeIndex);
+      goToPlayer(movie: movie!, eNum: episodeNumber);
     }
   }
 
@@ -418,16 +430,16 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   void goToPlayer({
     required Movie movie,
     WatchHistory? wh,
-    int? sIndex,
-    int? eIndex,
+    int? sNum,
+    int? eNum,
   }) {
     goToPlayerNew(
       context: context,
       ref: ref,
       movie: movie,
       wh: wh,
-      sIndex: sIndex ?? seasonIndex,
-      eIndex: eIndex,
+      sNum: sNum ?? seasonNumber,
+      eNum: eNum,
     );
   }
 
@@ -449,16 +461,24 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     );
   }
 
-  void downloadEpisode(int episodeIndex, int seasonindex) async {
-    final videoId = movie!.seasons[seasonindex].episodes![episodeIndex].id;
+  void downloadEpisode(int episodeNumber, int seasonNum) async {
+    final episode = movie!.getEpisode(seasonNum, episodeNumber);
+    if (episode == null) {
+      l.error(
+        "Episode not found: season $seasonNum, episode number $episodeNumber",
+      );
+      return;
+    }
+
+    final videoId = episode.id;
     final x = await getSource(id: videoId, ott: ott);
 
     downloadConfigure(
       videoId,
       movie!.toMinifyMovie(),
       x.resourceKey,
-      seasonIndex,
-      episodeIndex,
+      seasonNum,
+      episodeNumber,
       context,
     );
   }
@@ -467,7 +487,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     final x = await getSource(id: movie!.id, ott: ott);
 
     // all episodes of a season except downloaded ones
-    final episodes = movie!.seasons[seasonIndex].episodes!
+    final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
+    final episodes = episodesMap.values
         .where((e) => !downloads.containsKey(e.id))
         .toList();
     log("new episodes added: ${episodes.length}");
@@ -475,14 +496,14 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     final result = await seasonConfigure(
       movie!.toMinifyMovie(),
       x.resourceKey,
-      seasonIndex,
+      seasonNumber,
       context,
     );
     if (result == null) return;
     final (qualityIndex, audioIndexes, sourceRaw) = result;
     Downloader.instance.startSeasonDownload(
       movie!.toMinifyMovie(),
-      seasonIndex,
+      seasonNumber,
       episodes,
       qualityIndex,
       audioIndexes,
@@ -547,10 +568,16 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     if (watchHistory != null) {
       text = "Resume";
     } else if (seasonWatchHistory.isNotEmpty) {
-      final episode = movie!
-          .seasons[seasonIndex]
-          .episodes![seasonWatchHistory.first.episodeIndex!];
-      text = "Resume ${episode.s}:${episode.ep}";
+      final watchHist = seasonWatchHistory.first;
+      final episode = movie!.getEpisode(
+        watchHist.seasonNumber!,
+        watchHist.episodeNumber!,
+      );
+      if (episode != null) {
+        text = "Resume ${episode.s}:${episode.ep}";
+      } else {
+        text = "Play";
+      }
     } else {
       text = "Play";
     }
@@ -600,12 +627,19 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 Future<(int, List<int>, String)?> seasonConfigure(
   MinifyMovie movie,
   String key,
-  int seasonIndex,
+  int seasonNumber,
   BuildContext context,
 ) async {
   late final String sourceRaw;
 
-  final id = movie.seasons[seasonIndex].episodes![0].id;
+  final season = movie.seasons[seasonNumber];
+  if (season?.episodes == null || season!.episodes!.isEmpty) {
+    log("No episodes found for season $seasonNumber");
+    return null;
+  }
+
+  final firstEpisodeNumber = (season.episodes!.keys.toList()..sort()).first;
+  final id = season.episodes![firstEpisodeNumber]!.id;
 
   // final x = await DatabaseHelper.instance.getHslPlaylist(movie.id);
   final x = null;
@@ -706,8 +740,8 @@ Future<void> downloadConfigure(
   String videoId,
   MinifyMovie movie,
   String key,
-  int seasonIndex,
-  int? episodeIndex,
+  int seasonNumber,
+  int? episodeNumber,
   BuildContext context,
 ) async {
   late final String sourceRaw;
@@ -761,8 +795,8 @@ Future<void> downloadConfigure(
         qualityIndex,
         key,
         sources,
-        episodeIndex: episodeIndex,
-        seasonIndex: seasonIndex,
+        episodeNumber: episodeNumber,
+        seasonNumber: seasonNumber,
       );
     } else {
       log("status: $status");
@@ -775,8 +809,8 @@ Future<void> downloadConfigure(
       0,
       key,
       sources,
-      episodeIndex: episodeIndex,
-      seasonIndex: seasonIndex,
+      episodeNumber: episodeNumber,
+      seasonNumber: seasonNumber,
     );
   }
 }

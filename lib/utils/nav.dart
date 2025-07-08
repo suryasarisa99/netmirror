@@ -23,10 +23,10 @@ void goToPlayerNew({
   required WidgetRef ref,
   required Movie movie,
   WatchHistory? wh,
-  int? sIndex,
-  int? eIndex,
+  int? sNum,
+  int? eNum,
 }) async {
-  if (movie.isShow && eIndex == null) {
+  if (movie.isShow && sNum == null) {
     // l.error("Episode index is null for show");
     return;
   }
@@ -41,9 +41,7 @@ void goToPlayerNew({
   // );
 
   // for testing, passing object doesn't supports hot reload, so url for testing purpose
-  final videoId = movie.isMovie
-      ? movie.id
-      : movie.seasons[sIndex!].episodes![eIndex!].id;
+  final videoId = movie.isMovie ? movie.id : movie.getEpisode(sNum!, eNum!)!.id;
   final resourceKey = CookiesManager.resourceKey!;
   late String url;
   if (SettingsOptions.fastModeByAudio || SettingsOptions.fastModeByVideo) {
@@ -80,8 +78,8 @@ void goToPlayerNew({
     extra: (
       movie: movie,
       watchHistory: wh,
-      seasonIndex: sIndex,
-      episodeIndex: eIndex,
+      seasonNumber: sNum,
+      episodeNumber: eNum,
       url: url,
     ),
   );

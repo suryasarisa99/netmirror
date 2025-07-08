@@ -347,23 +347,21 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
         }
         log("item id: ${item.id}, download path: ${item.downloadPath}");
         log("item path: ${item.playlistPath}");
-        final id = item.seriesId;
-        final movie = await DB.movie.get(id!, 1);
+        final id = item.seriesId ?? item.id;
+        final movie = await DB.movie.get(id, item.ottId);
         if (movie == null) {
           log("Movie not found in DB for id: $id");
           return;
         }
-        log(
-          "movie: ${movie.title} ${movie.id} ${movie.ott.name}, s:e ${item.seasonNumber}:${item.episodeNumber}",
-        );
+
         GoRouter.of(context).push(
           "/player",
           extra: (
             url: item.playlistPath,
             movie: movie,
             watchHistory: null,
-            seasonIndex: item.seasonNumber! - 1,
-            episodeIndex: item.episodeNumber! - 1,
+            seasonNumber: item.seasonNumber,
+            episodeNumber: item.episodeNumber,
           ),
         );
 

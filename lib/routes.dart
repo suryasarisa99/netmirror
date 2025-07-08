@@ -23,8 +23,8 @@ typedef PlayerScreenData = ({
   Movie movie,
   WatchHistory? watchHistory,
   String url,
-  int? seasonIndex,
-  int? episodeIndex,
+  int? seasonNumber,
+  int? episodeNumber,
 });
 
 final routes = GoRouter(
@@ -79,8 +79,8 @@ final routes = GoRouter(
             url: data.url,
             data: data.movie,
             wh: data.watchHistory,
-            seasonIndex: data.seasonIndex,
-            episodeIndex: data.episodeIndex,
+            seasonNumber: data.seasonNumber,
+            episodeNumber: data.episodeNumber,
           ),
         );
       },

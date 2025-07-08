@@ -145,34 +145,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               child: Text("Audio Tracks"),
             ),
-            FilledButton(
-              onPressed: () async {
-                final db = await DB.instance.database;
-                final result = await db.query(Tables.movie);
-                log("result length: ${result.length}");
-                result.forEach((item) {
-                  final key = item['key'] as String;
-                  final val = Movie.fromJson(
-                    jsonDecode(item['value']! as String),
-                    key,
-                    null,
-                  );
-                  if (val.isMovie) return;
-                  for (final season in val.seasons) {
-                    if (season.episodes != null &&
-                        season.episodes!.isNotEmpty) {
-                      for (int i = 0; i < season.episodes!.length; i++) {
-                        final episode = season.episodes![i];
-                        if (int.parse(episode.ep.substring(1)) != i + 1) {
-                          log("error in ${val.title}, at season ${season.s} ");
-                        }
-                      }
-                    }
-                  }
-                });
-              },
-              child: Text("Subtitles"),
-            ),
           ],
         ),
       ),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_code/models/movie_model.dart';
 
 class SeasonSelectorBottomSheet extends StatelessWidget {
-  final List<Season> seasons;
+  final Map<int, Season> seasons;
   final int selectedSeason;
-  final Function(int x) onTap;
+  final Function(int seasonNumber) onTap;
 
   SeasonSelectorBottomSheet({
     required this.seasons,
@@ -16,6 +16,9 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    // Get sorted season numbers for consistent display
+    final seasonNumbers = seasons.keys.toList()..sort();
+
     //  dragableScrollableSheet
     return DraggableScrollableSheet(
       expand: false,
@@ -25,15 +28,16 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20, right: 20, top: 35),
           child: NotificationListener(
             child: ListView.builder(
-              itemCount: seasons.length,
+              itemCount: seasonNumbers.length,
               controller: x,
               itemBuilder: (context, index) {
-                final isSelected = index == selectedSeason;
+                final seasonNumber = seasonNumbers[index];
+                final season = seasons[seasonNumber]!;
+                final isSelected = seasonNumber == selectedSeason;
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
-                    // onTap(seasons[index].s);
-                    onTap(index);
+                    onTap(seasonNumber);
                   },
                   child: Container(
                     margin: const EdgeInsets.all(1),
@@ -47,7 +51,7 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
                           ? const Color.fromRGBO(71, 75, 81, 1)
                           : null,
                     ),
-                    child: Text("Season ${seasons[index].s}"),
+                    child: Text("Season ${season.s}"),
                   ),
                 );
               },

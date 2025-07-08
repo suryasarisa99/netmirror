@@ -70,6 +70,7 @@ class DownloadTables {
     '''
     CREATE TABLE IF NOT EXISTS $downloads (
     id TEXT PRIMARY KEY,
+    ott_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     type TEXT NOT NULL,
     thumbnail TEXT,
@@ -276,6 +277,7 @@ class DownloadAudioLangs {
 
 class DownloadItem {
   String id; // video ID
+  int ottId; // OTT ID
   String title;
   String type;
   String thumbnail;
@@ -311,6 +313,7 @@ class DownloadItem {
 
   DownloadItem({
     required this.id,
+    required this.ottId,
     required this.title,
     required this.type,
     required this.thumbnail,
@@ -349,6 +352,7 @@ class DownloadItem {
   factory DownloadItem.fromMap(Map<String, dynamic> map) {
     return DownloadItem(
       id: map['id'] as String,
+      ottId: map['ott_id'] as int,
       title: map['title'] as String,
       type: map['type'] as String,
       thumbnail: map['thumbnail'] as String,

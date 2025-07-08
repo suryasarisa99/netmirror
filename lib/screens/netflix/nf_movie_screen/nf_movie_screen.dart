@@ -34,19 +34,19 @@ class NfMovieScreenState extends MovieScreenState {
   void openSeasonMenu() {
     if (movie!.isMovie) return;
     if (movie!.seasons.isEmpty) return;
-    final items = movie!.seasons.map((e) => e.s).toList();
+    final seasonNumbers = movie!.seasonNumbers; // Get sorted season numbers
 
     showDialog(
       context: context,
       useSafeArea: false,
       builder: (context) {
         return CategoryPopupScreen(
-          getText: (x) => "Season $x",
-          selected: seasonIndex,
-          handleClick: (i) {
-            handleSeasonChange(i);
+          getText: (seasonNum) => "Season $seasonNum",
+          selected: seasonNumber,
+          handleClick: (seasonNum) {
+            handleSeasonChange(seasonNumbers[seasonNum]);
           },
-          items: items,
+          items: seasonNumbers,
         );
       },
     );
@@ -149,7 +149,7 @@ class NfMovieScreenState extends MovieScreenState {
                   child: Row(
                     children: [
                       Text(
-                        "Season ${movie!.seasons[seasonIndex].s}   (${movie!.seasons[seasonIndex].ep} Ep)",
+                        "Season $seasonNumber  (${movie!.getSeason(seasonNumber)?.ep ?? '?'} Ep)",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -170,18 +170,21 @@ class NfMovieScreenState extends MovieScreenState {
   }
 
   Widget _buildEpisodes() {
-    if (seasonIndex == -1) {
+    if (seasonNumber == -1) {
       return const SliverToBoxAdapter(
-        child: Center(child: Text("Error:: Season Index is -1")),
+        child: Center(child: Text("Error:: Season Number is -1")),
       );
     }
-    if (movie!.seasons[seasonIndex].episodes == null) {
+
+    final season = movie!.getSeason(seasonNumber);
+    if (season.episodes == null) {
       log("episodes is null");
 
       return const SkeletonEpisodesList();
     } else {
-      final currentEpisodesCount = movie!.seasons[seasonIndex].episodes!.length;
-      final extraThere = movie!.seasons[seasonIndex].ep > currentEpisodesCount;
+      final episodes = season.episodes!.values.toList();
+      final currentEpisodesCount = episodes.length;
+      final extraThere = season.ep > currentEpisodesCount;
       final episodeCount = extraThere
           ? currentEpisodesCount + 1
           : currentEpisodesCount;
@@ -195,18 +198,18 @@ class NfMovieScreenState extends MovieScreenState {
           if (index == episodeCount - 1 && extraThere) {
             return const Skeletonizer(child: SkeletonEpisodeWidget());
           }
-          final episode = movie!.seasons[seasonIndex].episodes![index];
+          final episode = episodes[index];
           final depisode = downloads[episode.id];
           final whEpisode = seasonWatchHistory
-              .where((wh) => wh.episodeIndex == index)
+              .where((wh) => wh.episodeNumber == episode.epNum)
               .firstOrNull;
           return EpisodeWidget(
             episode: episode,
             dEpisode: depisode,
             ott: movie!.ott.value,
             wh: whEpisode,
-            playEpisode: () => playEpisode(index),
-            downloadEpisode: () => downloadEpisode(index, seasonIndex),
+            playEpisode: () => playEpisode(episode.epNum),
+            downloadEpisode: () => downloadEpisode(episode.epNum, seasonNumber),
           );
         },
         separatorBuilder: (context, index) {

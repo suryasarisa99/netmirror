@@ -11,8 +11,8 @@ class WatchHistory {
   final double scaleY;
   final double speed;
   final String fit;
-  final int? episodeIndex;
-  final int? seasonIndex;
+  final int? episodeNumber;
+  final int? seasonNumber;
 
   final DateTime? lastUpdated;
 
@@ -20,8 +20,8 @@ class WatchHistory {
     required this.id,
     required this.videoId,
     required this.ottId,
-    required this.episodeIndex,
-    required this.seasonIndex,
+    required this.episodeNumber,
+    required this.seasonNumber,
     required this.title,
     required this.url,
     required this.isShow,
@@ -39,8 +39,8 @@ class WatchHistory {
       id: json['id'],
       videoId: json['video_id'],
       ottId: json['ott_id'] as int,
-      episodeIndex: json['episode_index'],
-      seasonIndex: json['season_index'],
+      episodeNumber: json['episode_number'],
+      seasonNumber: json['season_number'],
       title: json['title'],
       url: json['url'],
       isShow: json['is_show'] == 1 ? true : false,
@@ -58,8 +58,8 @@ class WatchHistory {
       'id': id,
       'video_id': videoId,
       'ott_id': ottId,
-      'episode_index': episodeIndex,
-      'season_index': seasonIndex,
+      'episode_number': episodeNumber,
+      'season_number': seasonNumber,
       'title': title,
       'url': url,
       'is_show': isShow ? 1 : 0,

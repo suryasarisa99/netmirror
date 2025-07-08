@@ -18,14 +18,14 @@ class MediaKitPlayer extends ConsumerStatefulWidget {
     super.key,
     required this.data,
     required this.wh,
-    this.seasonIndex,
-    this.episodeIndex,
+    this.seasonNumber,
+    this.episodeNumber,
     required this.url,
   });
   final Movie data;
   final WatchHistory? wh;
-  final int? seasonIndex;
-  final int? episodeIndex;
+  final int? seasonNumber;
+  final int? episodeNumber;
   final String url;
 
   @override
@@ -62,10 +62,8 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
   String get videoId {
     return widget.data.isMovie
         ? widget.data.id
-        : widget
-              .data
-              .seasons[widget.seasonIndex!]
-              .episodes![widget.episodeIndex!]
+        : widget.data
+              .getEpisode(widget.seasonNumber!, widget.episodeNumber!)!
               .id;
   }
 
@@ -321,10 +319,8 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           ottId: widget.data.ott.id,
           videoId: widget.data.isMovie
               ? widget.data.id
-              : widget
-                    .data
-                    .seasons[widget.seasonIndex!]
-                    .episodes![widget.episodeIndex!]
+              : widget.data
+                    .getEpisode(widget.seasonNumber!, widget.episodeNumber!)!
                     .id,
           title: widget.data.title,
           url: widget.url,
@@ -337,8 +333,8 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           scaleY: 1.0,
           speed: _player!.state.rate,
           fit: 'contain',
-          episodeIndex: widget.episodeIndex,
-          seasonIndex: widget.seasonIndex,
+          episodeNumber: widget.data.isMovie ? null : widget.episodeNumber,
+          seasonNumber: widget.data.isMovie ? null : widget.seasonNumber,
         );
 
         // // Save to database

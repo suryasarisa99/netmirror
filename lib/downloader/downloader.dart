@@ -409,6 +409,7 @@ class Downloader {
 
   Future<(Map<String, dynamic>, int)> createDownloadItem({
     required String videoId,
+    required int ottId,
     required String title,
     required bool isMovie,
     required String thumbnail,
@@ -498,6 +499,7 @@ class Downloader {
     // Insert main download record
     final record = {
       'id': videoId,
+      'ott_id': ottId,
       'title': title,
       'type': isMovie ? 'movie' : 'episode',
       'thumbnail': thumbnail,
@@ -525,14 +527,18 @@ class Downloader {
   //* @startSeasonDownload
   Future<void> startSeasonDownload(
     MinifyMovie movie,
-    int seasonIndex,
+    int seasonNumber,
     List<Episode> episodes,
     int qualityIndex,
     List<int> audioIndexes,
     String firstEpisodeSourceRaw,
     String resourceKey,
   ) async {
-    final seasonNumber = movie.seasons[seasonIndex].s;
+    final season = movie.seasons[seasonNumber];
+    if (season == null) {
+      log("Season not found: $seasonNumber");
+      return;
+    }
 
     // its a dummy item, to show series image and title
     await DownloadDb.instance.insertSeries({
@@ -556,6 +562,7 @@ class Downloader {
         videoId: videoId,
         masterPlaylist: masterPlayList,
         title: movie.title,
+        ottId: movie.ott.id,
         isMovie: movie.isMovie,
         thumbnail: movie.ott.getImg(videoId, forceHorizontal: true),
         qualityIndex: qualityIndex,
@@ -596,8 +603,8 @@ class Downloader {
     int qualityIndex,
     String resourceKey,
     MasterPlayList masterPlaylist, {
-    int? seasonIndex,
-    int? episodeIndex,
+    int? seasonNumber,
+    int? episodeNumber,
   }) async {
     final db = await _db;
     log("masterplaylist: $sourceRaw");
@@ -607,6 +614,7 @@ class Downloader {
 
     final (record, totalParts) = await createDownloadItem(
       videoId: videoId,
+      ottId: movie.ott.id,
       masterPlaylist: masterPlaylist,
       title: movie.title,
       isMovie: movie.isMovie,
@@ -618,11 +626,7 @@ class Downloader {
     // return;
 
     if (movie.isShow) {
-      final seasonNumber = movie.seasons[seasonIndex!].s;
-      final episodeNumber = int.parse(
-        movie.seasons[seasonIndex].episodes![episodeIndex!].ep.substring(1),
-      );
-
+      final episode = movie.seasons[seasonNumber]!.episodes![episodeNumber!]!;
       await DownloadDb.instance.insertSeriesWithEpisodes(
         {
           'id': movie.id,
@@ -636,7 +640,7 @@ class Downloader {
           {
             ...record,
             'series_id': movie.id,
-            'runtime': movie.seasons[seasonIndex].episodes![episodeIndex].time,
+            'runtime': episode.time,
             'season_number': seasonNumber,
             'episode_number': episodeNumber,
           },

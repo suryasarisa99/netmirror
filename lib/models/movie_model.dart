@@ -30,7 +30,7 @@ class Movie {
   String desc;
   String? oin;
   String resume;
-  List<Season> seasons;
+  Map<int, Season> seasons;
   List<Language> lang;
   List<Suggestion> suggest;
   dynamic error;
@@ -70,9 +70,34 @@ class Movie {
 
   bool get isMovie => type == 'm';
   bool get isShow => !isMovie;
-  // OTT get ott => OTT.fromValue(ottStr);
+
+  /// Get all season numbers in ascending order
+  List<int> get seasonNumbers => seasons.keys.toList();
+
+  /// Get season by season number
+  Season getSeason(int seasonNumber) => seasons[seasonNumber]!;
+
+  /// Get episode by season and episode numbers
+  Episode getEpisode(int seasonNumber, int episodeNumber) {
+    return seasons[seasonNumber]!.episodes![episodeNumber]!;
+  }
+
+  Episode getFirstEpisdoe(int seasonNumber) {
+    return seasons[seasonNumber]!.episodes!.entries.first.value;
+  }
+
+  /// Get the latest/highest season number
+  int get latestSeasonNumber {
+    if (seasons.isEmpty) return -1;
+    return seasonNumbers.last;
+  }
+
+  Map<int, Episode> getSeasonEpisodes(int seasonNumber) {
+    return seasons[seasonNumber]!.episodes!;
+  }
 
   factory Movie.parse(Map<String, dynamic> json, String id, OTT? ott) {
+    log("movie: json: $json");
     List<Episode> episodesList = [];
     List<Suggestion> suggestList = [];
     List<String> genre = [];
@@ -84,15 +109,32 @@ class Movie {
       }
     }
 
-    var seasons = json['season'] != null
+    var seasonsList = json['season'] != null
         ? (json['season'] as List).map((s) => Season.parse(s)).toList()
         : <Season>[];
 
-    log("seasons length: ${seasons.length}");
-    for (int i = seasons.length - 1; i >= 0; i--) {
-      int seasonIndex = Episode.getSeasonsNumber(episodesList.first);
-      if (seasons[i].s == seasonIndex) {
-        seasons[i].episodes = episodesList;
+    // Convert List<Season> to Map<int, Season>
+    Map<int, Season> seasonsMap = {};
+    for (final season in seasonsList) {
+      seasonsMap[season.s] = season;
+    }
+
+    log("seasons length: ${seasonsList.length}");
+    for (int i = seasonsList.length - 1; i >= 0; i--) {
+      int seasonNumber = episodesList.first.sNum;
+      if (seasonsList[i].s == seasonNumber) {
+        // Convert episodes list to map
+        Map<int, Episode> episodesMap = {};
+        for (final episode in episodesList) {
+          episodesMap[episode.epNum] = episode;
+        }
+        // Create new season with episodes map
+        seasonsMap[seasonNumber] = Season(
+          s: seasonsList[i].s,
+          ep: seasonsList[i].ep,
+          id: seasonsList[i].id,
+          episodes: episodesMap,
+        );
         break;
       }
     }
@@ -137,7 +179,7 @@ class Movie {
       lastUpdated: json['lastUpdated'] != null
           ? DateTime.parse(json['lastUpdated'])
           : DateTime.now(),
-      seasons: seasons,
+      seasons: seasonsMap,
     );
   }
 
@@ -148,9 +190,15 @@ class Movie {
     List<Suggestion> suggestList = [];
     List<String> genre = [];
 
-    var seasons = json['season'] != null
+    var seasonsList = json['season'] != null
         ? (json['season'] as List).map((s) => Season.fromJson(s)).toList()
         : <Season>[];
+
+    // Convert List<Season> to Map<int, Season>
+    Map<int, Season> seasonsMap = {};
+    for (final season in seasonsList) {
+      seasonsMap[season.s] = season;
+    }
 
     if (json['suggest'] == "") {
       suggestList = [];
@@ -202,7 +250,7 @@ class Movie {
       lastUpdated: json['lastUpdated'] != null
           ? DateTime.parse(json['lastUpdated'])
           : DateTime.now(),
-      seasons: seasons,
+      seasons: seasonsMap,
     );
   }
 
@@ -235,7 +283,7 @@ class Movie {
       'error': error,
       'lastUpdated': lastUpdated.toIso8601String(),
       'ottStr': ott.value,
-      'season': seasons.map((e) => e.toJson()).toList(),
+      'season': seasons.values.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -254,8 +302,8 @@ class Movie {
   }
 
   PlayerData toPlayerData(
-    int seasonIndex, {
-    int? episodeIndex,
+    int seasonNumber, {
+    int? episodeNumber,
     WatchHistory? wh,
   }) {
     return PlayerData(
@@ -268,8 +316,8 @@ class Movie {
       lang: lang,
       suggest: suggest,
       ott: ott,
-      currentEpisodeIndex: episodeIndex ?? wh?.episodeIndex ?? 0,
-      currentSeasonIndex: seasonIndex,
+      currentEpisodeNumber: episodeNumber ?? wh?.episodeNumber,
+      currentSeasonNumber: seasonNumber,
     );
   }
 }

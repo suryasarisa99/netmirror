@@ -17,10 +17,12 @@ void checkSeasonAndEpisodeNumbers() async {
     final key = item['key'] as String;
     final val = Movie.fromJson(jsonDecode(item['value']! as String), key, null);
     if (val.isMovie) continue;
-    for (final season in val.seasons) {
+    for (final season in val.seasons.values) {
       if (season.episodes != null && season.episodes!.isNotEmpty) {
-        for (int i = 0; i < season.episodes!.length; i++) {
-          final episode = season.episodes![i];
+        final sortedEpisodes = season.episodes!.values.toList()
+          ..sort((a, b) => a.epNum.compareTo(b.epNum));
+        for (int i = 0; i < sortedEpisodes.length; i++) {
+          final episode = sortedEpisodes[i];
           if (int.parse(episode.ep.substring(1)) != i + 1) {
             log(
               "error in ${val.title}, at season ${season.s}, episode ${episode.ep}",

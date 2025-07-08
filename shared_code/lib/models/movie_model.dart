@@ -1,20 +1,21 @@
 import 'ott.dart';
 
 class MinifyMovie {
-  String id;
-  String title;
-  String year;
-  String? runtime;
-  String type;
-  List<Season> seasons;
-  List<Language> lang;
-  List<Suggestion> suggest;
-  OTT ott;
+  final String id;
+  final String title;
+  final String year;
+  final String? runtime;
+  final String type;
+  final Map<int, Season>
+  seasons; // Changed from List to Map<seasonNumber, Season>
+  final List<Language> lang;
+  final List<Suggestion> suggest;
+  final OTT ott;
 
   get isMovie => type == 'm';
   get isShow => !isMovie;
 
-  MinifyMovie({
+  const MinifyMovie({
     required this.id,
     required this.title,
     required this.year,
@@ -28,8 +29,8 @@ class MinifyMovie {
 }
 
 class PlayerData extends MinifyMovie {
-  final int? currentEpisodeIndex;
-  final int currentSeasonIndex;
+  final int? currentEpisodeNumber; // Changed from Index to Number
+  final int currentSeasonNumber; // Changed from Index to Number
 
   PlayerData({
     required super.id,
@@ -41,13 +42,18 @@ class PlayerData extends MinifyMovie {
     required super.lang,
     required super.suggest,
     required super.ott,
-    required this.currentEpisodeIndex,
-    required this.currentSeasonIndex,
+    required this.currentEpisodeNumber,
+    required this.currentSeasonNumber,
   });
 
   Episode? get currentEpisode {
     if (!isShow) return null;
-    return seasons[currentSeasonIndex].episodes?[currentEpisodeIndex!];
+    return seasons[currentSeasonNumber]?.episodes?[currentEpisodeNumber!];
+  }
+
+  Season? get currentSeason {
+    if (!isShow) return null;
+    return seasons[currentSeasonNumber];
   }
 
   String get videoId {
@@ -57,22 +63,55 @@ class PlayerData extends MinifyMovie {
 
   bool get hasNext {
     if (!isShow) return false;
-    return (currentSeasonIndex < seasons.length - 1 ||
-        currentEpisodeIndex! < seasons[currentSeasonIndex].episodes!.length);
+    final currentSeason = seasons[currentSeasonNumber];
+    if (currentSeason?.episodes == null) return false;
+
+    // Check if there's a next episode in current season
+    final episodeNumbers = currentSeason!.episodes!.keys.toList()..sort();
+    final currentEpIndex = episodeNumbers.indexOf(currentEpisodeNumber!);
+
+    return (currentEpIndex < episodeNumbers.length - 1) || _hasNextSeason();
+  }
+
+  bool _hasNextSeason() {
+    final seasonNumbers = seasons.keys.toList()..sort();
+    final currentSeasonIndex = seasonNumbers.indexOf(currentSeasonNumber);
+    return currentSeasonIndex < seasonNumbers.length - 1;
   }
 
   Episode? get nextEpisode {
     if (!isShow) return null;
-    final currentSeason = seasons[currentSeasonIndex];
-    if (currentEpisodeIndex! < currentSeason.episodes!.length - 1) {
-      return currentSeason.episodes![currentEpisodeIndex! + 1];
-    } else if (currentSeasonIndex < seasons.length - 1) {
-      return seasons[currentSeasonIndex + 1].episodes?.first;
+    final currentSeason = seasons[currentSeasonNumber];
+    if (currentSeason?.episodes == null) return null;
+
+    // Get sorted episode numbers for current season
+    final episodeNumbers = currentSeason!.episodes!.keys.toList()..sort();
+    final currentEpIndex = episodeNumbers.indexOf(currentEpisodeNumber!);
+
+    // Check if there's a next episode in current season
+    if (currentEpIndex < episodeNumbers.length - 1) {
+      final nextEpisodeNumber = episodeNumbers[currentEpIndex + 1];
+      return currentSeason.episodes![nextEpisodeNumber];
     }
+
+    // Check next season
+    if (_hasNextSeason()) {
+      final seasonNumbers = seasons.keys.toList()..sort();
+      final currentSeasonIndex = seasonNumbers.indexOf(currentSeasonNumber);
+      final nextSeasonNumber = seasonNumbers[currentSeasonIndex + 1];
+      final nextSeason = seasons[nextSeasonNumber];
+
+      if (nextSeason?.episodes?.isNotEmpty == true) {
+        final firstEpisodeNumber =
+            (nextSeason!.episodes!.keys.toList()..sort()).first;
+        return nextSeason.episodes![firstEpisodeNumber];
+      }
+    }
+
     return null;
   }
 
-  PlayerData copyWith({required int ei, int? si}) {
+  PlayerData copyWith({required int episodeNumber, int? seasonNumber}) {
     return PlayerData(
       id: id,
       title: title,
@@ -83,26 +122,26 @@ class PlayerData extends MinifyMovie {
       lang: lang,
       suggest: suggest,
       ott: ott,
-      currentEpisodeIndex: ei,
-      currentSeasonIndex: si ?? currentSeasonIndex,
+      currentEpisodeNumber: episodeNumber,
+      currentSeasonNumber: seasonNumber ?? currentSeasonNumber,
     );
   }
 }
 
 class Season {
-  /// Season number, e.g. S1
-  int s;
+  /// Season number, e.g. 1
+  final int s;
 
   /// Episodes total count, e.g. 10
-  int ep;
+  final int ep;
 
   /// Season id, e.g. "s1"
-  String id;
+  final String id;
 
-  /// List of episodes in this season
-  List<Episode>? episodes;
+  /// Map of episodes in this season, keyed by episode number
+  final Map<int, Episode>? episodes;
 
-  Season({
+  const Season({
     required this.s,
     required this.ep,
     required this.id,
@@ -110,13 +149,22 @@ class Season {
   });
 
   factory Season.fromJson(Map<String, dynamic> json) {
+    Map<int, Episode>? episodesMap;
+    if (json['episodes'] != null) {
+      final episodesList = (json['episodes'] as List)
+          .map((e) => Episode.fromJson(e))
+          .toList();
+      episodesMap = {};
+      for (final episode in episodesList) {
+        episodesMap[episode.epNum] = episode;
+      }
+    }
+
     return Season(
       s: json['s'],
       ep: json['ep'],
       id: json['id'],
-      episodes: json['episodes'] == null
-          ? null
-          : (json['episodes'] as List).map((e) => Episode.fromJson(e)).toList(),
+      episodes: episodesMap,
     );
   }
 
@@ -130,42 +178,56 @@ class Season {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      's': s,
-      'ep': ep,
-      'id': id,
-      'episodes': episodes?.map((e) => e.toJson()).toList(),
-    };
+    List<Map<String, dynamic>>? episodesList;
+    if (episodes != null) {
+      episodesList = episodes!.values.map((e) => e.toJson()).toList();
+      // Sort episodes by episode number for consistent serialization
+      episodesList.sort(
+        (a, b) =>
+            Episode.fromJson(a).epNum.compareTo(Episode.fromJson(b).epNum),
+      );
+    }
+
+    return {'s': s, 'ep': ep, 'id': id, 'episodes': episodesList};
+  }
+
+  /// Creates a copy of the season with new episodes
+  Season copyWithEpisodes(List<Episode> episodesList) {
+    Map<int, Episode> episodesMap = {};
+    for (final episode in episodesList) {
+      episodesMap[episode.epNum] = episode;
+    }
+
+    return Season(s: s, ep: ep, id: id, episodes: episodesMap);
   }
 }
 
 class Episode {
   /// Episode id
-  String id;
+  final String id;
 
   /// Episode title
-  String t;
+  final String t;
 
   /// Season number, e.g. S1
-  String s;
+  final String s;
 
   /// Episode number, e.g. E1
-  String ep;
+  final String ep;
 
   /// Time in format HH:MM:SS
-  String time;
+  final String time;
 
-  Episode({
+  int get epNum => int.parse(ep.substring(1));
+  int get sNum => int.parse(s.substring(1));
+
+  const Episode({
     required this.id,
     required this.t,
     required this.s,
     required this.ep,
     required this.time,
   });
-
-  static int getSeasonsNumber(Episode episode) {
-    return int.parse(episode.s.substring(1));
-  }
 
   factory Episode.fromJson(Map<String, dynamic> json) {
     return Episode(
