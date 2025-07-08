@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:netmirror/downloader/download_models.dart';
+import 'package:netmirror/log.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 export 'package:netmirror/downloader/download_models.dart';
+
+const l = L("DownloadDb");
 
 class DownloadDb {
   static final DownloadDb instance = DownloadDb._internal();
@@ -25,8 +28,6 @@ class DownloadDb {
   //* Database Initialization
 
   Future<Database> _initDatabase() async {
-    log("<=====================    _initDatabase    =====================>");
-
     final dbPath = await getDatabasesPath();
     final path = p.join(dbPath, 'downloads.db');
 
@@ -36,9 +37,8 @@ class DownloadDb {
       version: 1,
       onCreate: _onCreate,
       onUpgrade: (db, oldVersion, newVersion) async {
-        log("inside onUpgrade");
         if (oldVersion < newVersion) {
-          log("need to delete tables");
+          l.info("database updated from $oldVersion to $newVersion");
           await deleteTables(db);
           for (final statement in DownloadTables.createStatements) {
             await db.execute(statement);
@@ -46,9 +46,8 @@ class DownloadDb {
         }
       },
       onDowngrade: (db, oldVersion, newVersion) async {
-        log("inside onDowngrade");
         if (oldVersion > newVersion) {
-          log("need to delete tables");
+          l.info("database downgraded from $newVersion to $oldVersion");
           await deleteTables(db);
           await _onCreate(db, newVersion);
         }
@@ -63,15 +62,13 @@ class DownloadDb {
   }
 
   Future<void> deleteTables(Database db) async {
-    // final db = await database;
-    log("database getter is done");
     for (final table in DownloadTables.tables) {
       await db.execute("DROP TABLE IF EXISTS $table");
     }
     for (final view in DownloadTables.views) {
       await db.execute("DROP VIEW IF EXISTS $view");
     }
-    log("Tables deleted");
+    l.info("Tables deleted");
   }
 
   //* Database Queries
@@ -86,7 +83,7 @@ class DownloadDb {
   // Get episodes for a specific series
   Future<List<DownloadItem>> getSeriesEpisodes(String seriesId) async {
     final db = await database;
-    log("only episodes");
+    l.debug("only episodes");
     const query =
         '''
       SELECT * 

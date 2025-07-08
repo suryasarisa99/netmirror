@@ -14,6 +14,8 @@ void main() async {
   // Initialize MediaKit for video playback
   MediaKit.ensureInitialized();
   L.only = ["downloader"];
+  L.logLevel = LogLevel.debug;
+  // L.stackStrace = true;
 
   if (isDesk) {
     await windowManager.ensureInitialized();

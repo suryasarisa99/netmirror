@@ -7,6 +7,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/db/tables.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,6 +18,8 @@ class SettingsScreen extends StatefulWidget {
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
+
+const l = L("Settings_Screen");
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _resolutionController = TextEditingController();
@@ -142,6 +145,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             FilledButton(
               onPressed: () async {
                 GoRouter.of(context).push('/settings-audio-tracks');
+              },
+              child: Text("Audio Tracks"),
+            ),
+            FilledButton(
+              onPressed: () async {
+                l.debug("some debug message");
+                l.info("some info message");
+                l.log("some log message");
+                l.success("some success message");
+                l.warn("some warning message");
+                l.error("some error message");
               },
               child: Text("Audio Tracks"),
             ),
