@@ -145,11 +145,6 @@ class DownloadDb {
     await db.insert(DownloadTables.downloads, movie);
   }
 
-  Future<void> insertEpisodeDownload(Map<String, dynamic> episode) async {
-    final db = await database;
-    await db.insert(DownloadTables.downloads, episode);
-  }
-
   Future<void> insertSeries(Map<String, dynamic> series) async {
     final db = await database;
     await db.insert(DownloadTables.downloads, {
@@ -169,6 +164,10 @@ class DownloadDb {
     List<Map<String, dynamic>> episodes,
   ) async {
     final db = await database;
+    log("Inserting series : ${series['ott_id']} - ${series['id']}");
+    log(
+      "inserting episode: ${episodes.length} episodes, ${episodes.first['ott_id']}",
+    );
     await db.transaction((txn) async {
       // Insert series
       series['type'] = 'series';

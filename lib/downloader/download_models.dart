@@ -141,6 +141,7 @@ class DownloadTables {
     CREATE VIEW IF NOT EXISTS $downloadsList AS
     SELECT 
       d.id,
+      d.ott_id,
       d.title,
       d.type,
       d.thumbnail,
@@ -350,6 +351,7 @@ class DownloadItem {
   });
 
   factory DownloadItem.fromMap(Map<String, dynamic> map) {
+    log("DownloadItem.fromMap: $map");
     return DownloadItem(
       id: map['id'] as String,
       ottId: map['ott_id'] as int,

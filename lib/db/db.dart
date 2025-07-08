@@ -35,20 +35,24 @@ class DB {
     String path = p.join(await getDatabasesPath(), 'netmirror.db');
     return await openDatabase(
       path,
-      version: 8,
+      version: 1,
       onCreate: (db, version) async {
         for (final query in Tables.queriesList) {
           await db.execute(query);
         }
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 5) {
-          await db.execute(Tables.queries.watchHistory);
+        if (oldVersion < newVersion) {
+          for (final table in Tables.tableNames) {
+            await db.execute('DROP TABLE IF EXISTS $table');
+          }
+          for (final query in Tables.queriesList) {
+            await db.execute(query);
+          }
         }
-        if (oldVersion < 6) {
-          await db.execute(Tables.queries.watchList);
-        }
-        if (oldVersion < 8) {
+      },
+      onDowngrade: (db, oldVersion, newVersion) async {
+        if (oldVersion > newVersion) {
           for (final table in Tables.tableNames) {
             await db.execute('DROP TABLE IF EXISTS $table');
           }

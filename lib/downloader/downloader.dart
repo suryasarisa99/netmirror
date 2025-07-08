@@ -543,6 +543,7 @@ class Downloader {
     // its a dummy item, to show series image and title
     await DownloadDb.instance.insertSeries({
       'id': movie.id,
+      'ott_id': movie.ott.id,
       'title': movie.title,
       'type': 'series',
       'created_at': DateTime.now().millisecondsSinceEpoch,
@@ -630,6 +631,7 @@ class Downloader {
       await DownloadDb.instance.insertSeriesWithEpisodes(
         {
           'id': movie.id,
+          'ott_id': movie.ott.id,
           'title': movie.title,
           'type': 'series',
           'created_at': DateTime.now().millisecondsSinceEpoch,
