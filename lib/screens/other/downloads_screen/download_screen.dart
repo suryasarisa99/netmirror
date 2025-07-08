@@ -13,7 +13,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/downloader/download_db.dart';
-import 'package:netmirror/screens/external_plyer.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +25,8 @@ class DownloadsScreen extends StatefulWidget {
   @override
   State<DownloadsScreen> createState() => _DownloadsScreenState();
 }
+
+const l = L("Downloads_Screen");
 
 class _DownloadsScreenState extends State<DownloadsScreen> {
   List<DownloadItem> downloads = [];
@@ -44,7 +46,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     _progressSubscription = Downloader.instance.progressStream.listen((update) {
       final downloadId = update.id;
 
-      log("download id: $downloadId");
+      l.debug("download id: $downloadId");
 
       // when new download item added
       // handles both movie and series, in case of movie, both seriesId are null and became equal

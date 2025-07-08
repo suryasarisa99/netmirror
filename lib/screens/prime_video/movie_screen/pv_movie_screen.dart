@@ -278,12 +278,9 @@ class _PVMovieScreenState extends MovieScreenState {
                         controller: watchlistAnimationController,
                         height: 40,
                         onLoaded: (composition) {
-                          // Set initial state based on inWatchlist
                           if (inWatchlist) {
-                            log("Setting watchlist animation to 1.0");
                             watchlistAnimationController.value = 1.0;
                           } else {
-                            log("Setting watchlist animation to 0.0");
                             watchlistAnimationController.value = 0.0;
                           }
                         },

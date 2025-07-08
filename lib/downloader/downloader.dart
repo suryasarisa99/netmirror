@@ -537,11 +537,7 @@ class Downloader {
     String firstEpisodeSourceRaw,
     String resourceKey,
   ) async {
-    final season = movie.seasons[seasonNumber];
-    if (season == null) {
-      log("Season not found: $seasonNumber");
-      return;
-    }
+    final season = movie.seasons[seasonNumber]!;
 
     // its a dummy item, to show series image and title
     await DownloadDb.instance.insertSeries({
@@ -611,7 +607,6 @@ class Downloader {
     int? episodeNumber,
   }) async {
     final db = await _db;
-    log("masterplaylist: $sourceRaw");
     final videoId = movie.isShow
         ? masterPlaylist.videos[qualityIndex].videoId
         : movie.id;
@@ -685,7 +680,7 @@ class Downloader {
   //* @processDownload
 
   Future<void> processDownload(String videoId) async {
-    log("Inside Process Download : $videoId");
+    l.info("Process Download : $videoId");
     final info = await DownloadDb.instance.getDownloadItem(videoId);
     final videoDir = Directory(
       p.join(info.downloadPath, ".${info.id}", "videos"),
@@ -733,7 +728,7 @@ class Downloader {
           // log("write data at: ${file.path}");
           final file = File(p.join(audioDir.path, "$partId.aac"));
           file.writeAsBytes(response.data).catchError((err) {
-            log(
+            l.error(
               "write Audio data error (Expected Error Happens Because Download was deleted)  : $err",
             );
             return file;
@@ -746,7 +741,7 @@ class Downloader {
             isAudio: true,
           );
           if (pauseFlags[videoId] == true) {
-            log("Paused Download in Process Download: [$videoId]");
+            l.info("Paused Download in Process Download: [$videoId]");
             return;
           }
         }
@@ -761,14 +756,14 @@ class Downloader {
             "${info.uniqueId}_${info.currentVideoPart.toString().padLeft(3, '0')}";
         final url =
             "https://${info.videoPrefix}.top/files/${info.id}/${info.resolution}/$partId.jpg";
-        log("url: $url");
+        l.debug("url: $url");
         final response = await Dio().get(
           url,
           options: Options(headers: headers, responseType: ResponseType.bytes),
         );
         final file = File(p.join(videoDir.path, "$partId.mp4"));
         file.writeAsBytes(response.data).catchError((err) {
-          log(
+          l.error(
             "write Video data error (Expected Error Happens Because Download was deleted)  : $err",
           );
           return file;
@@ -782,11 +777,11 @@ class Downloader {
 
         // Check if the task has been cancelled
         if (pauseFlags[videoId] == true) {
-          log("Paused Download: [$videoId]");
+          l.info("Paused Download: [$videoId]");
           return;
         }
       }
-      log("Download Completed");
+      l.success("Download Completed");
       _progressController.add(DownloadProgress.status(videoId, "completed"));
       if (info.type == "episode") {
         _progressController.add(
@@ -799,7 +794,7 @@ class Downloader {
         where: 'id = ?',
         whereArgs: [videoId],
       );
-      log("Download Completed calling: continueDownload");
+      l.info("Download Completed calling: continueDownload");
       continueDownload();
     } catch (e) {
       log("Error at Download: $e");
@@ -810,7 +805,7 @@ class Downloader {
         where: 'id = ?',
         whereArgs: [videoId],
       );
-      log("Download Failed calling: continueDownload");
+      l.error("Download Failed calling: continueDownload");
       continueDownload();
     }
   }

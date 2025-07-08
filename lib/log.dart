@@ -22,7 +22,7 @@ class L {
   static bool stackStrace = false;
 
   static bool check(String? n) {
-    if (only.isEmpty || n == null) return true;
+    if (only.isEmpty) return true;
     return only.contains(n);
   }
 
@@ -33,16 +33,16 @@ class L {
     LogLevel level = LogLevel.info,
   }) {
     // return;
+    final prefix = n ?? name;
     if (level.index < logLevel.index && !check(n)) return;
-    final prefix = n ?? name ?? 'log';
     if (!stackStrace) {
-      dev.log('$color$message$_reset', name: prefix, level: level.index);
+      dev.log('$color$message$_reset', name: prefix!, level: level.index);
       return;
     }
     final stackTraceLine = StackTrace.current.toString().split('\n')[2].trim();
     final stackTracePackage = stackTraceLine.split('package')[1];
     dev.log(stackTracePackage, name: ":");
-    dev.log('\t$color$message$_reset', name: prefix);
+    dev.log('\t$color$message$_reset', name: prefix!);
   }
 
   void error(String message, {String? n}) {

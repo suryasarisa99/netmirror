@@ -73,7 +73,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
 
   String get videoId {
     if (movie!.isMovie) return movie!.id;
-    return movie!.getSeasonEpisodes(seasonNumber)!.entries.first.value.id;
+    return movie!.getSeasonEpisodes(seasonNumber).entries.first.value.id;
   }
 
   Future<void> loadDownloads() async {
@@ -491,7 +491,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     final episodes = episodesMap.values
         .where((e) => !downloads.containsKey(e.id))
         .toList();
-    log("new episodes added: ${episodes.length}");
+    l.info("new episodes added: ${episodes.length}");
 
     final result = await seasonConfigure(
       movie!.toMinifyMovie(),

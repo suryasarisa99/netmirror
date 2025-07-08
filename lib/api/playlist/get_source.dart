@@ -48,14 +48,14 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
   // log("Source: ${res.body.substring(0, 10)}");
   // log("Source: ${res.body}");
   final result = Sources.parse(res.body);
-  log("sources: ${result.sources.length}");
-  log("subtitles: ${result.subtitles.length}");
-  log("other tracks: ${result.otherTracks.length}");
-  if (result.subtitles.isNotEmpty) {
-    for (var subtitle in result.subtitles) {
-      log("subtitle: ${subtitle.file}");
-    }
-  }
+  // log("sources: ${result.sources.length}");
+  // log("subtitles: ${result.subtitles.length}");
+  // log("other tracks: ${result.otherTracks.length}");
+  // if (result.subtitles.isNotEmpty) {
+  //   for (var subtitle in result.subtitles) {
+  //     log("subtitle: ${subtitle.file}");
+  //   }
+  // }
   CookiesManager.resourceKey = result.resourceKey;
   return result;
 }

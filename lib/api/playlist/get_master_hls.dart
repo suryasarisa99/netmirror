@@ -12,7 +12,7 @@ Future<String> getMasterHls(
   hd = true,
 }) async {
   final url = Uri.parse('$newApiUrl/${ott.url}hls/$videoId.m3u8?in=$key');
-  log("getMasterHls url: $url, key: $key", name: "http");
+  // log("getMasterHls url: $url, key: $key", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;

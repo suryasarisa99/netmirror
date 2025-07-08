@@ -232,7 +232,6 @@ class MiniDownloadItem {
   });
 
   factory MiniDownloadItem.fromMap(Map<String, dynamic> map) {
-    log('MiniDownloadItem.fromMap: $map');
     return MiniDownloadItem(
       id: map['id'] as String,
       progress: map['video_progress'] as int,
@@ -351,7 +350,6 @@ class DownloadItem {
   });
 
   factory DownloadItem.fromMap(Map<String, dynamic> map) {
-    log("DownloadItem.fromMap: $map");
     return DownloadItem(
       id: map['id'] as String,
       ottId: map['ott_id'] as int,
