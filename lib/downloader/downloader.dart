@@ -11,10 +11,13 @@ import 'package:netmirror/api/playlist/get_video_hls.dart';
 import 'package:netmirror/api/playlist/local_playlist.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/downloader/download_db.dart';
+import 'package:netmirror/log.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
+
+const l = L("downloader");
 
 class Downloader {
   // singleton
@@ -87,7 +90,7 @@ class Downloader {
       }
     });
     // may be not required
-    log("Paused Download: [$videoId]");
+    l.info("Paused Download: [$videoId]");
     _progressController.add(DownloadProgress.status(videoId, "paused"));
     await db.update(
       DownloadTables.downloads,
@@ -126,7 +129,7 @@ class Downloader {
 
   Future<void> resumeDownload(String videoId) async {
     final db = await _db;
-    log("Resume Download: ($currentDownloadItems >= $maxDownloadLimit)");
+    l.info("Resume Download: ($currentDownloadItems >= $maxDownloadLimit)");
     if (currentDownloadItems >= maxDownloadLimit) {
       moveToPending(videoId);
       return;
@@ -143,13 +146,13 @@ class Downloader {
       currentDownloadItems++;
       processDownload(videoId);
     } else {
-      log("failed: $currentDownloadItems >= $maxDownloadLimit");
+      l.error("failed: $currentDownloadItems >= $maxDownloadLimit");
     }
   }
 
   static Future<void> deleteItem(String videoId) async {
     final db = await _db;
-    log("Deleting: $videoId");
+    l.info("Deleting: $videoId");
     pauseFlags[videoId] = true;
     final downloads = await db.query(
       DownloadTables.downloads,
@@ -166,7 +169,7 @@ class Downloader {
       final file = File(downloads.first['playlist_path'] as String);
       final downloadPath =
           "${downloads.first['download_path'] as String}/.${item['video_id']}";
-      log("downloadPath: $downloadPath");
+      l.log("downloadPath: $downloadPath");
       if (await file.exists()) {
         await file.delete();
       }
@@ -181,7 +184,7 @@ class Downloader {
   static Future<void> deleteSeries(String id) async {
     final db = await _db;
     // pause all episodesFlags
-    log("Deleting Series: $id");
+    l.log("Deleting Series: $id");
 
     final episodes = (await db.query(
       DownloadTables.downloads,
@@ -196,7 +199,7 @@ class Downloader {
       if (status == "downloading") {
         pauseFlags[videoId] = true;
         currentDownloadItems--;
-        log("Paused Item (because of series delete): $videoId");
+        l.info("Paused Item (because of series delete): $videoId");
       }
     }
 
@@ -242,13 +245,13 @@ class Downloader {
       final id = item['id'] as String;
       item['status'] == 'downloading' ? downloadings.add(id) : pendings.add(id);
     }
-    log("Downloading: ${downloadings.length}");
+    l.log("Downloading: ${downloadings.length}");
     return (downloadings, pendings);
   }
 
   Future<void> continueDownloadAfterAppOpen() async {
     final (downloading, pending) = await getDownloadingAndPendingIds();
-    log(
+    l.info(
       "Continue Download After Open: Downloading: ${downloading.length} || Pending: ${pending.length}",
     );
     int count = 0;
@@ -283,7 +286,7 @@ class Downloader {
       0,
       maxDownloadLimit,
     );
-    log(
+    l.info(
       "Continue Download: Remaining:($maxDownloadLimit - $currentDownloadItems == $remaining)",
     );
 

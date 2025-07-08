@@ -4,6 +4,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/routes.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -12,6 +13,7 @@ void main() async {
 
   // Initialize MediaKit for video playback
   MediaKit.ensureInitialized();
+  L.only = ["downloader"];
 
   if (isDesk) {
     await windowManager.ensureInitialized();
