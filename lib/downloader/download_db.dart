@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 export 'package:netmirror/downloader/download_models.dart';
 
-const l = L("DownloadDb");
+const l = L("download_db");
 
 class DownloadDb {
   static final DownloadDb instance = DownloadDb._internal();

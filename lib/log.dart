@@ -34,9 +34,13 @@ class L {
   }) {
     // return;
     final prefix = n ?? name;
-    if (level.index < logLevel.index && !check(n)) return;
+    if (level.index < logLevel.index || !check(prefix)) return;
     if (!stackStrace) {
-      dev.log('$color$message$_reset', name: prefix!, level: level.index);
+      dev.log(
+        '$color$message$_reset',
+        name: prefix!,
+        // level: level.index
+      );
       return;
     }
     final stackTraceLine = StackTrace.current.toString().split('\n')[2].trim();

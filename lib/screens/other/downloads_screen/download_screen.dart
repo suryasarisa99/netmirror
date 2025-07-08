@@ -26,7 +26,7 @@ class DownloadsScreen extends StatefulWidget {
   State<DownloadsScreen> createState() => _DownloadsScreenState();
 }
 
-const l = L("Downloads_Screen");
+const l = L("download_screen");
 
 class _DownloadsScreenState extends State<DownloadsScreen> {
   List<DownloadItem> downloads = [];

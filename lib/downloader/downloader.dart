@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -79,6 +79,7 @@ class Downloader {
     downloadDir.create(recursive: true);
     DownloadDb.instance.database;
     continueDownloadAfterAppOpen();
+    // syncDownloadCounter();
   }
 
   Future<void> pauseDownload(String videoId) async {
@@ -86,7 +87,7 @@ class Downloader {
     pauseFlags[videoId] = true;
     DownloadDb.instance.getDownloadStatus(videoId).then((status) {
       if (status == "downloading") {
-        currentDownloadItems--;
+        decrementCurrentDownloadItems();
       }
     });
     // may be not required
@@ -129,11 +130,17 @@ class Downloader {
 
   Future<void> resumeDownload(String videoId) async {
     final db = await _db;
-    l.info("Resume Download: ($currentDownloadItems >= $maxDownloadLimit)");
+    l.debug("pause flags: $pauseFlags");
+
+    // if (pauseFlags[videoId] == false) {
+    //   l.warn("Download already in progress for $videoId");
+    //   return;
+    // }
     if (currentDownloadItems >= maxDownloadLimit) {
       moveToPending(videoId);
       return;
     }
+
     pauseFlags[videoId] = false;
     _progressController.add(DownloadProgress.status(videoId, "downloading"));
     await db.update(
@@ -142,12 +149,10 @@ class Downloader {
       where: 'id = ?',
       whereArgs: [videoId],
     );
-    if (currentDownloadItems < maxDownloadLimit) {
-      currentDownloadItems++;
-      processDownload(videoId);
-    } else {
-      l.error("failed: $currentDownloadItems >= $maxDownloadLimit");
-    }
+
+    currentDownloadItems++;
+    l.info("Resume Download: ($currentDownloadItems >= $maxDownloadLimit)");
+    processDownload(videoId);
   }
 
   static Future<void> deleteItem(String videoId) async {
@@ -164,7 +169,7 @@ class Downloader {
       final item = downloads.first;
       if (item['status'] == 'downloading') {
         pauseFlags[videoId] = true;
-        currentDownloadItems--;
+        decrementCurrentDownloadItems();
       }
       final file = File(downloads.first['playlist_path'] as String);
       final downloadPath =
@@ -198,7 +203,7 @@ class Downloader {
       final status = episodes[i]['status'] as String;
       if (status == "downloading") {
         pauseFlags[videoId] = true;
-        currentDownloadItems--;
+        decrementCurrentDownloadItems();
         l.info("Paused Item (because of series delete): $videoId");
       }
     }
@@ -290,15 +295,20 @@ class Downloader {
       "Continue Download: Remaining:($maxDownloadLimit - $currentDownloadItems == $remaining)",
     );
 
-    moveToDownloadingStatus(pending.take(remaining).toList());
-    int count = 0;
-    for (final downloadId in pending) {
-      if (count >= remaining) break;
-      log("Continue Download: [$downloadId]");
+    final idsToStart = pending.take(remaining).toList();
+    moveToDownloadingStatus(idsToStart);
+
+    for (final downloadId in idsToStart) {
+      // Check if already downloading to prevent duplicates
+      if (pauseFlags[downloadId] == false) {
+        l.warn("Download already in progress for $downloadId");
+        continue;
+      }
+
+      l.info("Continue Download: [$downloadId]");
+      currentDownloadItems++;
       processDownload(downloadId);
-      count++;
     }
-    currentDownloadItems += count;
   }
 
   Future<void> _updateProgress({
@@ -472,11 +482,10 @@ class Downloader {
       src: masterPlaylist.videos[qualityIndex],
       isShow: !isMovie,
     );
-    log("video hls data:\n$videoHlsData");
     final lines = videoHlsData.split('\n');
     final videoUrls = lines.where((line) => line.endsWith('.jpg')).toList();
     if (videoUrls.isEmpty) {
-      log("Error: Parsing videoHlsData failed, no video urls found");
+      l.error("Error: Parsing videoHlsData failed, no video urls found");
       throw Exception(
         "Error: Parsing videoHlsData failed, no video urls found",
       );
@@ -537,8 +546,6 @@ class Downloader {
     String firstEpisodeSourceRaw,
     String resourceKey,
   ) async {
-    final season = movie.seasons[seasonNumber]!;
-
     // its a dummy item, to show series image and title
     await DownloadDb.instance.insertSeries({
       'id': movie.id,
@@ -582,14 +589,19 @@ class Downloader {
             _progressController.add(
               DownloadProgress(id: videoId, seriesId: movie.id, newItem: true),
             );
-            log("add episodes: ${episodes.length}");
+            l.info("add episodes: ${episodes.length}");
             _progressController.add(
               DownloadProgress(id: movie.id, totalEpisodesPlus: 1),
             );
             if (currentDownloadItems < maxDownloadLimit) {
-              log("$currentDownloadItems < $maxDownloadLimit");
-              currentDownloadItems++;
-              processDownload(videoId);
+              // Check if already downloading to prevent duplicates
+              if (pauseFlags[videoId] != false) {
+                l.log("$currentDownloadItems < $maxDownloadLimit");
+                currentDownloadItems++;
+                processDownload(videoId);
+              } else {
+                l.warn("Download already in progress for $videoId");
+              }
             }
           });
     }
@@ -672,8 +684,13 @@ class Downloader {
     );
 
     if (currentDownloadItems < maxDownloadLimit) {
-      currentDownloadItems++;
-      processDownload(videoId);
+      // Check if already downloading to prevent duplicates
+      if (pauseFlags[videoId] != false) {
+        currentDownloadItems++;
+        processDownload(videoId);
+      } else {
+        l.warn("Download already in progress for $videoId");
+      }
     }
   }
 
@@ -782,6 +799,7 @@ class Downloader {
         }
       }
       l.success("Download Completed");
+      decrementCurrentDownloadItems(); // Decrement counter on completion
       _progressController.add(DownloadProgress.status(videoId, "completed"));
       if (info.type == "episode") {
         _progressController.add(
@@ -797,7 +815,8 @@ class Downloader {
       l.info("Download Completed calling: continueDownload");
       continueDownload();
     } catch (e) {
-      log("Error at Download: $e");
+      l.error("Error at Download: $e");
+      decrementCurrentDownloadItems();
       _progressController.add(DownloadProgress.status(videoId, "failed"));
       await db.update(
         DownloadTables.downloads,
@@ -809,4 +828,22 @@ class Downloader {
       continueDownload();
     }
   }
+
+  static decrementCurrentDownloadItems() {
+    /*
+    decrements when :
+      1. Download Completed
+      2. Download Failed
+      3. Download Paused
+      4. Download item Deleted
+      5. Download Series Deleted
+    */
+    currentDownloadItems = max(0, currentDownloadItems - 1);
+  }
+
+  // Future<void> syncDownloadCounter() async {
+  //   final (downloading, _) = await getDownloadingAndPendingIds();
+  //   currentDownloadItems = downloading.length;
+  //   l.info("Synced currentDownloadItems to: $currentDownloadItems");
+  // }
 }
