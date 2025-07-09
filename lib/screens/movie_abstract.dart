@@ -85,7 +85,6 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   Future<void> loadData() async {
-    log("surya abstract class: loadData()");
     var localMovie = await DB.movie.get(widget.id, ott.id);
 
     loadDownloads();
@@ -95,11 +94,6 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         getWatchHistory(localMovie),
         DB.watchList.isIn(localMovie.id, ott.id),
       ]);
-      log("in watchlist: ${results[1]}");
-
-      log(
-        "watch history: ${watchHistory?.id}, ${watchHistory?.current}, sn: ${watchHistory?.seasonNumber}, en: ${watchHistory?.episodeNumber}",
-      );
       int tabLen = 0;
       if (localMovie.isShow) tabLen++;
       if (localMovie.suggest.isNotEmpty) tabLen++;
@@ -112,7 +106,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         seasonNumber =
             localMovie.latestSeasonNumber; // Use latest season number
       });
-      log(">>>>> movie got from db, the movie id is: ${localMovie.id}");
+      l.debug("movie got from db: ${localMovie.id}");
     }
 
     if (localMovie == null || localMovie.isStale) {
@@ -121,10 +115,8 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   }
 
   Future<void> loadDataFromOnline() async {
-    log("surya abstract class: loadDataFromOnline()");
-
     var onlineMovie = await getMovie(widget.id, ott);
-    log("movie got from online: ${onlineMovie.id}");
+    l.debug("movie got from online: ${onlineMovie.id}");
     if (tabController == null) {
       int tabLen = 0;
       if (onlineMovie.isShow) tabLen++;
@@ -161,13 +153,13 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         seasonNumber: seasonNum ?? m.latestSeasonNumber, // Use season number
         seriesId: m.id,
       );
-      l.success("season watch history: ${result.length}");
+      l.debug("season watch history len: ${result.length}");
       seasonWatchHistory = result;
     }
   }
 
   void handleSeasonChange(int newSeasonNumber) async {
-    log("surya abstract class: handleSeasonChange()");
+    l.debug("Changing season to $newSeasonNumber");
 
     setState(() {
       seasonNumber = newSeasonNumber;
@@ -176,7 +168,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     log("watch history: ${watchHistory?.id}, ${watchHistory?.current}");
 
     final season = movie!.getSeason(newSeasonNumber);
-    if (season?.episodes == null && season != null) {
+    if (season.episodes == null) {
       log("episodes are loading");
       final moreEpisodes = await getMoreEpisodes(
         s: season.id,

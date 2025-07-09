@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:netmirror/constants.dart';
@@ -25,7 +24,6 @@ class _PlayerCommand {
   Future<void> mpv(String url) async {
     switch (type) {
       case 'online-url':
-        print('MPV playing online URL: $url');
         Process.start('mpv', [
           '--no-config',
           '--demuxer=lavf',
@@ -37,7 +35,6 @@ class _PlayerCommand {
         ], mode: ProcessStartMode.detached);
         break;
       case 'online-file':
-        print('MPV playing online file: $url');
         Process.start('mpv', [
           '--no-config',
           '--demuxer=lavf',
@@ -47,7 +44,6 @@ class _PlayerCommand {
         ], mode: ProcessStartMode.detached);
         break;
       case 'offline-file':
-        print('MPV playing offline file: $url');
         Process.start('mpv', [
           '--no-config',
           '--demuxer=lavf',
@@ -94,14 +90,36 @@ class _PlayerCommand {
           mode: ProcessStartMode.detached,
           environment: Platform.isWindows ? null : linuxEnv,
         );
-        log("vlc --fullscreen $url");
-
-        print('VLC playing offline file: $url');
         break;
     }
   }
 
   Future<void> iina(String url) async {
     Process.start('open', ['-a', 'IINA', url], mode: ProcessStartMode.detached);
+  }
+
+  Future<void> wmp(String url) async {
+    Process.start('start', ['wmplayer', url], mode: ProcessStartMode.detached);
+  }
+
+  Future<void> mplayer(String url) async {
+    Process.start('mplayer', [
+      "-playlist",
+      url,
+    ], mode: ProcessStartMode.detached);
+  }
+
+  Future<void> ffPlay(String url) async {
+    Process.start('ffplay', [
+      '-i',
+      url,
+      // '-fs',
+      // '-an',
+      // '-sn',
+      // '-vcodec',
+      // 'copy',
+      // '-acodec',
+      // 'copy',
+    ], mode: ProcessStartMode.detached);
   }
 }

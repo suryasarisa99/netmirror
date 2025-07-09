@@ -97,7 +97,6 @@ class Movie {
   }
 
   factory Movie.parse(Map<String, dynamic> json, String id, OTT? ott) {
-    log("movie: json: $json");
     List<Episode> episodesList = [];
     List<Suggestion> suggestList = [];
     List<String> genre = [];

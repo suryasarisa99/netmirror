@@ -7,6 +7,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/data/options.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/db/tables.dart';
+import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -23,6 +24,9 @@ const l = L("Settings_Screen");
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _resolutionController = TextEditingController();
+  final _maxDownloadLimitController = TextEditingController(
+    text: Downloader.maxDownloadLimit.toString(),
+  );
   @override
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).textTheme.titleMedium;
@@ -134,6 +138,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Text("Max Download Limit", style: labelStyle),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      showPopupTextField(
+                        context,
+                        "Max Download Limit",
+                        _maxDownloadLimitController,
+                        () {
+                          SettingsOptions.maxDownloadLimit = int.parse(
+                            _maxDownloadLimitController.text,
+                          );
+                          Navigator.of(context).pop();
+                          setState(() {});
+                          return true;
+                        },
+                      );
+                    },
+                    child: Text(Downloader.maxDownloadLimit.toString()),
+                  ),
+                ],
+              ),
+            ),
             FilledButton(
               onPressed: () async {
                 PermissionStatus status = await Permission.manageExternalStorage
@@ -198,6 +229,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onChanged: isEnabled
           ? onChanged
           : null, // Disable the switch if isEnabled is false
+    );
+  }
+
+  void showPopupTextField(
+    BuildContext context,
+    String title,
+    TextEditingController controller,
+    bool Function() onSave,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: TextField(
+            autofocus: true,
+            controller: controller,
+            textAlign: TextAlign.center,
+            decoration: const InputDecoration(
+              hintText: "Type here...",
+              isDense: true,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                if (onSave()) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text("Save"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

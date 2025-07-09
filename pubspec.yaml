@@ -38,6 +38,7 @@ dependencies:
   process: ^5.0.4
   screen_brightness: ^2.1.4
   share_plus: ^11.0.0
+  popover: ^0.3.1
   shared_code:
     path: ./shared_code
   shared_preferences: ^2.5.3

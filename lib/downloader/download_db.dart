@@ -83,7 +83,6 @@ class DownloadDb {
   // Get episodes for a specific series
   Future<List<DownloadItem>> getSeriesEpisodes(String seriesId) async {
     final db = await database;
-    l.debug("only episodes");
     const query =
         '''
       SELECT * 

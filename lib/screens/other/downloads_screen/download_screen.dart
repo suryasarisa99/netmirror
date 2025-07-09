@@ -14,9 +14,12 @@ import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/log.dart';
+import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:popover/popover.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DownloadsScreen extends StatefulWidget {
   const DownloadsScreen({super.key, this.seriesId});
@@ -92,68 +95,25 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     } else {
       x = await DownloadDb.instance.getSeriesEpisodes(widget.seriesId!);
     }
-    log("x: ${x.length}");
+    l.info("downloads count: ${x.length}");
     setState(() {
-      log("downloads: ${x.length}");
       downloads = x;
     });
   }
 
-  static void playWithVlc(path) {
-    log("path: $path");
-    Process.start("vlc", [
-      // "--fullscreen",
-      // "--no-qt-error-dialogs",
-      // "--no-repeat",
-      path,
-    ], mode: ProcessStartMode.detached);
+  void openMovie(String id, int ottId) {
+    GoRouter.of(context).push("/movie/$ottId/$id");
   }
 
-  static void playWithMpv(path) {
-    Process.start("mpv", [path], mode: ProcessStartMode.detached);
+  static void _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
-  static void playWithFfPlay(path) {
-    Process.start("ffplay", ["-i", path], mode: ProcessStartMode.detached);
-  }
-
-  static void playWithMplayer(path) {
-    Process.start("mplayer", [
-      "-playlist",
-      path,
-    ], mode: ProcessStartMode.detached);
-  }
-
-  static void playWithWmp(path) {
-    // windows media player
-    Process.start("wmplayer", [path], mode: ProcessStartMode.detached);
-  }
-
-  void openMovie(String id) {
-    GoRouter.of(context).go("/movie/$id");
-  }
-
-  // static void _launchUrl(String url) async {
-  //   final Uri uri = Uri.parse(url);
-  //   if (await canLaunchUrl(uri)) {
-  //     await launchUrl(uri, mode: LaunchMode.externalApplication);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
-  static Future<String> getContentUri(String filePath) async {
-    final file = File(filePath);
-    // final uri = await MethodChannel('android_intent')
-    //     .invokeMethod<String>('getContentUri', file.path);
-    final result = await MethodChannel(
-      'android_intent',
-    ).invokeMethod<String>('getContentUri', {'path': filePath});
-    return result!;
-  }
-
-  //     "content://com.example.netmirror.fileprovider/external_files/Outlander-81692348.m3u8";
-  //   type: 'application/x-mpegURL',
   Future<bool> requestPermission() async {
     if (true) {
       final result = await Permission.manageExternalStorage.request();
@@ -161,25 +121,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     }
   }
 
-  Future<void> _launchFileWithExternalApp(String file) async {
+  Future<void> playWithAndroidVlc(String file) async {
     requestPermission();
-    //placed a manugallly in sample.txt file in Android/data/com.example.netmirror/files directory
-    // "content://com.example.netmirror.provider/external_files/Android/data/com.example.netmirror/files/Outlander-81692348.m3u8";
-    // final path =
-    //     "content://com.example.netmirror.provider/external_files/Downloads/Outlander-81692348.mp4";
-    // final String file =
-    //     // "/storage/emulated/0/Android/data/com.example.netmirror/files/Outlander-81692348.mp4";
-    //     "/storage/emulated/0/Download/Outlander-81692348.mp4";
-
-    // // Open
-    // OpenFile.open(file);
-    // return;
-
-    // // share
-    // Share.shareXFiles([
-    //   XFile(path),
-    // ]);
-
     String subtitlePath = "/storage/emulated/0/Download/80243261-ar.srt";
     final intent = AndroidIntent(
       action: 'action_view',
@@ -203,12 +146,6 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_GRANT_READ_URI_PERMISSION],
     );
     await intent.launch();
-
-    //// Url launcher
-    // final uri = Uri.parse(path);
-    // if (await canLaunchUrl(uri)) {
-    //   await launchUrl(uri, mode: LaunchMode.externalApplication);
-    // }
   }
 
   void delete(String id, String type, int index) {
@@ -252,60 +189,6 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
     );
   }
 
-  // Widget buildDownloadItemWrapper(DownloadItem item, int i) {
-  //   log("item: ${item.title} ${item.id} ${item.type}");
-  //   final firstFalseIndex = item.audioLangs.indexWhere((e) => !e.status);
-  //   return ContextMenuWidget(
-  //     menuProvider: (_) {
-  //       log("plalistpath offline: ${item.playlistPath}");
-  //       return Menu(
-  //         children: [
-  //           Menu(
-  //             title: "Play With",
-  //             children: [
-  //               MenuAction(
-  //                 // callback: () => playWithVlc(item.playlistPath),
-  //                 callback: () =>
-  //                     ExternalPlayer.offlineFile.vlc(item.playlistPath),
-  //                 title: "Vlc",
-  //               ),
-  //               MenuAction(
-  //                 // callback: () => playWithMpv(item.playlistPath),
-  //                 callback: () =>
-  //                     ExternalPlayer.offlineFile.mpv(item.playlistPath),
-  //                 title: "Mpv",
-  //               ),
-  //               MenuAction(
-  //                 callback: () => playWithFfPlay(item.playlistPath),
-  //                 title: "FfPlay",
-  //               ),
-  //               MenuAction(
-  //                 callback: () => playWithMplayer(item.playlistPath),
-  //                 title: "Mplayer",
-  //               ),
-  //               MenuAction(
-  //                 callback: () => playWithWmp(item.playlistPath),
-  //                 title: "Windows Media Player",
-  //               ),
-  //             ],
-  //           ),
-  //           MenuAction(
-  //             // callback: () => playWithVlc(item.playlistPath),
-  //             callback: () =>
-  //                 context.push("/nf-movie", extra: widget.seriesId ?? item.id),
-  //             title: "Go to Page",
-  //           ),
-  //           MenuAction(
-  //             callback: () => delete(item.id, item.type, i),
-  //             title: "Delete Download",
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //     child: buildDownloadItem(item, i),
-  //   );
-  // }
-
   Widget _buildProgressAudioOrVideo(
     DownloadItem item,
     int firstNonDownloadAudioIndex,
@@ -347,8 +230,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
           context.push("/downloads", extra: item.id);
           return;
         }
-        log("item id: ${item.id}, download path: ${item.downloadPath}");
-        log("item path: ${item.playlistPath}");
+
+        l.debug("download id: ${item.id}, playlist path: ${item.playlistPath}");
         final id = item.seriesId ?? item.id;
         final movie = await DB.movie.get(id, item.ottId);
         if (movie == null) {
@@ -366,15 +249,6 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
             episodeNumber: item.episodeNumber,
           ),
         );
-
-        // final movie = await DB.movie.get(item.id, 0);
-        // if (isDesk) {
-        //   ExternalPlayer.offlineFile.mpv(item.playlistPath);
-        // } else {
-        //   final y = item.playlistPath;
-        //   final x = item.playlistPath.replaceFirst(".mp4", ".m3u8");
-        //   _launchFileWithExternalApp(item.playlistPath);
-        // }
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -485,6 +359,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                   ),
               ],
             ),
+
             if (item.status != "completed") SizedBox(height: 2),
             if (item.status != "completed")
               Padding(
@@ -492,6 +367,69 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // vertical dots menu
+                    _buildIconButton(Icons.more_vert, () {
+                      final player = ExternalPlayer.offlineFile;
+                      showMenu(
+                        position: RelativeRect.fromLTRB(100, 100, 0, 0),
+                        context: context,
+                        items: [
+                          PopupMenuItem(
+                            onTap: () => delete(item.id, item.type, i),
+                            child: Text("Delete Download"),
+                          ),
+                          PopupMenuItem(onTap: () {}, child: Text("Select")),
+                          PopupMenuItem(
+                            onTap: () =>
+                                openMovie(item.seriesId ?? item.id, item.ottId),
+                            child: Text("Go to Page"),
+                          ),
+
+                          // Android specific
+                          if (Platform.isAndroid)
+                            PopupMenuItem(
+                              onTap: () =>
+                                  playWithAndroidVlc(item.playlistPath),
+                              child: Text("Play With VLC"),
+                            ),
+                          // MacOS specific
+                          if (Platform.isMacOS)
+                            PopupMenuItem(
+                              onTap: () => player.iina(item.playlistPath),
+                              child: Text("Play With IINA"),
+                            ),
+                          // Windows specific
+                          if (Platform.isWindows)
+                            PopupMenuItem(
+                              onTap: () => player.wmp(item.playlistPath),
+                              child: Text("Play With Windows Media Player"),
+                            ),
+
+                          if (isDesk) ...[
+                            PopupMenuItem(
+                              onTap: () => player.vlc(item.playlistPath),
+                              child: Text("VLC"),
+                            ),
+                            PopupMenuItem(
+                              onTap: () => player.mpv(item.playlistPath),
+                              child: Text("Mpv"),
+                            ),
+                            PopupMenuItem(
+                              onTap: () => player.ffPlay(item.playlistPath),
+                              child: Text("FfPlay"),
+                            ),
+                            PopupMenuItem(
+                              onTap: () => player.mplayer(item.playlistPath),
+                              child: Text("Mplayer"),
+                            ),
+                          ],
+                          PopupMenuItem(
+                            onTap: () => _launchUrl(item.playlistPath),
+                            child: Text("Other"),
+                          ),
+                        ],
+                      );
+                    }),
                     if (item.status == "paused" || item.status == "failed")
                       _buildIconButton(Icons.play_arrow, () {
                         Downloader.instance.resumeDownload(item.id);

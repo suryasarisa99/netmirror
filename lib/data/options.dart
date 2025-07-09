@@ -1,4 +1,5 @@
 import 'package:netmirror/constants.dart';
+import 'package:netmirror/downloader/downloader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsOptions {
@@ -60,5 +61,10 @@ class SettingsOptions {
     } else {
       sp!.remove('defaultResolution');
     }
+  }
+
+  static set maxDownloadLimit(int value) {
+    Downloader.maxDownloadLimit = value;
+    sp!.setInt('maxDownloadLimit', value);
   }
 }

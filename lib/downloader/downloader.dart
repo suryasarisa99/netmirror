@@ -28,7 +28,7 @@ class Downloader {
   final _notifications = FlutterLocalNotificationsPlugin();
   static late final Directory downloadDir;
 
-  static final int maxDownloadLimit = 2;
+  static int maxDownloadLimit = sp!.getInt('maxDownloadLimit') ?? 2;
   static int currentDownloadItems = 0;
 
   Downloader._internal();
