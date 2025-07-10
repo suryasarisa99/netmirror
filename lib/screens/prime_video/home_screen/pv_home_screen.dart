@@ -190,7 +190,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
               // showIndicator: true,
               // slideIndicator: CircularSlideIndicator(),
             ),
-            items: data!.carouselImgs.map((item) {
+            items: data!.carouselImages.map((item) {
               return Builder(
                 builder: (BuildContext context) {
                   return GestureDetector(
@@ -212,7 +212,7 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(data!.carouselImgs.length, (i) {
+          children: List.generate(data!.carouselImages.length, (i) {
             bool isSelected = i == currentCarouselIndex;
             return GestureDetector(
               onTap: () {

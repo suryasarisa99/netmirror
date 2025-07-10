@@ -11,7 +11,7 @@ import 'package:shared_code/models/ott.dart';
 class NfHomeRow extends StatelessWidget {
   const NfHomeRow({super.key, required this.tray});
 
-  final PvHomeTray tray;
+  final HomeTray tray;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class NfHomeRow extends StatelessWidget {
 class NfHomeTop10Row extends StatelessWidget {
   const NfHomeTop10Row({super.key, required this.tray});
 
-  final PvHomeTray tray;
+  final HomeTray tray;
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,7 @@ void main() async {
 
   // Initialize MediaKit for video playback
   MediaKit.ensureInitialized();
-  L.only = ["downloader", "download_db"];
+  L.only = ["hotstar_home"];
   L.logLevel = LogLevel.debug;
   // L.stackStrace = true;
 

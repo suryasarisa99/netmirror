@@ -9,7 +9,7 @@ import 'package:netmirror/utils/nav.dart';
 class PvHomeRow extends StatelessWidget {
   const PvHomeRow({super.key, required this.tray});
 
-  final PvHomeTray tray;
+  final HomeTray tray;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -64,7 +64,7 @@ class PvHomeRow extends StatelessWidget {
 class PvHomeTop10Row extends StatelessWidget {
   const PvHomeTop10Row({super.key, required this.tray});
 
-  final PvHomeTray tray;
+  final HomeTray tray;
 
   @override
   Widget build(BuildContext context) {
