@@ -55,9 +55,11 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       SystemUiMode.immersiveSticky,
       overlays: [],
     );
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
-
-  void seekToCurrentPosition() {}
 
   String get videoId {
     return widget.data.isMovie
@@ -74,14 +76,12 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       ottId: widget.data.ott.id,
       id: widget.data.id,
     );
+
     try {
-      // Initialize MediaKit Player
       _player = Player(
         configuration: PlayerConfiguration(
           logLevel: MPVLogLevel.debug,
-          // bufferSize: 1024 * 300,
           ready: () {
-            // Player is ready but video might not be loaded yet
             l.info("Player is ready");
           },
         ),
@@ -106,11 +106,8 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         }
 
         final wh = await futureWatchHistory;
-        // Video is now loaded and has a valid duration, safe to seek
         if (wh != null) {
           final seekPosition = Duration(milliseconds: wh.current);
-
-          // Only seek if the position is valid and less than duration
           if (seekPosition.inMilliseconds > 0 &&
               seekPosition.inMilliseconds < duration.inMilliseconds) {
             _seeked = true;
@@ -143,10 +140,11 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
       _player!.stream.playing.listen((playing) {
         l.info("Player state changed - Playing: $playing");
         if (!playing) {
-          // Video stopped/paused - save progress
           _savePlaybackProgress();
         }
       });
+
+      // _player!.stream
 
       // Listen for completion
       _player!.stream.completed.listen((completed) {
@@ -364,9 +362,10 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
           ? Video(
               controller: _controller!,
               fit: BoxFit.cover,
-              onExitFullscreen: () async {
-                hideStatusBarAndNavigationBar();
-              },
+
+              // onExitFullscreen: () async {
+              //   hideStatusBarAndNavigationBar();
+              // },
               // fill: Colors.green,
             )
           : Center(child: const CircularProgressIndicator(color: Colors.red)),

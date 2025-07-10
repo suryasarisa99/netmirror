@@ -34,12 +34,16 @@ MaterialDesktopVideoControlsThemeData _theme(BuildContext context) =>
             kDefaultMaterialDesktopVideoControlsThemeDataFullscreen;
 
 /// Default [MaterialDesktopVideoControlsThemeData].
-const kDefaultMaterialDesktopVideoControlsThemeData =
-    MaterialDesktopVideoControlsThemeData();
+final kDefaultMaterialDesktopVideoControlsThemeData =
+    MaterialDesktopVideoControlsThemeData(
+  modifyVolumeOnScroll: false,
+);
 
 /// Default [MaterialDesktopVideoControlsThemeData] for fullscreen.
 const kDefaultMaterialDesktopVideoControlsThemeDataFullscreen =
-    MaterialDesktopVideoControlsThemeData();
+    MaterialDesktopVideoControlsThemeData(
+  modifyVolumeOnScroll: false,
+);
 
 /// {@template material_desktop_video_controls_theme_data}
 ///

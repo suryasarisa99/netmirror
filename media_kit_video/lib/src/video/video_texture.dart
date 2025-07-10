@@ -499,17 +499,17 @@ Future<void> defaultEnterNativeFullscreen() async {
 Future<void> defaultExitNativeFullscreen() async {
   try {
     if (Platform.isAndroid || Platform.isIOS) {
-      await Future.wait(
-        [
-          SystemChrome.setEnabledSystemUIMode(
-            SystemUiMode.manual,
-            overlays: SystemUiOverlay.values,
-          ),
-          SystemChrome.setPreferredOrientations(
-            [],
-          ),
-        ],
-      );
+      // await Future.wait(
+      //   [
+      //     SystemChrome.setEnabledSystemUIMode(
+      //       SystemUiMode.manual,
+      //       overlays: SystemUiOverlay.values,
+      //     ),
+      //     SystemChrome.setPreferredOrientations(
+      //       [],
+      //     ),
+      //   ],
+      // );
     } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
       await const MethodChannel('com.alexmercerind/media_kit_video')
           .invokeMethod(
