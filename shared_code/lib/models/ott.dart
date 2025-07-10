@@ -30,14 +30,19 @@ enum OTT {
     hImgHeight: 374,
     hImgWidth: 665,
   ),
-  dh(
-    "dh",
+  hotstar(
+    "hs",
     2,
     name: "Disney + Hotstar",
-    vImgHeight: 0,
-    vImgWidth: 0,
-    hImgHeight: 0,
-    hImgWidth: 0,
+    // vImgHeight: 0,
+    // vImgWidth: 0,
+    // hImgHeight: 0,
+    // hImgWidth: 0,
+    // todo: ,temporary using netflix aspect ratio
+    vImgHeight: 233,
+    vImgWidth: 166,
+    hImgHeight: 233,
+    hImgWidth: 166,
   ),
   lionGate(
     "lg",
@@ -68,7 +73,7 @@ enum OTT {
   final double vAspectRatio;
   final double hAspectRatio;
 
-  static final list = [netflix, pv, dh, lionGate, hbo];
+  static final list = [netflix, pv, hotstar, lionGate, hbo];
 
   const OTT(
     this.value,
@@ -106,6 +111,12 @@ enum OTT {
       }
 
       return "https://imgcdn.media/poster/$direction/$id.jpg";
+    }
+    if (this == OTT.hotstar) {
+      final direction = (largeImg || forceHorizontal) ? "h" : "v";
+      final size = largeImg ? "700" : "166";
+      if (largeImg || forceHorizontal) {}
+      return "https://imgcdn.media/$url/$direction/$size/$id.jpg";
     }
     return "https://imgcdn.media/$url${largeImg ? 700 : 341}/$id.jpg";
     // return "https://imgcdn.media/$url/c/$id.jpg";   //pv moviescreen poster

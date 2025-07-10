@@ -94,7 +94,10 @@ Widget windowDragAreaWithChild(
   } else {
     return Row(
       children: [
-        if (Platform.isMacOS) SizedBox(width: 60), // For macOS titlebar spacing
+        if (Platform.isMacOS) ...[
+          SizedBox(width: 60),
+          // Icon(Icons.chevron_left),
+        ], // For macOS titlebar spacing
         ...children, const Spacer(), ...actions,
       ],
     );

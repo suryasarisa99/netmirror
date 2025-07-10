@@ -15,6 +15,7 @@ import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/screens/external_plyer.dart';
+import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -173,18 +174,21 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
   @override
   Widget build(BuildContext context) {
     // In your downloads screen
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        surfaceTintColor: Colors.black,
+    return DesktopWrapper(
+      child: Scaffold(
         backgroundColor: Colors.black,
-        title: windowDragAreaWithChild([
-          const Text('Downloads', style: TextStyle(color: Colors.white)),
-        ]),
-      ),
-      body: ListView.builder(
-        itemCount: downloads.length,
-        itemBuilder: (context, i) => buildDownloadItem(downloads[i], i),
+        appBar: AppBar(
+          surfaceTintColor: Colors.black,
+          backgroundColor: Colors.black,
+          automaticallyImplyLeading: !isDesk,
+          title: windowDragAreaWithChild([
+            const Text('Downloads', style: TextStyle(color: Colors.white)),
+          ]),
+        ),
+        body: ListView.builder(
+          itemCount: downloads.length,
+          itemBuilder: (context, i) => buildDownloadItem(downloads[i], i),
+        ),
       ),
     );
   }

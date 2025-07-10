@@ -15,6 +15,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 Future goToMovie(BuildContext context, int ottId, String movieId) {
+  debugPrint("Navigating to movie: $movieId on OTT: $ottId");
   return GoRouter.of(context).push("/movie/$ottId/$movieId");
 }
 

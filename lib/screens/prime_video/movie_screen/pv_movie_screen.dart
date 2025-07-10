@@ -6,11 +6,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
+import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_season_selector_bottom_sheet.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
@@ -62,86 +64,89 @@ class _PVMovieScreenState extends MovieScreenState {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return RefreshIndicator(
-      onRefresh: loadDataFromOnline,
-      edgeOffset: 50,
-      displacement: 60,
-      color: Colors.white,
-      child: Scaffold(
-        bottomNavigationBar: CustomBottomBar(
-          selectedIndex: 0,
-          onItemSelected: (i) {},
-        ),
-        backgroundColor: Colors.black,
-        body: CustomScrollView(
-          // no bounce
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.black,
-              surfaceTintColor: Colors.black,
-              // forceMaterialTransparency: false,
-              forceElevated: false,
-              title: windowDragAreaWithChild(
-                [],
-                actions: [
-                  TopbarButtons.settingsBtn(context),
-                  TopbarButtons.downloadsBtn(context),
-                  TopbarButtons.searchBtn(context, ott.id),
-                ],
+    return DesktopWrapper(
+      child: RefreshIndicator(
+        onRefresh: loadDataFromOnline,
+        edgeOffset: 50,
+        displacement: 60,
+        color: Colors.white,
+        child: Scaffold(
+          bottomNavigationBar: CustomBottomBar(
+            selectedIndex: 0,
+            onItemSelected: (i) {},
+          ),
+          backgroundColor: Colors.black,
+          body: CustomScrollView(
+            // no bounce
+            physics: const ClampingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Colors.black,
+                surfaceTintColor: Colors.black,
+                automaticallyImplyLeading: !isDesk,
+                // forceMaterialTransparency: false,
+                forceElevated: false,
+                title: windowDragAreaWithChild(
+                  [],
+                  actions: [
+                    TopbarButtons.settingsBtn(context),
+                    TopbarButtons.downloadsBtn(context),
+                    TopbarButtons.searchBtn(context, ott.id),
+                  ],
+                ),
+                floating: false,
+                pinned: true,
+                expandedHeight: 60,
               ),
-              floating: false,
-              pinned: true,
-              expandedHeight: 60,
-            ),
-            SliverToBoxAdapter(
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: CachedNetworkImage(
-                      // imageUrl: isDesk
-                      //     ? "https://imgcdn.media/pv/c/${widget.id}.jpg"
-                      //     : OTT.pv.getImg(widget.id, largeImg: true),
-                      imageUrl: OTT.pv.getImg(widget.id, largeImg: true),
-                      cacheManager: PvLargeCacheManager.instance,
-                      width: size.width,
-                      fit: BoxFit.cover,
-                      height: size.width / 2.052,
-                      // height: OTT.pv
-                      // height: 230,
+              SliverToBoxAdapter(
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: CachedNetworkImage(
+                        // imageUrl: isDesk
+                        //     ? "https://imgcdn.media/pv/c/${widget.id}.jpg"
+                        //     : OTT.pv.getImg(widget.id, largeImg: true),
+                        imageUrl: OTT.pv.getImg(widget.id, largeImg: true),
+                        cacheManager: PvLargeCacheManager.instance,
+                        width: size.width,
+                        fit: BoxFit.cover,
+                        height: size.width / 2.052,
+                        // height: OTT.pv
+                        // height: 230,
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.center,
-                          colors: [Colors.black, Colors.transparent],
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.center,
+                            colors: [Colors.black, Colors.transparent],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            if (movie != null)
-              ...buildMainData()
-            else
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 450,
-                  child: Center(
-                    child: CircularProgressIndicator(color: Colors.white),
-                  ),
+                  ],
                 ),
               ),
-          ],
+              if (movie != null)
+                ...buildMainData()
+              else
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 450,
+                    child: Center(
+                      child: CircularProgressIndicator(color: Colors.white),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -398,24 +403,27 @@ class _PVMovieScreenState extends MovieScreenState {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[850]!,
-                      borderRadius: const BorderRadius.all(Radius.circular(3)),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    child: Text(
-                      movie!.hdsd,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                  if (movie!.hdsd != null)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[850]!,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(3),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      child: Text(
+                        movie!.hdsd!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ],

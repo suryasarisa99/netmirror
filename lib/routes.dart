@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
+import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home.dart';
+import 'package:netmirror/screens/hotstar/hotstar_movie/hotstar_movie_screen.dart';
 import 'package:netmirror/screens/initial_screen.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_screen.dart';
 import 'package:netmirror/screens/netflix/nf_movie_screen/nf_movie_screen.dart';
@@ -91,11 +93,18 @@ final routes = GoRouter(
       pageBuilder: (context, state) {
         final ottId = int.parse(state.pathParameters['ottId']!);
         final movieId = state.pathParameters['movieId']!;
-        return slideFromRightTransition(switch (ottId) {
-          0 => NfMovieScreen(movieId),
-          1 => PVMovieScreen(movieId),
-          _ => NfMovieScreen(movieId), // Default to Netflix if ottId is unknown
-        }, state);
+        // return slideFromRightTransition(switch (ottId) {
+        //   0 => NfMovieScreen(movieId),
+        //   1 => PVMovieScreen(movieId),
+        //   2 => HotstarMovieScreen(movieId),
+        //   _ => NfMovieScreen(movieId), // Default to Netflix if ottId is unknown
+        // }, state);
+        return switch (ottId) {
+          0 => slideFromRightTransition(NfMovieScreen(movieId), state),
+          1 => slideFromRightTransition(PVMovieScreen(movieId), state),
+          2 => slideFromBottomTransition(HotstarMovieScreen(movieId), state),
+          _ => slideFromRightTransition(NfMovieScreen(movieId), state),
+        };
       },
     ),
 
@@ -138,6 +147,24 @@ final routes = GoRouter(
         ),
       ],
     ),
+
+    StatefulShellRoute.indexedStack(
+      key: pvMainHomeKey,
+      builder: (context, state, shell) => PvMain(shell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/hotstar-home',
+              pageBuilder: (context, state) {
+                // final tab = state.extra == null ? 0 : state.extra as int;
+                return instantTransition(HotstarHome(), state);
+              },
+            ),
+          ],
+        ),
+      ],
+    ),
   ],
 );
 
@@ -152,6 +179,27 @@ CustomTransitionPage<T> slideFromRightTransition<T extends Object?>(
     child: child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0); // Start from right
+      const end = Offset.zero; // End at center
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(position: animation.drive(tween), child: child);
+    },
+    transitionDuration: duration,
+  );
+}
+
+CustomTransitionPage<T> slideFromBottomTransition<T extends Object?>(
+  Widget child,
+  GoRouterState state, {
+  Duration duration = const Duration(milliseconds: 600),
+  Curve curve = Curves.easeInOut,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0); // Start from bottom
       const end = Offset.zero; // End at center
 
       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

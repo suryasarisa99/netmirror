@@ -15,7 +15,7 @@ class Movie {
   String ua;
   String match;
   String? runtime;
-  String hdsd;
+  String? hdsd;
   String type;
   String creator;
   String director;
@@ -24,7 +24,7 @@ class Movie {
   String cast;
   List<String> genre;
   String? genreStr;
-  String thisMovieIs;
+  String? thisMovieIs;
   String mDesc;
   String mReason;
   String desc;

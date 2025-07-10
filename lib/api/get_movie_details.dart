@@ -31,10 +31,12 @@ Future<Movie> getMovie(String id, OTT ott) async {
 
   final params = {'id': id, 't': '1734872811'};
 
+  final prefixUrl = ott.index <= 1 ? newApiUrl : apiUrl;
+
   final url = Uri.parse(
-    '$newApiUrl/${ott.url}post.php',
+    '$prefixUrl/${ott.url}post.php',
   ).replace(queryParameters: params);
-  // log("getMovie: $url", name: "http");
+  log("getMovie: $url", name: "http");
 
   final res = await http.get(url, headers: headers);
   final status = res.statusCode;

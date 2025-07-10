@@ -12,6 +12,7 @@ import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
+import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -56,72 +57,74 @@ class NfMovieScreenState extends MovieScreenState {
   Widget build(context) {
     final size = MediaQuery.sizeOf(context);
 
-    return Scaffold(
-      bottomNavigationBar: NfNavBar(current: 0),
-      backgroundColor: Colors.black,
-      appBar: AppBar(
+    return DesktopWrapper(
+      child: Scaffold(
+        bottomNavigationBar: NfNavBar(current: 0),
         backgroundColor: Colors.black,
-        surfaceTintColor: Colors.black,
-        toolbarHeight: 48,
-        title: windowDragAreaWithChild(
-          [],
-          actions: [
-            IconButton(
-              onPressed: () {
-                GoRouter.of(context).push("/downloads");
-              },
-              icon: isDesk
-                  ? Icon(Icons.download, size: 20)
-                  : Icon(
-                      HugeIcons.strokeRoundedDownload05,
-                      size: 30,
-                      color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          surfaceTintColor: Colors.black,
+          automaticallyImplyLeading: !isDesk,
+          title: windowDragAreaWithChild(
+            [],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  GoRouter.of(context).push("/downloads");
+                },
+                icon: isDesk
+                    ? Icon(Icons.download, size: 20)
+                    : Icon(
+                        HugeIcons.strokeRoundedDownload05,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+              ),
+              IconButton(
+                onPressed: () {
+                  GoRouter.of(context).push("/search/${ott.id}");
+                },
+                icon: isDesk
+                    ? Icon(Icons.search, size: 20)
+                    : Icon(Icons.search, size: 30, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: "https://imgcdn.media/poster/h/${widget.id}.jpg",
+                    cacheManager: NfLargeCacheManager.instance,
+                    fit: BoxFit.cover,
+                    height: size.width / (16 / 9),
+                    width: double.infinity,
+                  ),
+                  if (movie != null)
+                    ...buildMainData(size)
+                  else
+                    SizedBox(
+                      height: 400,
+                      child: Center(child: CircularProgressIndicator()),
                     ),
-            ),
-            IconButton(
-              onPressed: () {
-                GoRouter.of(context).push("/search/${ott.id}");
-              },
-              icon: isDesk
-                  ? Icon(Icons.search, size: 20)
-                  : Icon(Icons.search, size: 30, color: Colors.white),
+                ],
+              ),
             ),
           ],
+          body: movie != null
+              ? TabBarView(
+                  controller: tabController,
+                  children: [
+                    if (movie!.isShow) buildEpisodes(),
+                    _buildSuggestionsTab(),
+                  ],
+                )
+              : SizedBox(),
         ),
-      ),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: "https://imgcdn.media/poster/h/${widget.id}.jpg",
-                  cacheManager: NfLargeCacheManager.instance,
-                  fit: BoxFit.cover,
-                  height: size.width / (16 / 9),
-                  width: double.infinity,
-                ),
-                if (movie != null)
-                  ...buildMainData(size)
-                else
-                  SizedBox(
-                    height: 400,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-              ],
-            ),
-          ),
-        ],
-        body: movie != null
-            ? TabBarView(
-                controller: tabController,
-                children: [
-                  if (movie!.isShow) buildEpisodes(),
-                  _buildSuggestionsTab(),
-                ],
-              )
-            : SizedBox(),
       ),
     );
   }

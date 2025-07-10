@@ -13,6 +13,7 @@ import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
+import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
@@ -88,37 +89,39 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: loadDataFromOnline,
-      displacement: 50,
-      edgeOffset: 120,
-      color: Colors.white,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          top: true,
-          child: CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              buildAppBar(),
-              if (data == null)
-                const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else ...[
-                SliverToBoxAdapter(child: buildCarousel()),
-                SliverList.builder(
-                  itemCount: data!.trays.length,
-                  itemBuilder: (context, i) {
-                    final tray = data!.trays[i];
-                    return tray.isTop10
-                        ? PvHomeTop10Row(tray: tray)
-                        : PvHomeRow(tray: tray);
-                  },
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 20)),
+    return DesktopWrapper(
+      child: RefreshIndicator(
+        onRefresh: loadDataFromOnline,
+        displacement: 50,
+        edgeOffset: 120,
+        color: Colors.white,
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: SafeArea(
+            top: true,
+            child: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                buildAppBar(),
+                if (data == null)
+                  const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else ...[
+                  SliverToBoxAdapter(child: buildCarousel()),
+                  SliverList.builder(
+                    itemCount: data!.trays.length,
+                    itemBuilder: (context, i) {
+                      final tray = data!.trays[i];
+                      return tray.isTop10
+                          ? PvHomeTop10Row(tray: tray)
+                          : PvHomeRow(tray: tray);
+                    },
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

@@ -20,7 +20,7 @@ void main() async {
   if (isDesk) {
     await windowManager.ensureInitialized();
     const WindowOptions windowOptions = WindowOptions(
-      size: Size(800, 600),
+      size: Size(400, 720),
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
@@ -95,15 +95,23 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   // }
   // }
 
+  final theme = ThemeData(
+    useMaterial3: true,
+    colorScheme: darkScheme,
+    appBarTheme: AppBarTheme(
+      toolbarHeight: isDesk ? 28 : 48,
+      centerTitle: false,
+      titleTextStyle: TextStyle(fontSize: isDesk ? 14 : 16),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       key: GlobalKey(),
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(
-        useMaterial3: true,
-      ).copyWith(colorScheme: darkScheme),
-      theme: ThemeData.dark(useMaterial3: true),
+      darkTheme: theme,
+      theme: theme,
       routerConfig: routes,
     );
   }
