@@ -2,11 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-class DesktopWrapper extends StatelessWidget {
+class DesktopWrapper extends StatefulWidget {
   final Widget child;
-  final focusScope = FocusScopeNode();
-  final focusNode = FocusNode();
-  DesktopWrapper({required this.child, super.key});
+
+  const DesktopWrapper({required this.child, super.key});
+
+  @override
+  State<DesktopWrapper> createState() => _DesktopWrapperState();
+}
+
+class _DesktopWrapperState extends State<DesktopWrapper> {
+  late final FocusScopeNode focusScope;
+  late final FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    focusScope = FocusScopeNode();
+    focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    focusScope.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +38,7 @@ class DesktopWrapper extends StatelessWidget {
       onFocusChange: (hasFocus) {
         if (hasFocus) {
           focusNode.requestFocus();
-        } else {}
+        }
       },
       child: CallbackShortcuts(
         bindings: {
@@ -36,7 +57,7 @@ class DesktopWrapper extends StatelessWidget {
           canRequestFocus: true,
           autofocus: true,
           skipTraversal: true,
-          child: child,
+          child: widget.child,
         ),
       ),
     );
