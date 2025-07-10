@@ -23,8 +23,10 @@ dependencies:
   flutter_svg: ^2.1.0
   font_awesome_flutter: ^10.8.0
   go_router: ^15.1.2
+  html: any
   http: ^1.4.0
   hugeicons: ^0.0.11
+  icons_plus: ^5.0.0
   lottie: ^3.3.1
   media_kit: ^1.1.11
   media_kit_libs_video: ^1.0.5
@@ -35,10 +37,11 @@ dependencies:
   permission_handler: ^12.0.0+1
   pip_view: ^0.9.7
   platform_detector: ^0.2.0
+  popover: ^0.3.1
   process: ^5.0.4
+  riverpod: any
   screen_brightness: ^2.1.4
   share_plus: ^11.0.0
-  popover: ^0.3.1
   shared_code:
     path: ./shared_code
   shared_preferences: ^2.5.3
@@ -49,9 +52,6 @@ dependencies:
   visibility_detector: ^0.4.0+2
   wakelock_plus: ^1.3.2
   window_manager: ^0.5.0
-
-  riverpod: any
-  html: any
 dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:

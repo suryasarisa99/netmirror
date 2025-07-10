@@ -150,7 +150,7 @@ final routes = GoRouter(
 
     StatefulShellRoute.indexedStack(
       key: pvMainHomeKey,
-      builder: (context, state, shell) => PvMain(shell),
+      builder: (context, state, shell) => HotstarMain(shell),
       branches: [
         StatefulShellBranch(
           routes: [
