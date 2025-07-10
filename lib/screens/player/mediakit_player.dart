@@ -144,8 +144,6 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         }
       });
 
-      // _player!.stream
-
       // Listen for completion
       _player!.stream.completed.listen((completed) {
         if (completed) {

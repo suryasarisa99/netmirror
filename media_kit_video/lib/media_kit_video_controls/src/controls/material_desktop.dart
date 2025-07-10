@@ -729,13 +729,13 @@ class _MaterialDesktopVideoControlsState
                                       margin:
                                           _theme(context).topButtonBarMargin,
                                       child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: _theme(context).topButtonBar,
-                                      ),
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children:
+                                              _theme(context).topButtonBar),
                                     ),
                                     // Only display [primaryButtonBar] if [buffering] is false.
                                     Expanded(

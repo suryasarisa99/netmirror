@@ -76,8 +76,8 @@ const kDefaultMaterialVideoControlsThemeDataFullscreen =
     Spacer(flex: 2),
   ],
   topButtonBar: [],
-  topButtonBarMargin: EdgeInsets.symmetric(
-    horizontal: 16.0,
+  topButtonBarMargin: EdgeInsets.only(
+    left: 4,
   ),
   bottomButtonBar: [
     MaterialPositionIndicator(),
