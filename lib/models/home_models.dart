@@ -3,10 +3,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:shared_code/models/ott.dart';
 
 abstract class HomeModel {
   final List<HomeTray> trays;
   final DateTime lastUpdated;
+
+  static HomeModel parse(String raw, OTT ott) {
+    switch (ott) {
+      case OTT.hotstar:
+        return HotstarModel.parse(raw);
+      case OTT.netflix:
+        return NfHomeModel.parse(raw);
+      case OTT.pv:
+        return PvHomeModel.parse(raw);
+      default:
+        throw UnimplementedError('Parser not implemented for ${ott.name}');
+    }
+  }
 
   HomeModel({required this.trays, required this.lastUpdated});
 
@@ -129,6 +143,7 @@ class NfHomeModel extends HomeModel {
     required super.lastUpdated,
   });
 
+  @override
   factory NfHomeModel.parse(String raw) {
     final document = parse(raw);
 

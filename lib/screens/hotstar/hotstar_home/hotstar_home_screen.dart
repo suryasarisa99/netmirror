@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:html/parser.dart';
-import 'package:lottie/lottie.dart';
-import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/home_models.dart';
+import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/hotstar_navbar.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
@@ -29,30 +25,22 @@ class HotstarMain extends StatelessWidget {
   }
 }
 
-class HotstarHome extends StatefulWidget {
-  const HotstarHome({super.key});
+class HotstarHomeScreen extends Home {
+  const HotstarHomeScreen({super.key});
 
   @override
-  State<HotstarHome> createState() => _HotstarHomeState();
+  State<Home> createState() => HotstarHomeState();
 }
 
 const l = L("hotstar_home");
 
-class _HotstarHomeState extends State<HotstarHome> {
-  HotstarModel? data;
-  final ott = OTT.hotstar;
+class HotstarHomeState extends HomeState<HotstarModel> {
+  @override
+  final OTT ott = OTT.hotstar;
   @override
   void initState() {
     super.initState();
     loadData();
-  }
-
-  void loadData() async {
-    final str = await getHotstar();
-    final h = HotstarModel.parse(str);
-    setState(() {
-      data = h;
-    });
   }
 
   @override
@@ -159,9 +147,7 @@ class _HotstarHomeState extends State<HotstarHome> {
               SizedBox(width: 8),
               ...tray.postIds.map((id) {
                 return InkWell(
-                  onTap: () {
-                    GoRouter.of(context).push("/movie/${ott.id}/$id");
-                  },
+                  onTap: () => goToMovie(id),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Image.network(
