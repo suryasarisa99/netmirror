@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
+import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
@@ -111,7 +112,7 @@ class _HoststarMovieScreenState extends MovieScreenState {
 
   List<Widget> buildMainData(Size size) {
     return [
-      _buildWatchButton(),
+      HotstarButton(text: "Watch Now", onPressed: () {}),
       SizedBox(height: 16),
       _buildActions(),
       SizedBox(height: 16),
@@ -199,43 +200,43 @@ class _HoststarMovieScreenState extends MovieScreenState {
     );
   }
 
-  Widget _buildWatchButton() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF1491FF),
-            Color(0xFF155BBD),
-            Color(0xFF67379D),
-            Color(0xFFDB0765),
-          ],
-          // stops: [0.6, 0.8, 1.0],
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: () {},
-          child: Container(
-            width: 200,
-            height: 40,
-            alignment: Alignment.center,
-            child: Text(
-              "Watch Now",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildWatchButton() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       gradient: LinearGradient(
+  //         colors: [
+  //           Color(0xFF1491FF),
+  //           Color(0xFF155BBD),
+  //           Color(0xFF67379D),
+  //           Color(0xFFDB0765),
+  //         ],
+  //         // stops: [0.6, 0.8, 1.0],
+  //       ),
+  //       borderRadius: BorderRadius.circular(8),
+  //     ),
+  //     child: Material(
+  //       color: Colors.transparent,
+  //       borderRadius: BorderRadius.circular(8),
+  //       child: InkWell(
+  //         borderRadius: BorderRadius.circular(8),
+  //         onTap: () {},
+  //         child: Container(
+  //           width: 200,
+  //           height: 40,
+  //           alignment: Alignment.center,
+  //           child: Text(
+  //             "Watch Now",
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.w600,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildActions() {
     return Row(

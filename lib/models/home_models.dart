@@ -213,10 +213,12 @@ class PvHomeCarousel {
 class HotstarModel extends HomeModel {
   final List<HotstarStudio> studios;
   final String spotlightImg;
+  final String titleImg;
 
   HotstarModel({
     required this.studios,
     required this.spotlightImg,
+    required this.titleImg,
     required super.trays,
     required super.lastUpdated,
   });
@@ -233,16 +235,21 @@ class HotstarModel extends HomeModel {
         name: studio.attributes["data-studio"] ?? "Unknown",
       );
     });
-    final style = document.querySelector(".spotlight")!.attributes['style']!;
+    final spotlight = document.querySelector(".spotlight-hs")!;
+    final style = spotlight.attributes['style']!;
     final backgroundImageMatch = RegExp(
       r"""background-image:\s*url\(["\']?([^"\']+)["\']?\)""",
     ).firstMatch(style);
+    final titleImg =
+        spotlight.querySelector("img.img-title")?.attributes["src"] ?? "";
+    log("bg: ${backgroundImageMatch?.group(1)}");
 
     log("images: len: ${studios.length}");
     final trays = HomeModel.parseTrays(document);
     return HotstarModel(
       studios: studios.toList(),
       spotlightImg: backgroundImageMatch?.group(1) ?? "",
+      titleImg: titleImg,
       trays: trays,
       lastUpdated: DateTime.now(),
     );
@@ -254,6 +261,7 @@ class HotstarModel extends HomeModel {
       ...super.toJson(),
       "spotlightImg": spotlightImg,
       "studios": studios.map((e) => e.toJson()).toList(),
+      "titleImg": titleImg,
     };
   }
 
@@ -265,6 +273,7 @@ class HotstarModel extends HomeModel {
       ),
       trays: HomeModel.traysFromJson(json),
       lastUpdated: DateTime.parse(json["lastUpdated"]),
+      titleImg: json["titleImg"],
     );
   }
 }
