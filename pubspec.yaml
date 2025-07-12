@@ -79,6 +79,10 @@ flutter:
     - assets/ott-list/
     - assets/nums/pv/
     - assets/dummy/
+
+    - assets/hotstar/studio-lists/
+    - assets/hotstar/studio-posters/
+    - assets/hotstar/studio-titles/
   # fonts:
   #   - family: Schyler
   #     fonts:

@@ -53,14 +53,16 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
   @override
   void initState() {
     super.initState();
+    log("current tab: ${widget.tab}");
     loadData();
+    // loadDataFromOnline();
   }
 
   String get currentTabName {
     return switch (widget.tab) {
       0 => "home",
-      1 => "movies",
-      2 => "tvshows",
+      1 => "tvshows",
+      2 => "movies",
       _ => "home",
     };
   }

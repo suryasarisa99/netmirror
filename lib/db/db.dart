@@ -3,8 +3,11 @@ import 'package:netmirror/db/home_table.dart';
 import 'package:netmirror/db/movie_table.dart';
 import 'package:netmirror/db/watch_history_table.dart';
 import 'package:netmirror/db/watch_list_table.dart';
+import 'package:netmirror/log.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
+
+const l = L("db");
 
 class DB {
   static final DB instance = DB._internal();
@@ -43,6 +46,7 @@ class DB {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < newVersion) {
+          l.debug("onUpgrade: dropping all tables and recreating them");
           for (final table in Tables.tableNames) {
             await db.execute('DROP TABLE IF EXISTS $table');
           }
@@ -53,6 +57,7 @@ class DB {
       },
       onDowngrade: (db, oldVersion, newVersion) async {
         if (oldVersion > newVersion) {
+          l.debug("onDowngrade: dropping all tables and recreating them");
           for (final table in Tables.tableNames) {
             await db.execute('DROP TABLE IF EXISTS $table');
           }

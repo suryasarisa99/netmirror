@@ -18,12 +18,7 @@ class HotstarNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      decoration: const BoxDecoration(
-        color: Color(0xFF0f1014),
-        border: Border(
-          top: BorderSide(color: Color.fromRGBO(93, 93, 93, 1), width: 2),
-        ),
-      ),
+      color: Color(0xFF0f1014),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

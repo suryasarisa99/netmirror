@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:netmirror/log.dart';
+import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
+import 'package:netmirror/screens/hotstar/hotstar_build.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/hotstar_navbar.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
@@ -25,8 +28,32 @@ class HotstarMain extends StatelessWidget {
   }
 }
 
+class Studio {
+  final String studio;
+  final bool title;
+  final Color? gradient;
+
+  const Studio(this.studio, {this.title = true, this.gradient});
+
+  String get assetPath => "assets/hotstar/studio-lists/$studio.png";
+  String get posterPath => "assets/hotstar/studio-posters/$studio.jpg";
+  String get titlePath => "assets/hotstar/studio-titles/$studio.png";
+}
+
+const List<Studio> studios = [
+  Studio("special"),
+  Studio("disney", title: false),
+  Studio("hbo"),
+  Studio("peacock"),
+  Studio("paramount", gradient: Color(0xff234FC5)),
+  Studio("marvel", title: false),
+  Studio("pixar"),
+  // Studio("star-wars", title: true),
+  Studio("national", title: false),
+];
+
 class HotstarHomeScreen extends Home {
-  const HotstarHomeScreen({super.key});
+  const HotstarHomeScreen({required super.tab, super.key});
 
   @override
   State<Home> createState() => HotstarHomeState();
@@ -34,18 +61,12 @@ class HotstarHomeScreen extends Home {
 
 const l = L("hotstar_home");
 
-class HotstarHomeState extends HomeState<HotstarModel> {
+class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
   @override
   final OTT ott = OTT.hotstar;
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     return DesktopWrapper(
       child: Scaffold(
         backgroundColor: Color(0xFF0f1014),
@@ -53,35 +74,52 @@ class HotstarHomeState extends HomeState<HotstarModel> {
             ? Center(child: CircularProgressIndicator())
             : CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        buildPoster(),
-                        SizedBox(height: 8),
-                        HotstarButton(text: "Watch Now", onPressed: () {}),
-                        SizedBox(height: 16),
-                        buildRows(data!.trays),
-                      ],
-                    ),
-                  ),
+                  SliverToBoxAdapter(child: buildHome()),
+                  HotstarRows(trays: data!.trays),
                 ],
               ),
       ),
     );
   }
 
+  Widget buildHome() {
+    return Column(
+      children: [
+        buildPoster(),
+        SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            HotstarButton(text: "Watch Now", onPressed: () {}),
+            SizedBox(width: 8),
+            buildWatchList(),
+          ],
+        ),
+        SizedBox(height: 8),
+        HotstarStudioList(),
+        SizedBox(height: 16),
+      ],
+    );
+  }
+
   Widget buildPoster() {
     final size = MediaQuery.sizeOf(context);
     final clr = Color(0xFF0f1014);
+    final imgUrl = data!.spotlightImg.startsWith("http")
+        ? data!.spotlightImg
+        : "https://netfree2.cc/${data!.spotlightImg}";
+    final titleImg = data!.titleImg.startsWith("http")
+        ? data!.titleImg
+        : "https://netfree2.cc/${data!.titleImg}";
     return SizedBox(
       height: size.width / 1.778 + 10,
       child: Stack(
         children: [
           Positioned(
-            child: Image.network(
-              data?.spotlightImg ?? "",
+            child: CachedNetworkImage(
+              imageUrl: imgUrl,
               fit: BoxFit.cover,
-              // height: 200,
+              cacheManager: PvSmallCacheManager.instance,
               width: size.width,
               height: size.width / 1.778 - 30,
               alignment: Alignment(0, -1),
@@ -108,61 +146,30 @@ class HotstarHomeState extends HomeState<HotstarModel> {
             bottom: 20,
             left: size.width / 2 - 80,
             right: size.width / 2 - 80,
-            child: Image.network(data!.titleImg, width: 160),
+            child: CachedNetworkImage(
+              imageUrl: titleImg,
+              cacheManager: PvSmallCacheManager.instance,
+              width: 160,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget buildRows(List<HomeTray> trays) {
-    return Column(
-      children: trays.map((tray) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: buildRow(tray),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget buildRow(HomeTray tray) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text(
-            tray.title,
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ),
-        SizedBox(height: 8),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            spacing: 8,
-            children: [
-              SizedBox(width: 8),
-              ...tray.postIds.map((id) {
-                return InkWell(
-                  onTap: () => goToMovie(id),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
-                      ott.getImg(id),
-                      width: 150 * ott.aspectRatio,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
-        ),
-      ],
+  Widget buildWatchList() {
+    return Container(
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Color(0xFF212227),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: LottieBuilder.asset(
+        "assets/lottie/hotstar/watchlist_animation_blue.json",
+        height: 24,
+        animate: false,
+        onLoaded: (composition) {},
+      ),
     );
   }
 }

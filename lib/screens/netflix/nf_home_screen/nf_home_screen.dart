@@ -18,7 +18,7 @@ import 'package:shared_code/models/ott.dart';
 
 class NfMain extends StatelessWidget {
   const NfMain(this.shell, {super.key});
-  final StatefulNavigationShell shell;
+  final Widget shell;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +157,8 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
         : Colors.black;
     final paddingTop = MediaQuery.paddingOf(context).top;
     final toolbarHeight = isDesk ? 28.0 : kToolbarHeight;
+
+    l.debug("rebuild nf hom screen, tab: ${widget.tab}");
 
     return DesktopWrapper(
       child: RefreshIndicator(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,19 @@ abstract class HomeModel {
         return NfHomeModel.parse(raw);
       case OTT.pv:
         return PvHomeModel.parse(raw);
+      default:
+        throw UnimplementedError('Parser not implemented for ${ott.name}');
+    }
+  }
+
+  static HomeModel fromJson(Map<String, dynamic> json, OTT ott) {
+    switch (ott) {
+      case OTT.hotstar:
+        return HotstarModel.fromJson(json);
+      case OTT.netflix:
+        return NfHomeModel.fromJson(json);
+      case OTT.pv:
+        return PvHomeModel.fromJson(json);
       default:
         throw UnimplementedError('Parser not implemented for ${ott.name}');
     }
@@ -175,7 +189,6 @@ class NfHomeModel extends HomeModel {
 
     // color = Color.fromRGBO(61, 98, 112, 1);
     // Color.fromARGB(255, 61, 98, 112);
-    debugPrint("color val: ${color.toString()}");
     final genre = spotlight!.querySelector(".genre")!.text.split("•");
 
     final id = spotlight.querySelector(".btn-play")!.attributes["data-post"];
@@ -195,7 +208,7 @@ class NfHomeModel extends HomeModel {
       ...super.toJson(),
       "spotlightId": spotlightId,
       "genre": genre,
-      "gradientColor": gradientColor.toString(),
+      "gradientColor": gradientColor.toARGB32(),
     };
   }
 
@@ -250,20 +263,29 @@ class HotstarModel extends HomeModel {
         name: studio.attributes["data-studio"] ?? "Unknown",
       );
     });
-    final spotlight = document.querySelector(".spotlight-hs")!;
-    final style = spotlight.attributes['style']!;
-    final backgroundImageMatch = RegExp(
-      r"""background-image:\s*url\(["\']?([^"\']+)["\']?\)""",
-    ).firstMatch(style);
-    final titleImg =
-        spotlight.querySelector("img.img-title")?.attributes["src"] ?? "";
-    log("bg: ${backgroundImageMatch?.group(1)}");
-
+    final spotlight =
+        document.querySelector(".spotlight-hs") ??
+        document.querySelector(".spotlight");
+    late String titleImg;
+    late String bgImg;
+    if (spotlight != null) {
+      final style = spotlight.attributes['style']!;
+      final backgroundImageMatch = RegExp(
+        r"""background-image:\s*url\(["\']?([^"\']+)["\']?\)""",
+      ).firstMatch(style);
+      titleImg =
+          spotlight.querySelector("img.img-title")?.attributes["src"] ?? "";
+      log("bg: ${backgroundImageMatch?.group(1)}");
+      bgImg = backgroundImageMatch?.group(1) ?? "";
+    } else {
+      titleImg = "";
+      bgImg = "";
+    }
     log("images: len: ${studios.length}");
     final trays = HomeModel.parseTrays(document);
     return HotstarModel(
       studios: studios.toList(),
-      spotlightImg: backgroundImageMatch?.group(1) ?? "",
+      spotlightImg: bgImg,
       titleImg: titleImg,
       trays: trays,
       lastUpdated: DateTime.now(),

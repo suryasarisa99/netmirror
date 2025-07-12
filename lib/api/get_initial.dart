@@ -101,8 +101,8 @@ Future<String?> verifyAdd(String addhash) async {
 Future<String> getPv({int id = 0, OTT ott = OTT.netflix}) async {
   final path = switch (id) {
     0 => 'home',
-    1 => 'movies',
-    2 => 'series',
+    1 => 'series',
+    2 => 'movies',
     _ => 'home',
   };
   final tHashT = CookiesManager.tHashT;

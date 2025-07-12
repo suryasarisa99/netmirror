@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:go_router/go_router.dart';
@@ -13,11 +15,12 @@ class PvHeaderTabs extends StatelessWidget {
       children: [
         const SizedBox(width: 15),
         if (tab == 0)
-          ...["Movies", "Tv Shows"].mapIndexed((i, e) {
+          ...["Tv Shows", "Movies"].mapIndexed((i, e) {
             return PvHeaderTab(
               name: e,
               isSelected: i + 1 == tab,
               onTap: () {
+                log("index: $i, tab: $tab");
                 context.push("/pv-home", extra: i + 1);
                 // changeTab(i + 1);
               },
@@ -25,7 +28,7 @@ class PvHeaderTabs extends StatelessWidget {
           })
         else
           PvHeaderTab(
-            name: tab == 1 ? "Movies" : "Tv Shows",
+            name: tab == 1 ? "Tv Shows" : "Movies",
             isSelected: true,
             onTap: () => {},
           ),

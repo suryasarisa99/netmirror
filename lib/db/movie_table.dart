@@ -9,11 +9,12 @@ import 'package:sqflite/sqflite.dart';
 
 class MovieTable {
   final DB _dbHelper;
+  final String table = Tables.movie;
   MovieTable(this._dbHelper);
 
   Future<void> add(String key, int ottId, Movie data) async {
     final db = await _dbHelper.database;
-    await db.insert(Tables.movie, {
+    await db.insert(table, {
       'key': key,
       'ott_id': ottId,
       'value': jsonEncode(data.toJson()),

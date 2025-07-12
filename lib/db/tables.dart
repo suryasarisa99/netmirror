@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Tables {
   static const String movie = "movie";
+  static const String home = "home";
   static const String ottPvHome = "ott_pv_home";
   static const String ottNfHome = "ott_nf_home";
   static const String watchHistory = "watch_history";
@@ -9,6 +10,12 @@ class Tables {
 
   static const queries = (
     movie: '''CREATE TABLE $movie (
+            key TEXT NOT NULL,
+            ott_id INTEGER NOT NULL,
+            value TEXT,
+            PRIMARY KEY (key, ott_id)
+          )''',
+    home: '''CREATE TABLE $home (
             key TEXT NOT NULL,
             ott_id INTEGER NOT NULL,
             value TEXT,
@@ -50,6 +57,7 @@ class Tables {
     queries.ottNfHome,
     queries.watchHistory,
     queries.watchList,
+    queries.home,
   ];
 
   static const List<String> tableNames = [
@@ -58,6 +66,7 @@ class Tables {
     ottNfHome,
     watchHistory,
     watchList,
+    home,
   ];
 
   Tables._();

@@ -3,20 +3,33 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_home.dart';
+import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:shared_code/models/ott.dart';
 
 abstract class Home extends StatefulWidget {
-  const Home({super.key});
+  final int tab;
+  const Home({required this.tab, super.key});
 }
 
-abstract class HomeState<T extends HomeModel> extends State<Home> {
+abstract class HomeState<T extends HomeModel, W extends Home> extends State<W> {
   T? data;
   abstract final OTT ott;
+  String get currentTabName {
+    return switch (widget.tab) {
+      0 => "home",
+      1 => "tvshows",
+      2 => "movies",
+      _ => "home",
+    };
+  }
+
+  String? get studioName => null;
 
   @override
   void initState() {
-    loadData();
+    l.debug("init state for tab: $currentTabName, studio: $studioName");
+    loadDataFromLocal();
     super.initState();
   }
 
@@ -25,13 +38,24 @@ abstract class HomeState<T extends HomeModel> extends State<Home> {
     super.dispose();
   }
 
-  void loadData() async {
-    final raw = await getHome(ott: ott);
-    final h = HomeModel.parse(raw, ott);
+  void loadDataFromLocal() async {
+    final localData = await DB.home.get(currentTabName, ott) as T?;
+    if (localData == null || localData.isStale) {
+      loadDataFromOnline();
+    } else {
+      setState(() {
+        data = localData;
+      });
+    }
+  }
+
+  Future<void> loadDataFromOnline() async {
+    final raw = await getHome(id: widget.tab, ott: ott, studio: studioName);
+    final onlineData = HomeModel.parse(raw, ott) as T;
     setState(() {
-      data = h as T;
+      data = onlineData;
     });
-    log("Home data loaded: ${h.trays.length} trays");
+    DB.home.add(currentTabName, onlineData, ott);
   }
 
   void goToMovie(String id) {

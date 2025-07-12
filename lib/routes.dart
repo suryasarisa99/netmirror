@@ -4,6 +4,7 @@ import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
 import 'package:netmirror/screens/hotstar/hotstar_movie/hotstar_movie_screen.dart';
+import 'package:netmirror/screens/hotstar/hotstar_studio/hotstar_studio_screen.dart';
 import 'package:netmirror/screens/initial_screen.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_screen.dart';
 import 'package:netmirror/screens/netflix/nf_movie_screen/nf_movie_screen.dart';
@@ -157,8 +158,18 @@ final routes = GoRouter(
             GoRoute(
               path: '/hotstar-home',
               pageBuilder: (context, state) {
-                // final tab = state.extra == null ? 0 : state.extra as int;
-                return instantTransition(HotstarHomeScreen(), state);
+                final tab = state.extra == null ? 0 : state.extra as int;
+                final studio = state.uri.queryParameters['studio'];
+                // return instantTransition(
+                //   HotstarHomeScreen(tab: tab, studio: studio),
+                //   state,
+                // );
+                return instantTransition(
+                  studio != null
+                      ? HotstarStudioScreen(studioName: studio, tab: tab)
+                      : HotstarHomeScreen(tab: tab),
+                  state,
+                );
               },
             ),
           ],
