@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
+import 'package:netmirror/screens/hotstar/hotstar_appbar.dart';
 import 'package:netmirror/screens/hotstar/hotstar_bg.dart';
 import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
@@ -38,12 +40,22 @@ class HotstarStudioScreenState
 
   @override
   Widget build(BuildContext context) {
-    final maxScrollRange = 180.0;
+    final maxScrollRange = 170.0;
     final size = MediaQuery.sizeOf(context);
     final bg = Color(0xFF0f1014);
     return DesktopWrapper(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         backgroundColor: bg,
+        appBar: !isDesk
+            ? HotstarAppbar(
+                scrollController: scrollController,
+                maxScroll: maxScrollRange,
+                // color: Colors.red,
+                color: bg,
+                // title: Text("Hello"),
+              )
+            : null,
         body: SizedBox(
           height: size.height,
           width: size.width,
@@ -69,8 +81,13 @@ class HotstarStudioScreenState
               CustomScrollView(
                 controller: scrollController,
                 slivers: [
+                  // SliverToBoxAdapter(
+                  //   child:
+                  // ),
                   SliverToBoxAdapter(child: SizedBox(height: size.width - 90)),
-                  SliverToBoxAdapter(child: HotstarStudioList()),
+                  SliverToBoxAdapter(
+                    child: HotstarStudioList(curr: studioName),
+                  ),
                   data == null
                       ? SliverToBoxAdapter(
                           child: SizedBox(

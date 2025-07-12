@@ -8,7 +8,8 @@ import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart'
 import 'package:shared_code/models/ott.dart';
 
 class HotstarStudioList extends StatelessWidget {
-  const HotstarStudioList({super.key});
+  final String? curr;
+  const HotstarStudioList({this.curr, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +33,14 @@ class HotstarStudioList extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: InkWell(
-                    onTap: () {
-                      GoRouter.of(
-                        context,
-                      ).push('/hotstar-home?studio=${e.studio}', extra: 0);
-                    },
+                    onTap: curr != e.studio
+                        ? () {
+                            GoRouter.of(context).push(
+                              '/hotstar-home?studio=${e.studio}',
+                              extra: 0,
+                            );
+                          }
+                        : null,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: Image.asset(
