@@ -6,6 +6,7 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_list_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
+import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -23,13 +24,13 @@ import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/download_db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/models/movie_model.dart';
-import 'package:netmirror/data/options.dart';
 import 'package:netmirror/screens/external_plyer.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:shared_code/models/ott.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 const l = L("moivie_abstract");
 
@@ -44,11 +45,11 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   abstract bool extraTabForCast;
 
   bool inWatchlist = false;
+  int tabIndex = 0;
   Movie? movie;
   Map<String, MiniDownloadItem> downloads = {};
   TabController? tabController;
   int seasonNumber = -1;
-  bool repeat = false;
   bool episodesLoading = false;
   WatchHistory? watchHistory;
   List<WatchHistory> seasonWatchHistory = [];
@@ -337,11 +338,11 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       l.error("Resource key is still invalid after fetching source");
       return;
     }
-    if (SettingsOptions.externalPlayer || isDesk) {
-      launchExternalPlayer(videoId, CookiesManager.resourceKey!);
-    } else {
-      goToPlayer(movie: movie!, eNum: episodeNumber);
-    }
+    goToPlayer(movie: movie!, eNum: episodeNumber);
+    // if (SettingsOptions.externalPlayer || isDesk) {
+    //   launchExternalPlayer(videoId, CookiesManager.resourceKey!);
+    // } else {
+    // }
   }
 
   // void goToPlayer({
@@ -504,30 +505,6 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     );
   }
 
-  // void handleAddWatchlist() {
-  //   if (inWatchlist) {
-  //     log("Removing from watchlist");
-  //     Timer(const Duration(milliseconds: 500), () {
-  //       setState(() {
-  //         inWatchlist = false;
-  //       });
-  //     });
-  //     DBHelper.instance.removeFromWatchList(movie!.id);
-  //   } else {
-  //     DBHelper.instance.addToWatchList(
-  //       WatchList(id: movie!.id, title: movie!.title, isShow: movie!.isShow),
-  //     );
-  //   }
-  //   setState(() {
-  //     if (inWatchlist) {
-  //       repeat = true;
-  //     } else {
-  //       inWatchlist = true;
-  //       repeat = false;
-  //     }
-  //   });
-  // }
-
   void handleAddWatchlist() async {
     if (inWatchlist) {
       log("Removing from watchlist");
@@ -613,6 +590,68 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
         ],
       ),
     );
+  }
+
+  Widget episodesBuilder(
+    Widget Function(Episode ep, MiniDownloadItem? dEp, WatchHistory? wh)
+    builder,
+  ) {
+    if (seasonNumber == -1) {
+      return const SliverToBoxAdapter(
+        child: Center(child: Text("Error:: Season Number is -1")),
+      );
+    }
+    final season = movie!.getSeason(seasonNumber);
+    if (season.episodes == null) {
+      return Skeletonizer.sliver(
+        child: SliverList.separated(
+          itemCount: 8,
+          itemBuilder: (context, index) {
+            return const SkeletonEpisodeWidget();
+          },
+          separatorBuilder: (context, index) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 22),
+              child: Divider(color: Colors.white24, height: 1),
+            );
+          },
+        ),
+      );
+    } else {
+      final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
+      final episodes = episodesMap.values.toList();
+      final currentEpisodesCount = episodes.length;
+      final extraThere = season.ep > currentEpisodesCount;
+      final episodeCount = extraThere
+          ? currentEpisodesCount + 1
+          : currentEpisodesCount;
+
+      return SliverList.separated(
+        itemCount: episodeCount,
+        itemBuilder: (context, index) {
+          if (index == episodeCount - 4 && !episodesLoading && extraThere) {
+            loadMoreEpisodes();
+          }
+
+          if (index == episodeCount - 1 && extraThere) {
+            return const Skeletonizer(child: SkeletonEpisodeWidget());
+          }
+
+          final episode = episodes[index];
+          final depisode = downloads[episode.id];
+          final whEpisode = seasonWatchHistory
+              .where((wh) => wh.episodeNumber == episode.epNum)
+              .firstOrNull;
+          return builder(episode, depisode, whEpisode);
+        },
+        separatorBuilder: (context, index) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 22),
+            child: Divider(color: Colors.white24, height: 1),
+          );
+        },
+      );
+    }
   }
 }
 
