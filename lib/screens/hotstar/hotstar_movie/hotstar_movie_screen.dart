@@ -17,6 +17,7 @@ import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
+import 'package:netmirror/widgets/sticky_header_delegate.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -46,6 +47,27 @@ class _HoststarMovieScreenState extends MovieScreenState {
   void dispose() {
     l.debug("HotstarMovieScreen dispose");
     super.dispose();
+  }
+
+  void handleTabChange(int index) {
+    if (movie!.isShow && tabIndex == 0 && index == 0) {
+      // showModalBottomSheet(
+      //   context: context,
+      //   builder: (x) {
+      //     return SeasonSelectorBottomSheet(
+      //       seasons: movie!.seasons,
+      //       selectedSeason: seasonNumber,
+      //       onTap: (seasonNum) {
+      //         handleSeasonChange(seasonNum);
+      //       },
+      //     );
+      //   },
+      // );
+    } else {
+      setState(() {
+        tabIndex = index;
+      });
+    }
   }
 
   @override
@@ -106,6 +128,48 @@ class _HoststarMovieScreenState extends MovieScreenState {
                     ],
                   ),
                 ),
+              ),
+              SliverPersistentHeader(
+                delegate: StickyHeaderDelegate(
+                  minHeight: 60.0,
+                  maxHeight: 60.0,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(color: Colors.black),
+                    child: TabBar(
+                      controller: tabController,
+                      indicatorWeight: 1.0,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      indicatorColor: Colors.white,
+                      labelStyle: const TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      unselectedLabelColor: Colors.grey,
+                      labelColor: Colors.white,
+                      onTap: handleTabChange,
+                      tabs: [
+                        if (movie!.isShow)
+                          Tab(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "S$seasonNumber} E${movie!.getSeason(seasonNumber).ep}",
+                                ),
+                                const SizedBox(width: 5),
+                                const Icon(Icons.expand_more_rounded),
+                              ],
+                            ),
+                          ),
+                        // Text("Hi"),
+                        if (movie!.suggest.isNotEmpty)
+                          const Tab(text: 'Related'),
+                        const Tab(text: 'Details'),
+                      ],
+                    ),
+                  ),
+                ),
+                pinned: true,
               ),
               ...buildsTabSections(),
             ],
