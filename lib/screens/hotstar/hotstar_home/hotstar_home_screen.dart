@@ -5,7 +5,7 @@ import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
-import 'package:netmirror/screens/hotstar/hotstar_build.dart';
+import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/hotstar_navbar.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';

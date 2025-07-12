@@ -4,7 +4,7 @@ import 'package:netmirror/log.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/hotstar/hotstar_bg.dart';
-import 'package:netmirror/screens/hotstar/hotstar_build.dart';
+import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
 import 'package:netmirror/screens/hotstar/hotstar_raise.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
@@ -38,16 +38,20 @@ class HotstarStudioScreenState
 
   @override
   Widget build(BuildContext context) {
+    final maxScrollRange = 180.0;
     final size = MediaQuery.sizeOf(context);
+    final bg = Color(0xFF0f1014);
     return DesktopWrapper(
       child: Scaffold(
-        backgroundColor: Color(0xFF0f1014),
+        backgroundColor: bg,
         body: SizedBox(
           height: size.height,
           width: size.width,
           child: Stack(
             children: [
               RaiseWidget(
+                maxScroll: maxScrollRange,
+                maxRaisePixels: 20.0,
                 scrollController: scrollController,
                 child: buildStudioPoster(),
               ),
@@ -56,12 +60,16 @@ class HotstarStudioScreenState
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: HotstarBg(scrollController: scrollController),
+                child: HotstarBg(
+                  maxScroll: maxScrollRange,
+                  color: bg,
+                  scrollController: scrollController,
+                ),
               ),
               CustomScrollView(
                 controller: scrollController,
                 slivers: [
-                  SliverToBoxAdapter(child: SizedBox(height: size.width - 65)),
+                  SliverToBoxAdapter(child: SizedBox(height: size.width - 90)),
                   SliverToBoxAdapter(child: HotstarStudioList()),
                   data == null
                       ? SliverToBoxAdapter(

@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 class RaiseWidget extends StatefulWidget {
   final ScrollController scrollController;
   final Widget child;
+  final double maxScroll;
+  final double maxRaisePixels;
   const RaiseWidget({
+    required this.maxScroll,
     required this.scrollController,
     required this.child,
+    this.maxRaisePixels = 20.0,
     super.key,
   });
 
@@ -15,8 +19,6 @@ class RaiseWidget extends StatefulWidget {
 
 class _RaiseWidgetState extends State<RaiseWidget> {
   double _scrollPosition = 0.0;
-  static const double _maxScrollForFullRaise = 240.0;
-  static const double _maxRaisePixels = 15.0;
 
   @override
   void initState() {
@@ -39,11 +41,8 @@ class _RaiseWidgetState extends State<RaiseWidget> {
   double _calculateRaiseOffset() {
     // Calculate the raise offset based on scroll position
     // From 0 to 240px scroll → 0 to 20px raise
-    double progress = (_scrollPosition / _maxScrollForFullRaise).clamp(
-      0.0,
-      1.0,
-    );
-    return progress * _maxRaisePixels;
+    double progress = (_scrollPosition / widget.maxScroll).clamp(0.0, 1.0);
+    return progress * widget.maxRaisePixels;
   }
 
   @override
