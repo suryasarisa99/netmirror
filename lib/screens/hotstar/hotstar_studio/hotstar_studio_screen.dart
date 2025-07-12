@@ -47,15 +47,22 @@ class HotstarStudioScreenState
       child: Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: bg,
-        appBar: !isDesk
-            ? HotstarAppbar(
-                scrollController: scrollController,
-                maxScroll: maxScrollRange,
-                // color: Colors.red,
-                color: bg,
-                // title: Text("Hello"),
-              )
-            : null,
+        appBar: HotstarAppbar(
+          scrollController: scrollController,
+          maxScroll: maxScrollRange,
+          // color: Colors.red,
+          color: bg,
+          // title: Text("Hello"),
+        ),
+        // appBar: !isDesk
+        //     ? HotstarAppbar(
+        //         scrollController: scrollController,
+        //         maxScroll: maxScrollRange,
+        //         // color: Colors.red,
+        //         color: bg,
+        //         // title: Text("Hello"),
+        //       )
+        //     : null,
         body: SizedBox(
           height: size.height,
           width: size.width,

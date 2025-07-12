@@ -45,8 +45,13 @@ class _HotstarAppbarState extends State<HotstarAppbar> {
   }
 
   void _onScroll() {
+    final pixels = widget.scrollController.position.pixels;
+    if (_scrollPosition > widget.maxScroll + 5 &&
+        pixels > widget.maxScroll + 5) {
+      return;
+    }
     setState(() {
-      _scrollPosition = widget.scrollController.position.pixels;
+      _scrollPosition = pixels;
     });
   }
 

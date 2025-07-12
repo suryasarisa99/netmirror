@@ -33,8 +33,13 @@ class _RaiseWidgetState extends State<RaiseWidget> {
   }
 
   void _onScroll() {
+    final pixels = widget.scrollController.position.pixels;
+    if (_scrollPosition > widget.maxScroll + 5 &&
+        pixels > widget.maxScroll + 5) {
+      return;
+    }
     setState(() {
-      _scrollPosition = widget.scrollController.position.pixels;
+      _scrollPosition = pixels;
     });
   }
 
