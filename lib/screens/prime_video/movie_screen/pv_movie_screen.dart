@@ -36,7 +36,6 @@ class _PVMovieScreenState extends MovieScreenState {
   bool extraTabForCast = true;
 
   int maxDescLines = 3;
-  int tabIndex = 0;
 
   void handleTabChange(int index) {
     if (movie!.isShow && tabIndex == 0 && index == 0) {
@@ -456,7 +455,7 @@ class _PVMovieScreenState extends MovieScreenState {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "S${movie!.getSeason(seasonNumber)?.s ?? seasonNumber} E${movie!.getSeason(seasonNumber)?.ep ?? '?'}",
+                            "S$seasonNumber} E${movie!.getSeason(seasonNumber).ep}",
                           ),
                           const SizedBox(width: 5),
                           const Icon(Icons.expand_more_rounded),
@@ -525,10 +524,9 @@ class _PVMovieScreenState extends MovieScreenState {
       );
     } else {
       final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
-      final episodes = episodesMap.values.toList()
-        ..sort((a, b) => a.epNum.compareTo(b.epNum));
+      final episodes = episodesMap.values.toList();
       final currentEpisodesCount = episodes.length;
-      final extraThere = season!.ep > currentEpisodesCount;
+      final extraThere = season.ep > currentEpisodesCount;
       final episodeCount = extraThere
           ? currentEpisodesCount + 1
           : currentEpisodesCount;

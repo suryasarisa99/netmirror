@@ -8,7 +8,7 @@ class HotstarButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
+      width: 170,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -28,7 +28,7 @@ class HotstarButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           onTap: onPressed,
           child: Container(
-            height: 34,
+            height: 40,
             alignment: Alignment.center,
             child: Text(
               text,

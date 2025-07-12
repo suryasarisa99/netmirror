@@ -20,7 +20,11 @@ class HotstarStudioList extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0),
           child: Text(
             "Studios",
-            style: TextStyle(color: Color(0xFFe2e6f1), fontSize: 16),
+            style: TextStyle(
+              color: Color(0xFFe2e6f1),
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         SizedBox(height: 8),
@@ -86,10 +90,14 @@ class HotstarRows extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16, top: 8),
           child: Text(
             tray.title,
-            style: TextStyle(color: Color(0xFFe2e6f1), fontSize: 16),
+            style: TextStyle(
+              color: Color(0xFFe2e6f1),
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         SizedBox(height: 8),

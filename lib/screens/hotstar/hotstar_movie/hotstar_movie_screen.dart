@@ -12,9 +12,14 @@ import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
+import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
+import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
+import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HotstarMovieScreen extends MovieScreen {
   const HotstarMovieScreen(super.id, {super.key});
@@ -91,7 +96,6 @@ class _HoststarMovieScreenState extends MovieScreenState {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // _buildMoviePoster(),
                       if (movie != null)
                         ...buildMainData(size)
                       else
@@ -103,6 +107,7 @@ class _HoststarMovieScreenState extends MovieScreenState {
                   ),
                 ),
               ),
+              ...buildsTabSections(),
             ],
           ),
         ),
@@ -112,7 +117,7 @@ class _HoststarMovieScreenState extends MovieScreenState {
 
   List<Widget> buildMainData(Size size) {
     return [
-      HotstarButton(text: "Watch Now", onPressed: () {}),
+      HotstarButton(text: "Watch Now", onPressed: playMovieOrEpisode),
       SizedBox(height: 16),
       _buildActions(),
       SizedBox(height: 16),
@@ -152,11 +157,16 @@ class _HoststarMovieScreenState extends MovieScreenState {
         ),
       ),
 
+      SizedBox(height: 16),
+
       // Movie Description
       Text(
         movie!.desc,
+        textAlign: TextAlign.justify,
         style: TextStyle(color: Color(0xFFe0e4ed), fontSize: 14),
       ),
+
+      //
     ];
   }
 
@@ -200,83 +210,47 @@ class _HoststarMovieScreenState extends MovieScreenState {
     );
   }
 
-  // Widget _buildWatchButton() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       gradient: LinearGradient(
-  //         colors: [
-  //           Color(0xFF1491FF),
-  //           Color(0xFF155BBD),
-  //           Color(0xFF67379D),
-  //           Color(0xFFDB0765),
-  //         ],
-  //         // stops: [0.6, 0.8, 1.0],
-  //       ),
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //     child: Material(
-  //       color: Colors.transparent,
-  //       borderRadius: BorderRadius.circular(8),
-  //       child: InkWell(
-  //         borderRadius: BorderRadius.circular(8),
-  //         onTap: () {},
-  //         child: Container(
-  //           width: 200,
-  //           height: 40,
-  //           alignment: Alignment.center,
-  //           child: Text(
-  //             "Watch Now",
-  //             style: TextStyle(
-  //               color: Colors.white,
-  //               fontSize: 16,
-  //               fontWeight: FontWeight.w600,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildActions() {
-    return Row(
-      spacing: 28,
-      children: [
-        const SizedBox(width: 10),
-        _actionBtn(
-          LottieBuilder.asset(
-            "assets/lottie/hotstar/watchlist_animation_blue.json",
-            // "assets/lottie/my-list-plus-to-check.json",
-            controller: watchlistAnimationController,
-            height: 24,
-            onLoaded: (composition) {
-              // Set initial state based on inWatchlist
-              if (inWatchlist) {
-                watchlistAnimationController.value = 1.0;
-              } else {
-                watchlistAnimationController.value = 0.0;
-              }
-            },
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Row(
+        spacing: 36,
+        children: [
+          _actionBtn(
+            LottieBuilder.asset(
+              "assets/lottie/hotstar/watchlist_animation_blue.json",
+              // "assets/lottie/my-list-plus-to-check.json",
+              controller: watchlistAnimationController,
+              height: 24,
+              onLoaded: (composition) {
+                // Set initial state based on inWatchlist
+                if (inWatchlist) {
+                  watchlistAnimationController.value = 1.0;
+                } else {
+                  watchlistAnimationController.value = 0.0;
+                }
+              },
+            ),
+            "Watchlist",
+            handleAddWatchlist,
           ),
-          "Watchlist",
-          handleAddWatchlist,
-        ),
-        _actionBtn(
-          _icon(HugeIcons.strokeRoundedDownload05),
-          "Download",
-          downloadMovie,
-        ),
-        _actionBtn(
-          _icon(HugeIcons.strokeRoundedShare08),
-          "Share",
-          shareDeepLinkUrl,
-        ),
-        _actionBtn(
-          _icon(HugeIcons.strokeRoundedFavourite, size: 19),
-          "Share",
-          shareDeepLinkUrl,
-        ),
-      ],
+          _actionBtn(
+            _icon(HugeIcons.strokeRoundedDownload05),
+            "Download",
+            downloadMovie,
+          ),
+          _actionBtn(
+            _icon(HugeIcons.strokeRoundedShare08),
+            "Share",
+            shareDeepLinkUrl,
+          ),
+          _actionBtn(
+            _icon(HugeIcons.strokeRoundedFavourite, size: 19),
+            "Share",
+            shareDeepLinkUrl,
+          ),
+        ],
+      ),
     );
   }
 
@@ -296,5 +270,95 @@ class _HoststarMovieScreenState extends MovieScreenState {
 
   Widget _icon(IconData icon, {double size = 22}) {
     return Icon(icon, size: size, color: Color(0xFFe0e4ed));
+  }
+
+  List<Widget> buildsTabSections() {
+    if (movie!.isShow) {
+      return [
+        if (tabIndex == 0) buildEpisodes(),
+        if (tabIndex == 1 && movie!.suggest.isNotEmpty) buildRelated(),
+        if ((movie!.suggest.isNotEmpty && tabIndex == 2) ||
+            (movie!.suggest.isEmpty && tabIndex == 1))
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            sliver: SliverList.list(children: buildCast()),
+          ),
+      ];
+    } else {
+      return [
+        if (tabIndex == 0 && movie!.suggest.isNotEmpty) buildRelated(),
+        if ((movie!.suggest.isNotEmpty && tabIndex == 1) ||
+            (movie!.suggest.isEmpty && tabIndex == 0))
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            sliver: SliverList.list(children: buildCast()),
+          ),
+      ];
+    }
+  }
+
+  Widget buildEpisodes() {
+    return episodesBuilder((ep, dEp, wEp) {
+      return EpisodeWidget(
+        episode: ep,
+        ott: ott.value,
+        dEpisode: dEp,
+        playEpisode: () => playEpisode(ep.epNum),
+        downloadEpisode: () => downloadEpisode(ep.epNum, seasonNumber),
+        wh: wEp,
+      );
+    });
+  }
+
+  Widget buildRelated() {
+    return SliverPadding(
+      padding: const EdgeInsets.all(22),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.7,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final id = movie!.suggest[index].id;
+          return GestureDetector(
+            onTap: () {
+              goToMovie(context, ott.id, id);
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: CachedNetworkImage(
+                imageUrl: movie!.ott.getImg(id),
+                cacheManager: PvSmallCacheManager.instance,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        }, childCount: movie!.suggest.length),
+      ),
+    );
+  }
+
+  List<Widget> buildCast() {
+    return [
+      const SizedBox(height: 10),
+      CastSection("Genres", movie!.genreStr ?? ''),
+      CastSection(
+        "Director",
+        movie!.director ?? movie!.creator ?? movie!.writer,
+      ),
+      CastSection("Cast", movie!.cast),
+      CastSection("Maturity rating", movie!.ua),
+      const CastSection(
+        "Viewing rights",
+        "Prime Video: Prime Video titles are available for watching by tapping Watch now if you're an Amazon Prime member. Some Prime Video titles are also available to download. Watcha  downloaded Prime Video title as long as it remains in Prime Video. Additional restrictions apply. Please see the Prime Video Usage Rule for more information.",
+      ),
+      CastSection("Content advisory", movie!.mReason),
+      const CastSection(
+        "Customer reviews",
+        "We don't have any customer reviews.",
+      ),
+    ];
   }
 }
