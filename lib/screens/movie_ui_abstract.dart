@@ -107,17 +107,20 @@ abstract class MovieScreenUiState extends MovieScreenState {
   Widget screenBuilder({
     Widget? tabBar,
     required List<Widget> tabs,
-    PreferredSizeWidget? appBar,
-    Widget? sliverAppbar,
     required Color bg,
     required List<Widget> headers,
     required Widget poster,
+    PreferredSizeWidget? appBar,
+    Widget? sliverAppbar,
+    ScrollController? scrollController,
+    Function(ScrollController)? getController,
     bool extendBodyBehindAppBar = false,
   }) {
     return DesktopWrapper(
       child: Scaffold(
         backgroundColor: bg,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
+        // extendBody: true,
         appBar: appBar,
         body: RefreshIndicator(
           key: _refreshIndicatorKey,
@@ -128,6 +131,10 @@ abstract class MovieScreenUiState extends MovieScreenState {
               length: 2,
               child: NestedScrollView(
                 headerSliverBuilder: (context, f) {
+                  if (getController != null) {
+                    final controller = PrimaryScrollController.of(context);
+                    getController(controller);
+                  }
                   return [
                     ?sliverAppbar,
                     SliverToBoxAdapter(child: poster),

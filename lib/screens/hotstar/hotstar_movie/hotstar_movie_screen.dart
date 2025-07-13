@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -10,6 +11,7 @@ import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
+import 'package:netmirror/screens/hotstar/hotstar_movie_appbar.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
@@ -37,20 +39,25 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   @override
   bool extraTabForCast = true;
 
+  ScrollController? scrollController;
+
+  // static vars
+  static final bg = Color(0xFF0F1014);
+
   void handleTabChange(int index) {
     // if (movie!.isShow && tabIndex == 0 && index == 0) {
-    //   // showModalBottomSheet(
-    //   //   context: context,
-    //   //   builder: (x) {
-    //   //     return SeasonSelectorBottomSheet(
-    //   //       seasons: movie!.seasons,
-    //   //       selectedSeason: seasonNumber,
-    //   //       onTap: (seasonNum) {
-    //   //         handleSeasonChange(seasonNum);
-    //   //       },
-    //   //     );
-    //   //   },
-    //   // );
+    // showModalBottomSheet(
+    //   context: context,
+    //   builder: (x) {
+    //     return SeasonSelectorBottomSheet(
+    //       seasons: movie!.seasons,
+    //       selectedSeason: seasonNumber,
+    //       onTap: (seasonNum) {
+    //         handleSeasonChange(seasonNum);
+    //       },
+    //     );
+    //   },
+    // );
     // } else {
     //   setState(() {
     //     tabIndex = index;
@@ -67,9 +74,27 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
         buildRelated(),
         buildCast(),
       ],
-      bg: Color(0xFF0F1014),
+      appBar: HotstarMovieAppbar(
+        scrollController: scrollController,
+        maxScroll: 80,
+        color: bg,
+        title: movie?.title ?? '',
+      ),
+      bg: bg,
+      extendBodyBehindAppBar: true,
       poster: _buildMoviePoster(),
       headers: [toSlivers(buildMovieDetails(size)), _buildTabBar()],
+      getController: (controller) {
+        if (scrollController == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                scrollController = controller;
+              });
+            }
+          });
+        }
+      },
     );
   }
 
