@@ -101,7 +101,7 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     appBarTheme: AppBarTheme(
       toolbarHeight: isDesk ? 28 : 48,
       centerTitle: false,
-      titleTextStyle: TextStyle(fontSize: isDesk ? 14 : 16),
+      titleTextStyle: TextStyle(fontSize: isDesk ? 14 : 20),
     ),
   );
 

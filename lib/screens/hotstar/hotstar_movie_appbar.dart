@@ -12,7 +12,7 @@ class HotstarMovieAppbar extends StatefulWidget implements PreferredSizeWidget {
     required this.maxScroll,
     required this.color,
     required this.title,
-    this.height = kToolbarHeight - 8,
+    this.height = kToolbarHeight - 18,
     super.key,
   });
 
@@ -78,10 +78,21 @@ class _HotstarMovieAppbarState extends State<HotstarMovieAppbar> {
       backgroundColor: widget.color.withValues(alpha: opacity),
       surfaceTintColor: Colors.transparent,
       automaticallyImplyLeading: false,
-      titleSpacing: 8,
-      title: Text(
-        widget.title,
-        style: TextStyle(color: Colors.white.withValues(alpha: opacity)),
+      titleSpacing: 18,
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.title,
+              style: TextStyle(color: Colors.white.withValues(alpha: opacity)),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.close, color: Colors.white),
+            iconSize: 22,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
       ),
     );
   }

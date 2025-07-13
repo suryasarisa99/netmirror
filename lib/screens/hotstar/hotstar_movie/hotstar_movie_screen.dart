@@ -200,10 +200,11 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
 
   Widget _buildMoviePoster() {
     final size = MediaQuery.sizeOf(context);
+    final paddingTop = MediaQuery.paddingOf(context).top;
     return SizedBox(
       width: size.width,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.only(left: 10, right: 10, top: paddingTop),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
