@@ -8,8 +8,9 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/dialogs/category_dialog.dart';
+import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
-import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
@@ -19,14 +20,16 @@ import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class NfMovieScreen extends MovieScreen {
+class NfMovieScreen extends MovieScreenUi {
   const NfMovieScreen(super.id, {super.key});
 
   @override
-  ConsumerState<MovieScreen> createState() => NfMovieScreenState();
+  NfMovieScreenState createState() => NfMovieScreenState();
 }
 
-class NfMovieScreenState extends MovieScreenState {
+const l = L("nf_movie_screen");
+
+class NfMovieScreenState extends MovieScreenUiState {
   @override
   OTT ott = OTT.netflix;
   @override
@@ -56,80 +59,59 @@ class NfMovieScreenState extends MovieScreenState {
   @override
   Widget build(context) {
     final size = MediaQuery.sizeOf(context);
+    return screenBuilder(
+      tabs: [
+        if (movie?.isShow ?? false) buildEpisodes(),
+        _buildSuggestionsTab(),
+      ],
+      appBar: buildAppBar(),
+      bg: Colors.black,
+      poster: CachedNetworkImage(
+        imageUrl: "https://imgcdn.media/poster/h/${widget.id}.jpg",
+        cacheManager: NfLargeCacheManager.instance,
+        fit: BoxFit.cover,
+        height: size.width / (16 / 9),
+        width: double.infinity,
+      ),
+      headers: [toSlivers(buildMainData(size), center: false)],
+    );
+  }
 
-    return DesktopWrapper(
-      child: Scaffold(
-        bottomNavigationBar: NfNavBar(current: 0),
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          surfaceTintColor: Colors.black,
-          automaticallyImplyLeading: !isDesk,
-          title: windowDragAreaWithChild(
-            [],
-            actions: [
-              IconButton(
-                onPressed: () {
-                  GoRouter.of(context).push("/downloads");
-                },
-                icon: isDesk
-                    ? Icon(Icons.download, size: 20)
-                    : Icon(
-                        HugeIcons.strokeRoundedDownload05,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-              ),
-              IconButton(
-                onPressed: () {
-                  GoRouter.of(context).push("/search/${ott.id}");
-                },
-                icon: isDesk
-                    ? Icon(Icons.search, size: 20)
-                    : Icon(Icons.search, size: 30, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: "https://imgcdn.media/poster/h/${widget.id}.jpg",
-                    cacheManager: NfLargeCacheManager.instance,
-                    fit: BoxFit.cover,
-                    height: size.width / (16 / 9),
-                    width: double.infinity,
+  PreferredSizeWidget buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.black,
+      surfaceTintColor: Colors.black,
+      automaticallyImplyLeading: !isDesk,
+      title: windowDragAreaWithChild(
+        [],
+        actions: [
+          IconButton(
+            onPressed: () {
+              GoRouter.of(context).push("/downloads");
+            },
+            icon: isDesk
+                ? Icon(Icons.download, size: 20)
+                : Icon(
+                    HugeIcons.strokeRoundedDownload05,
+                    size: 30,
+                    color: Colors.white,
                   ),
-                  if (movie != null)
-                    ...buildMainData(size)
-                  else
-                    SizedBox(
-                      height: 400,
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                ],
-              ),
-            ),
-          ],
-          body: movie != null
-              ? TabBarView(
-                  controller: tabController,
-                  children: [
-                    if (movie!.isShow) buildEpisodes(),
-                    _buildSuggestionsTab(),
-                  ],
-                )
-              : SizedBox(),
-        ),
+          ),
+          IconButton(
+            onPressed: () {
+              GoRouter.of(context).push("/search/${ott.id}");
+            },
+            icon: isDesk
+                ? Icon(Icons.search, size: 20)
+                : Icon(Icons.search, size: 30, color: Colors.white),
+          ),
+        ],
       ),
     );
   }
 
   Widget buildEpisodes() {
+    if (movie == null) return const SizedBox();
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -182,7 +164,6 @@ class NfMovieScreenState extends MovieScreenState {
     final season = movie!.getSeason(seasonNumber);
     if (season.episodes == null) {
       log("episodes is null");
-
       return const SkeletonEpisodesList();
     } else {
       final episodes = season.episodes!.values.toList();
@@ -226,36 +207,36 @@ class NfMovieScreenState extends MovieScreenState {
   }
 
   Widget _buildSuggestionsTab() {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isDesk ? 2 : 3,
-              childAspectRatio: OTT.netflix.aspectRatio,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            delegate: SliverChildBuilderDelegate((context, index) {
-              final id = movie!.suggest[index].id;
-              return GestureDetector(
-                onTap: () {
-                  goToMovie(context, ott.id, id);
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: CachedNetworkImage(
-                    imageUrl: movie!.ott.getImg(id),
-                    cacheManager: NfSmallCacheManager.instance,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            }, childCount: movie!.suggest.length),
-          ),
+    if (movie == null) return SizedBox();
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isDesk ? 2 : 3,
+          childAspectRatio: OTT.netflix.aspectRatio,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
-      ],
+        itemCount: movie!.suggest.length,
+        itemBuilder: (context, index) {
+          final id = movie!.suggest[index].id;
+          return GestureDetector(
+            onTap: () {
+              goToMovie(context, ott.id, id);
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: CachedNetworkImage(
+                imageUrl: movie!.ott.getImg(id),
+                cacheManager: NfSmallCacheManager.instance,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 

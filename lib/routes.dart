@@ -21,6 +21,8 @@ final GlobalKey<StatefulNavigationShellState> pvMainHomeKey =
     GlobalKey<StatefulNavigationShellState>();
 final GlobalKey<StatefulNavigationShellState> nfMainHomeKey =
     GlobalKey<StatefulNavigationShellState>();
+final GlobalKey<StatefulNavigationShellState> hotstarMainHomeKey =
+    GlobalKey<StatefulNavigationShellState>();
 
 typedef PlayerScreenData = ({
   Movie movie,
@@ -150,7 +152,7 @@ final routes = GoRouter(
     ),
 
     StatefulShellRoute.indexedStack(
-      key: pvMainHomeKey,
+      key: hotstarMainHomeKey,
       builder: (context, state, shell) => HotstarMain(shell),
       branches: [
         StatefulShellBranch(
@@ -160,10 +162,6 @@ final routes = GoRouter(
               pageBuilder: (context, state) {
                 final tab = state.extra == null ? 0 : state.extra as int;
                 final studio = state.uri.queryParameters['studio'];
-                // return instantTransition(
-                //   HotstarHomeScreen(tab: tab, studio: studio),
-                //   state,
-                // );
                 return instantTransition(
                   studio != null
                       ? HotstarStudioScreen(studioName: studio, tab: tab)

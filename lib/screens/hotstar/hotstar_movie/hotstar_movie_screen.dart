@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
@@ -12,6 +11,7 @@ import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/utils/nav.dart';
@@ -22,32 +22,20 @@ import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class HotstarMovieScreen extends MovieScreen {
+class HotstarMovieScreen extends MovieScreenUi {
   const HotstarMovieScreen(super.id, {super.key});
 
   @override
-  ConsumerState<MovieScreen> createState() => _HoststarMovieScreenState();
+  MovieScreenUiState createState() => _HoststarMovieScreenState();
 }
 
 const l = L("hotstar_movie_screen");
 
-class _HoststarMovieScreenState extends MovieScreenState {
+class _HoststarMovieScreenState extends MovieScreenUiState {
   @override
   OTT ott = OTT.hotstar;
   @override
   bool extraTabForCast = true;
-
-  @override
-  void initState() {
-    super.initState();
-    l.debug("HotstarMovieScreen initState");
-  }
-
-  @override
-  void dispose() {
-    l.debug("HotstarMovieScreen dispose");
-    super.dispose();
-  }
 
   void handleTabChange(int index) {
     if (movie!.isShow && tabIndex == 0 && index == 0) {
@@ -73,113 +61,20 @@ class _HoststarMovieScreenState extends MovieScreenState {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    return DesktopWrapper(
-      child: Scaffold(
-        backgroundColor: Color(0xFF0F1014),
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              if (Platform.isMacOS)
-                SliverToBoxAdapter(child: SizedBox(height: 28)),
-              // SliverAppBar(
-              //   backgroundColor: Colors.black,
-              //   surfaceTintColor: Colors.black,
-              //   toolbarHeight: 48,
-              //   title: windowDragAreaWithChild(
-              //     [],
-              //     actions: [
-              //       IconButton(
-              //         onPressed: () {
-              //           GoRouter.of(context).push("/downloads");
-              //         },
-              //         icon: isDesk
-              //             ? Icon(Icons.download, size: 20)
-              //             : Icon(
-              //                 HugeIcons.strokeRoundedDownload05,
-              //                 size: 30,
-              //                 color: Colors.white,
-              //               ),
-              //       ),
-              //       IconButton(
-              //         onPressed: () {
-              //           GoRouter.of(context).push("/search/${ott.id}");
-              //         },
-              //         icon: isDesk
-              //             ? Icon(Icons.search, size: 20)
-              //             : Icon(Icons.search, size: 30, color: Colors.white),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              SliverToBoxAdapter(child: _buildMoviePoster()),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (movie != null)
-                        ...buildMainData(size)
-                      else
-                        SizedBox(
-                          height: 400,
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverPersistentHeader(
-                delegate: StickyHeaderDelegate(
-                  minHeight: 60.0,
-                  maxHeight: 60.0,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(color: Colors.black),
-                    child: TabBar(
-                      controller: tabController,
-                      indicatorWeight: 1.0,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      indicatorColor: Colors.white,
-                      labelStyle: const TextStyle(
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      unselectedLabelColor: Colors.grey,
-                      labelColor: Colors.white,
-                      onTap: handleTabChange,
-                      tabs: [
-                        if (movie!.isShow)
-                          Tab(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "S$seasonNumber} E${movie!.getSeason(seasonNumber).ep}",
-                                ),
-                                const SizedBox(width: 5),
-                                const Icon(Icons.expand_more_rounded),
-                              ],
-                            ),
-                          ),
-                        // Text("Hi"),
-                        if (movie!.suggest.isNotEmpty)
-                          const Tab(text: 'Related'),
-                        const Tab(text: 'Details'),
-                      ],
-                    ),
-                  ),
-                ),
-                pinned: true,
-              ),
-              ...buildsTabSections(),
-            ],
-          ),
-        ),
-      ),
+    return screenBuilder(
+      tabs: [
+        if (movie?.isShow ?? false) buildEpisodes(),
+        buildRelated(),
+        buildCast(),
+      ],
+      bg: Color(0xFF0F1014),
+      poster: _buildMoviePoster(),
+      headers: [toSlivers(buildMovieDetails(size)), _buildTabBar()],
     );
   }
 
-  List<Widget> buildMainData(Size size) {
+  List<Widget> buildMovieDetails(Size size) {
+    if (movie == null) return [];
     return [
       HotstarButton(text: "Watch Now", onPressed: playMovieOrEpisode),
       SizedBox(height: 16),
@@ -232,6 +127,50 @@ class _HoststarMovieScreenState extends MovieScreenState {
 
       //
     ];
+  }
+
+  Widget _buildTabBar() {
+    if (movie == null) return SizedBox();
+    return SliverPersistentHeader(
+      delegate: StickyHeaderDelegate(
+        minHeight: 60.0,
+        maxHeight: 60.0,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(color: Color(0xFF0F1014)),
+          child: TabBar(
+            controller: tabController,
+            indicatorWeight: 1.0,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorColor: Colors.white,
+            labelStyle: const TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.white,
+            onTap: handleTabChange,
+            tabs: [
+              if (movie!.isShow)
+                Tab(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "S$seasonNumber E${movie!.getSeason(seasonNumber).ep}",
+                      ),
+                      const SizedBox(width: 5),
+                      const Icon(Icons.expand_more_rounded),
+                    ],
+                  ),
+                ),
+              if (movie!.suggest.isNotEmpty) const Tab(text: 'Related'),
+              const Tab(text: 'Details'),
+            ],
+          ),
+        ),
+      ),
+      pinned: true,
+    );
   }
 
   Widget _buildMoviePoster() {
@@ -336,31 +275,6 @@ class _HoststarMovieScreenState extends MovieScreenState {
     return Icon(icon, size: size, color: Color(0xFFe0e4ed));
   }
 
-  List<Widget> buildsTabSections() {
-    if (movie!.isShow) {
-      return [
-        if (tabIndex == 0) buildEpisodes(),
-        if (tabIndex == 1 && movie!.suggest.isNotEmpty) buildRelated(),
-        if ((movie!.suggest.isNotEmpty && tabIndex == 2) ||
-            (movie!.suggest.isEmpty && tabIndex == 1))
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            sliver: SliverList.list(children: buildCast()),
-          ),
-      ];
-    } else {
-      return [
-        if (tabIndex == 0 && movie!.suggest.isNotEmpty) buildRelated(),
-        if ((movie!.suggest.isNotEmpty && tabIndex == 1) ||
-            (movie!.suggest.isEmpty && tabIndex == 0))
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            sliver: SliverList.list(children: buildCast()),
-          ),
-      ];
-    }
-  }
-
   Widget buildEpisodes() {
     return episodesBuilder((ep, dEp, wEp) {
       return EpisodeWidget(
@@ -375,16 +289,20 @@ class _HoststarMovieScreenState extends MovieScreenState {
   }
 
   Widget buildRelated() {
-    return SliverPadding(
+    if (movie == null) return SizedBox();
+    return Padding(
       padding: const EdgeInsets.all(22),
-      sliver: SliverGrid(
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.7,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        delegate: SliverChildBuilderDelegate((context, index) {
+        itemCount: movie!.suggest.length,
+        itemBuilder: (context, index) {
           final id = movie!.suggest[index].id;
           return GestureDetector(
             onTap: () {
@@ -399,30 +317,35 @@ class _HoststarMovieScreenState extends MovieScreenState {
               ),
             ),
           );
-        }, childCount: movie!.suggest.length),
+        },
       ),
     );
   }
 
-  List<Widget> buildCast() {
-    return [
-      const SizedBox(height: 10),
-      CastSection("Genres", movie!.genreStr ?? ''),
-      CastSection(
-        "Director",
-        movie!.director ?? movie!.creator ?? movie!.writer,
+  Widget buildCast() {
+    if (movie == null) return SizedBox();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            CastSection("Genres", movie!.genreStr ?? ''),
+            CastSection("Director", movie!.director),
+            CastSection("Cast", movie!.cast),
+            CastSection("Maturity rating", movie!.ua),
+            const CastSection(
+              "Viewing rights",
+              "Prime Video: Prime Video titles are available for watching by tapping Watch now if you're an Amazon Prime member. Some Prime Video titles are also available to download. Watcha  downloaded Prime Video title as long as it remains in Prime Video. Additional restrictions apply. Please see the Prime Video Usage Rule for more information.",
+            ),
+            CastSection("Content advisory", movie!.mReason),
+            const CastSection(
+              "Customer reviews",
+              "We don't have any customer reviews.",
+            ),
+          ],
+        ),
       ),
-      CastSection("Cast", movie!.cast),
-      CastSection("Maturity rating", movie!.ua),
-      const CastSection(
-        "Viewing rights",
-        "Prime Video: Prime Video titles are available for watching by tapping Watch now if you're an Amazon Prime member. Some Prime Video titles are also available to download. Watcha  downloaded Prime Video title as long as it remains in Prime Video. Additional restrictions apply. Please see the Prime Video Usage Rule for more information.",
-      ),
-      CastSection("Content advisory", movie!.mReason),
-      const CastSection(
-        "Customer reviews",
-        "We don't have any customer reviews.",
-      ),
-    ];
+    );
   }
 }

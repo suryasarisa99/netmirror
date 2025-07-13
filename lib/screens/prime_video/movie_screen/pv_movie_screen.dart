@@ -9,27 +9,24 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
+import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
-import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
-import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_season_selector_bottom_sheet.dart';
-import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/sticky_header_delegate.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-class PVMovieScreen extends MovieScreen {
+class PVMovieScreen extends MovieScreenUi {
   const PVMovieScreen(super.id, {super.key});
 
   @override
   ConsumerState<MovieScreen> createState() => _PVMovieScreenState();
 }
 
-class _PVMovieScreenState extends MovieScreenState {
+class _PVMovieScreenState extends MovieScreenUiState {
   @override
   OTT ott = OTT.pv;
   @override
@@ -61,97 +58,75 @@ class _PVMovieScreenState extends MovieScreenState {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return DesktopWrapper(
-      child: RefreshIndicator(
-        onRefresh: loadDataFromOnline,
-        edgeOffset: 50,
-        displacement: 60,
-        color: Colors.white,
-        child: Scaffold(
-          bottomNavigationBar: CustomBottomBar(
-            selectedIndex: 0,
-            onItemSelected: (i) {},
-          ),
-          backgroundColor: Colors.black,
-          body: CustomScrollView(
-            // no bounce
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Colors.black,
-                surfaceTintColor: Colors.black,
-                automaticallyImplyLeading: !isDesk,
-                // forceMaterialTransparency: false,
-                forceElevated: false,
-                title: windowDragAreaWithChild(
-                  [],
-                  actions: [
-                    TopbarButtons.settingsBtn(context),
-                    TopbarButtons.downloadsBtn(context),
-                    TopbarButtons.searchBtn(context, ott.id),
-                  ],
-                ),
-                floating: false,
-                pinned: true,
-                expandedHeight: 60,
-              ),
-              SliverToBoxAdapter(
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: CachedNetworkImage(
-                        // imageUrl: isDesk
-                        //     ? "https://imgcdn.media/pv/c/${widget.id}.jpg"
-                        //     : OTT.pv.getImg(widget.id, largeImg: true),
-                        imageUrl: OTT.pv.getImg(widget.id, largeImg: true),
-                        cacheManager: PvLargeCacheManager.instance,
-                        width: size.width,
-                        fit: BoxFit.cover,
-                        height: size.width / 2.052,
-                        // height: OTT.pv
-                        // height: 230,
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.center,
-                            colors: [Colors.black, Colors.transparent],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (movie != null)
-                ...buildMainData()
-              else
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 450,
-                    child: Center(
-                      child: CircularProgressIndicator(color: Colors.white),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+    return screenBuilder(
+      bg: Colors.black,
+      sliverAppbar: buildSliverAppbar(),
+      poster: buildPoster(),
+      headers: buildMovieDetails(),
+      tabs: [
+        if (movie?.isShow ?? false) buildEpisodes(),
+        buildRelated(),
+        buildCast(),
+      ],
     );
   }
 
-  List<Widget> buildMainData() {
+  Widget buildSliverAppbar() {
+    return SliverAppBar(
+      backgroundColor: Colors.black,
+      surfaceTintColor: Colors.black,
+      automaticallyImplyLeading: !isDesk,
+      toolbarHeight: isDesk ? 28 : 48,
+      forceElevated: false,
+      title: windowDragAreaWithChild(
+        [],
+        actions: [
+          TopbarButtons.settingsBtn(context),
+          TopbarButtons.downloadsBtn(context),
+          TopbarButtons.searchBtn(context, ott.id),
+        ],
+      ),
+      floating: false,
+      pinned: true,
+      // expandedHeight: 60,
+    );
+  }
+
+  Widget buildPoster() {
+    final size = MediaQuery.sizeOf(context);
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: CachedNetworkImage(
+            imageUrl: OTT.pv.getImg(widget.id, largeImg: true),
+            cacheManager: PvLargeCacheManager.instance,
+            width: size.width,
+            fit: BoxFit.cover,
+            height: size.width / 2.052,
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                colors: [Colors.black, Colors.transparent],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> buildMovieDetails() {
+    if (movie == null) return [];
     return [
       SliverToBoxAdapter(
         child: Padding(
@@ -455,7 +430,7 @@ class _PVMovieScreenState extends MovieScreenState {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "S$seasonNumber} E${movie!.getSeason(seasonNumber).ep}",
+                            "S$seasonNumber E${movie!.getSeason(seasonNumber).ep}",
                           ),
                           const SizedBox(width: 5),
                           const Icon(Icons.expand_more_rounded),
@@ -471,112 +446,65 @@ class _PVMovieScreenState extends MovieScreenState {
           ),
           pinned: true,
         ),
-      ...buildsTabSections(),
+      // ...buildsTabSections(),
     ];
   }
 
-  List<Widget> buildCast() {
-    return [
-      const SizedBox(height: 10),
-      CastSection("Genres", movie!.genreStr ?? ''),
-      CastSection(
-        "Director",
-        movie!.director ?? movie!.creator ?? movie!.writer,
+  Widget buildCast() {
+    if (movie == null) return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            CastSection("Genres", movie!.genreStr ?? ''),
+            CastSection("Director", movie!.director),
+            CastSection("Cast", movie!.cast),
+            CastSection("Maturity rating", movie!.ua),
+            const CastSection(
+              "Viewing rights",
+              "Prime Video: Prime Video titles are available for watching by tapping Watch now if you're an Amazon Prime member. Some Prime Video titles are also available to download. Watcha  downloaded Prime Video title as long as it remains in Prime Video. Additional restrictions apply. Please see the Prime Video Usage Rule for more information.",
+            ),
+            CastSection("Content advisory", movie!.mReason),
+            const CastSection(
+              "Customer reviews",
+              "We don't have any customer reviews.",
+            ),
+          ],
+        ),
       ),
-      CastSection("Cast", movie!.cast),
-      CastSection("Maturity rating", movie!.ua),
-      const CastSection(
-        "Viewing rights",
-        "Prime Video: Prime Video titles are available for watching by tapping Watch now if you're an Amazon Prime member. Some Prime Video titles are also available to download. Watcha  downloaded Prime Video title as long as it remains in Prime Video. Additional restrictions apply. Please see the Prime Video Usage Rule for more information.",
-      ),
-      CastSection("Content advisory", movie!.mReason),
-      const CastSection(
-        "Customer reviews",
-        "We don't have any customer reviews.",
-      ),
-    ];
+    );
   }
 
   Widget buildEpisodes() {
-    if (seasonNumber == -1) {
-      return const SliverToBoxAdapter(
-        child: Center(child: Text("Error:: Season Number is -1")),
+    return episodesBuilder((ep, dEp, whEp) {
+      return EpisodeWidget(
+        episode: ep,
+        dEpisode: dEp,
+        wh: whEp,
+        playEpisode: () => playEpisode(ep.epNum),
+        ott: movie!.ott.value,
+        downloadEpisode: () => downloadEpisode(ep.epNum, seasonNumber),
       );
-    }
-
-    final season = movie!.getSeason(seasonNumber);
-    if (season?.episodes == null) {
-      log("episodes is null");
-
-      return Skeletonizer.sliver(
-        child: SliverList.separated(
-          itemCount: 8,
-          itemBuilder: (context, index) {
-            return const SkeletonEpisodeWidget();
-          },
-          separatorBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
-              child: Divider(color: Colors.white24, height: 1),
-            );
-          },
-        ),
-      );
-    } else {
-      final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
-      final episodes = episodesMap.values.toList();
-      final currentEpisodesCount = episodes.length;
-      final extraThere = season.ep > currentEpisodesCount;
-      final episodeCount = extraThere
-          ? currentEpisodesCount + 1
-          : currentEpisodesCount;
-
-      return SliverList.separated(
-        itemCount: episodeCount,
-        itemBuilder: (context, index) {
-          if (index == episodeCount - 4 && !episodesLoading && extraThere) {
-            loadMoreEpisodes();
-          }
-
-          if (index == episodeCount - 1 && extraThere) {
-            return const Skeletonizer(child: SkeletonEpisodeWidget());
-          }
-
-          final episode = episodes[index];
-          final depisode = downloads[episode.id];
-          final whEpisode = seasonWatchHistory
-              .where((wh) => wh.episodeNumber == episode.epNum)
-              .firstOrNull;
-          return EpisodeWidget(
-            episode: episode,
-            dEpisode: depisode,
-            wh: whEpisode,
-            playEpisode: () => playEpisode(episode.epNum),
-            ott: movie!.ott.value,
-            downloadEpisode: () => downloadEpisode(episode.epNum, seasonNumber),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22),
-            child: Divider(color: Colors.white24, height: 1),
-          );
-        },
-      );
-    }
+    });
   }
 
   Widget buildRelated() {
-    return SliverPadding(
+    if (movie == null) return const SizedBox();
+    return Padding(
       padding: const EdgeInsets.all(22),
-      sliver: SliverGrid(
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.7,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        delegate: SliverChildBuilderDelegate((context, index) {
+        itemCount: movie!.suggest.length,
+        itemBuilder: (context, index) {
           final id = movie!.suggest[index].id;
           return GestureDetector(
             onTap: () {
@@ -591,57 +519,7 @@ class _PVMovieScreenState extends MovieScreenState {
               ),
             ),
           );
-        }, childCount: movie!.suggest.length),
-      ),
-    );
-  }
-
-  Widget buildRowRelated() {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 12),
-          const Text(
-            "     Customers also watched",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 4),
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              scrollDirection: Axis.horizontal,
-              itemCount: movie!.suggest.length,
-              itemBuilder: (context, i) {
-                final id = movie!.suggest[i].id;
-                return GestureDetector(
-                  onTap: () {
-                    goToMovie(context, ott.id, id);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: CachedNetworkImage(
-                        imageUrl: movie!.ott.getImg(id),
-                        cacheManager: PvSmallCacheManager.instance,
-                        width: 200,
-                        height: 120,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 32),
-        ],
+        },
       ),
     );
   }
@@ -651,22 +529,22 @@ class _PVMovieScreenState extends MovieScreenState {
       return [
         if (tabIndex == 0) buildEpisodes(),
         if (tabIndex == 1 && movie!.suggest.isNotEmpty) buildRelated(),
-        if ((movie!.suggest.isNotEmpty && tabIndex == 2) ||
-            (movie!.suggest.isEmpty && tabIndex == 1))
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            sliver: SliverList.list(children: buildCast()),
-          ),
+        // if ((movie!.suggest.isNotEmpty && tabIndex == 2) ||
+        //     (movie!.suggest.isEmpty && tabIndex == 1))
+        // SliverPadding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 22),
+        //   sliver: SliverList.list(children: buildCast()),
+        // ),
       ];
     } else {
       return [
-        if (tabIndex == 0 && movie!.suggest.isNotEmpty) buildRelated(),
-        if ((movie!.suggest.isNotEmpty && tabIndex == 1) ||
-            (movie!.suggest.isEmpty && tabIndex == 0))
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            sliver: SliverList.list(children: buildCast()),
-          ),
+        // if (tabIndex == 0 && movie!.suggest.isNotEmpty) buildRelated(),
+        // if ((movie!.suggest.isNotEmpty && tabIndex == 1) ||
+        //     (movie!.suggest.isEmpty && tabIndex == 0))
+        //   SliverPadding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 22),
+        //     sliver: SliverList.list(children: buildCast()),
+        //   ),
       ];
     }
   }
