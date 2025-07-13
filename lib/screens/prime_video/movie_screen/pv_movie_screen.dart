@@ -33,6 +33,7 @@ class _PVMovieScreenState extends MovieScreenUiState {
   bool extraTabForCast = true;
 
   int maxDescLines = 3;
+  int tabIndex = 0;
 
   void handleTabChange(int index) {
     if (movie!.isShow && tabIndex == 0 && index == 0) {
@@ -155,6 +156,7 @@ class _PVMovieScreenState extends MovieScreenUiState {
                 ],
               ),
               const SizedBox(height: 5),
+
               // play button
               buildMainPlayBtn((text) {
                 return SizedBox(
@@ -195,6 +197,8 @@ class _PVMovieScreenState extends MovieScreenUiState {
               }),
               ?buildProgressBar(Colors.white),
               const SizedBox(height: 12),
+
+              // download button
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -237,67 +241,10 @@ class _PVMovieScreenState extends MovieScreenUiState {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // MovieScreenActionItem(
-                  //   const Icon(Icons.add, size: 26, color: Colors.white),
-                  //   "Watchlist",
-                  //   () {},
-                  // ),
-                  SizedBox.square(
-                    // dimension: 80,
-                    child: MovieScreenActionItem(
-                      LottieBuilder.asset(
-                        // "assets/lottie/hotstar/watchlist_animation_blue.json",
-                        "assets/lottie/my-list-plus-to-check.json",
-                        controller: watchlistAnimationController,
-                        height: 40,
-                        onLoaded: (composition) {
-                          if (inWatchlist) {
-                            watchlistAnimationController.value = 1.0;
-                          } else {
-                            watchlistAnimationController.value = 0.0;
-                          }
-                        },
-                      ),
-                      "My List",
-                      handleAddWatchlist,
-                    ),
-                  ),
-                  MovieScreenActionItem(
-                    const Icon(
-                      HugeIcons.strokeRoundedThumbsUp,
-                      size: 26,
-                      color: Colors.white,
-                    ),
-                    "Like",
-                    () {},
-                  ),
-                  MovieScreenActionItem(
-                    const Icon(
-                      HugeIcons.strokeRoundedShare08,
-                      size: 26,
-                      color: Colors.white,
-                    ),
-                    "Share",
-                    shareDeepLinkUrl,
-                  ),
-                  MovieScreenActionItem(
-                    const Icon(
-                      Icons.flag_outlined,
-                      size: 26,
-                      color: Colors.white,
-                    ),
-                    "Reports",
-                    () {},
-                  ),
-                ],
-              ),
+              const SizedBox(height: 20),
+              buildActions(),
               const SizedBox(height: 10),
+
               // description
               GestureDetector(
                 onTap: () {
@@ -317,6 +264,7 @@ class _PVMovieScreenState extends MovieScreenUiState {
                 ),
               ),
               const SizedBox(height: 6),
+
               // genres
               Row(
                 children: [
@@ -356,6 +304,8 @@ class _PVMovieScreenState extends MovieScreenUiState {
                 style: const TextStyle(fontSize: 16, color: Colors.white60),
               ),
               const SizedBox(height: 8),
+
+              // Quality and Maturity Rattings Row
               Row(
                 children: [
                   Container(
@@ -404,6 +354,8 @@ class _PVMovieScreenState extends MovieScreenUiState {
           ),
         ),
       ),
+
+      // TabBar
       if (tabController != null)
         SliverPersistentHeader(
           delegate: StickyHeaderDelegate(
@@ -446,8 +398,54 @@ class _PVMovieScreenState extends MovieScreenUiState {
           ),
           pinned: true,
         ),
-      // ...buildsTabSections(),
     ];
+  }
+
+  Widget buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        MovieScreenActionItem(
+          LottieBuilder.asset(
+            "assets/lottie/my-list-plus-to-check.json",
+            controller: watchlistAnimationController,
+            height: 40,
+            onLoaded: (composition) {
+              if (inWatchlist) {
+                watchlistAnimationController.value = 1.0;
+              } else {
+                watchlistAnimationController.value = 0.0;
+              }
+            },
+          ),
+          "My List",
+          handleAddWatchlist,
+        ),
+        MovieScreenActionItem(
+          const Icon(
+            HugeIcons.strokeRoundedThumbsUp,
+            size: 26,
+            color: Colors.white,
+          ),
+          "Like",
+          () {},
+        ),
+        MovieScreenActionItem(
+          const Icon(
+            HugeIcons.strokeRoundedShare08,
+            size: 26,
+            color: Colors.white,
+          ),
+          "Share",
+          shareDeepLinkUrl,
+        ),
+        MovieScreenActionItem(
+          const Icon(Icons.flag_outlined, size: 26, color: Colors.white),
+          "Reports",
+          () {},
+        ),
+      ],
+    );
   }
 
   Widget buildCast() {
@@ -522,31 +520,6 @@ class _PVMovieScreenState extends MovieScreenUiState {
         },
       ),
     );
-  }
-
-  List<Widget> buildsTabSections() {
-    if (movie!.isShow) {
-      return [
-        if (tabIndex == 0) buildEpisodes(),
-        if (tabIndex == 1 && movie!.suggest.isNotEmpty) buildRelated(),
-        // if ((movie!.suggest.isNotEmpty && tabIndex == 2) ||
-        //     (movie!.suggest.isEmpty && tabIndex == 1))
-        // SliverPadding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 22),
-        //   sliver: SliverList.list(children: buildCast()),
-        // ),
-      ];
-    } else {
-      return [
-        // if (tabIndex == 0 && movie!.suggest.isNotEmpty) buildRelated(),
-        // if ((movie!.suggest.isNotEmpty && tabIndex == 1) ||
-        //     (movie!.suggest.isEmpty && tabIndex == 0))
-        //   SliverPadding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 22),
-        //     sliver: SliverList.list(children: buildCast()),
-        //   ),
-      ];
-    }
   }
 }
 

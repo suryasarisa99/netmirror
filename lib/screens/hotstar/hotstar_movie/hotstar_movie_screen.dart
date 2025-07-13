@@ -38,24 +38,24 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   bool extraTabForCast = true;
 
   void handleTabChange(int index) {
-    if (movie!.isShow && tabIndex == 0 && index == 0) {
-      // showModalBottomSheet(
-      //   context: context,
-      //   builder: (x) {
-      //     return SeasonSelectorBottomSheet(
-      //       seasons: movie!.seasons,
-      //       selectedSeason: seasonNumber,
-      //       onTap: (seasonNum) {
-      //         handleSeasonChange(seasonNum);
-      //       },
-      //     );
-      //   },
-      // );
-    } else {
-      setState(() {
-        tabIndex = index;
-      });
-    }
+    // if (movie!.isShow && tabIndex == 0 && index == 0) {
+    //   // showModalBottomSheet(
+    //   //   context: context,
+    //   //   builder: (x) {
+    //   //     return SeasonSelectorBottomSheet(
+    //   //       seasons: movie!.seasons,
+    //   //       selectedSeason: seasonNumber,
+    //   //       onTap: (seasonNum) {
+    //   //         handleSeasonChange(seasonNum);
+    //   //       },
+    //   //     );
+    //   //   },
+    //   // );
+    // } else {
+    //   setState(() {
+    //     tabIndex = index;
+    //   });
+    // }
   }
 
   @override

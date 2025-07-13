@@ -256,8 +256,6 @@ abstract class MovieScreenUiState extends MovieScreenState {
           : currentEpisodesCount;
 
       return ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: episodeCount,
         itemBuilder: (context, index) {
           if (index == episodeCount - 4 && !episodesLoading && extraThere) {

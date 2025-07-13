@@ -6,7 +6,6 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/watch_list_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
-import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:path/path.dart' as p;
 import 'package:android_intent_plus/android_intent.dart';
@@ -45,7 +44,6 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   abstract bool extraTabForCast;
 
   bool inWatchlist = false;
-  int tabIndex = 0;
   Movie? movie;
   Map<String, MiniDownloadItem> downloads = {};
   TabController? tabController;
