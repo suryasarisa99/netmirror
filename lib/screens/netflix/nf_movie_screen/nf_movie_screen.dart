@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +10,9 @@ import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
-import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:shared_code/shared_code.dart' hide isDesk;
 
 class NfMovieScreen extends MovieScreenUi {
   const NfMovieScreen(super.id, {super.key});
@@ -57,10 +54,7 @@ class NfMovieScreenState extends MovieScreenUiState {
   Widget build(context) {
     final size = MediaQuery.sizeOf(context);
     return screenBuilder(
-      tabs: [
-        if (movie?.isShow ?? false) buildEpisodes(),
-        _buildSuggestionsTab(),
-      ],
+      tabs: [if (movie?.isShow ?? false) buildEpisodes(), buildRelated()],
       appBar: buildAppBar(),
       bg: Colors.black,
       poster: CachedNetworkImage(
@@ -70,7 +64,7 @@ class NfMovieScreenState extends MovieScreenUiState {
         height: size.width / (16 / 9),
         width: double.infinity,
       ),
-      headers: [toSlivers(buildMainData(size), center: false)],
+      headers: [toSlivers(buildMovieDetails(size), center: false)],
     );
   }
 
@@ -109,101 +103,19 @@ class NfMovieScreenState extends MovieScreenUiState {
 
   Widget buildEpisodes() {
     if (movie == null) return const SizedBox();
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  openSeasonMenu();
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(left: 8, top: 8, bottom: 10),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 43, 43, 43),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Season $seasonNumber  (${movie!.getSeason(seasonNumber)?.ep ?? '?'} Ep)",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.arrow_drop_down),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        _buildEpisodes(),
-      ],
-    );
+    return episodesBuilder((ep, dEp, whEp) {
+      return EpisodeWidget(
+        episode: ep,
+        ott: ott.value,
+        dEpisode: dEp,
+        playEpisode: () => playEpisode(ep.epNum),
+        downloadEpisode: () => downloadEpisode(ep.epNum, seasonNumber),
+        wh: whEp,
+      );
+    });
   }
 
-  Widget _buildEpisodes() {
-    if (seasonNumber == -1) {
-      return const SliverToBoxAdapter(
-        child: Center(child: Text("Error:: Season Number is -1")),
-      );
-    }
-
-    final season = movie!.getSeason(seasonNumber);
-    if (season.episodes == null) {
-      log("episodes is null");
-      return const SkeletonEpisodesList();
-    } else {
-      final episodes = season.episodes!.values.toList();
-      final currentEpisodesCount = episodes.length;
-      final extraThere = season.ep > currentEpisodesCount;
-      final episodeCount = extraThere
-          ? currentEpisodesCount + 1
-          : currentEpisodesCount;
-
-      return SliverList.separated(
-        itemCount: episodeCount,
-        itemBuilder: (context, index) {
-          if (index == episodeCount - 4 && !episodesLoading && extraThere) {
-            loadMoreEpisodes();
-          }
-          if (index == episodeCount - 1 && extraThere) {
-            return const Skeletonizer(child: SkeletonEpisodeWidget());
-          }
-          final episode = episodes[index];
-          final depisode = downloads[episode.id];
-          final whEpisode = seasonWatchHistory
-              .where((wh) => wh.episodeNumber == episode.epNum)
-              .firstOrNull;
-          return EpisodeWidget(
-            episode: episode,
-            dEpisode: depisode,
-            ott: movie!.ott.value,
-            wh: whEpisode,
-            playEpisode: () => playEpisode(episode.epNum),
-            downloadEpisode: () => downloadEpisode(episode.epNum, seasonNumber),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22),
-            child: Divider(color: Colors.white24, height: 1),
-          );
-        },
-      );
-    }
-  }
-
-  Widget _buildSuggestionsTab() {
+  Widget buildRelated() {
     if (movie == null) return SizedBox();
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -237,7 +149,7 @@ class NfMovieScreenState extends MovieScreenUiState {
     );
   }
 
-  List<Widget> buildMainData(Size size) {
+  List<Widget> buildMovieDetails(Size size) {
     if (movie == null) return [];
     return [
       buildDetails(),

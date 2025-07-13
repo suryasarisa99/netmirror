@@ -153,7 +153,6 @@ abstract class MovieScreenUiState extends MovieScreenState {
     );
   }
 
-  @override
   Widget buildMainPlayBtn(Widget Function(String text) builder) {
     late String text;
     if (watchHistory != null) {
@@ -182,7 +181,6 @@ abstract class MovieScreenUiState extends MovieScreenState {
     );
   }
 
-  @override
   Widget? buildProgressBar(Color color) {
     WatchHistory? currWatchHistory;
 
@@ -222,70 +220,6 @@ abstract class MovieScreenUiState extends MovieScreenState {
     );
   }
 
-  // @override
-  // Widget episodesBuilder(
-  //   Widget Function(Episode ep, MiniDownloadItem? dEp, WatchHistory? wh)
-  //   builder,
-  // ) {
-  //   if (seasonNumber == -1) {
-  //     return const SliverToBoxAdapter(
-  //       child: Center(child: Text("Error:: Season Number is -1")),
-  //     );
-  //   }
-  //   final season = movie!.getSeason(seasonNumber);
-  //   if (season.episodes == null) {
-  //     return Skeletonizer.sliver(
-  //       child: SliverList.separated(
-  //         itemCount: 8,
-  //         itemBuilder: (context, index) {
-  //           return const SkeletonEpisodeWidget();
-  //         },
-  //         separatorBuilder: (context, index) {
-  //           return const Padding(
-  //             padding: EdgeInsets.symmetric(horizontal: 22),
-  //             child: Divider(color: Colors.white24, height: 1),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //   } else {
-  //     final episodesMap = movie!.getSeasonEpisodes(seasonNumber);
-  //     final episodes = episodesMap.values.toList();
-  //     final currentEpisodesCount = episodes.length;
-  //     final extraThere = season.ep > currentEpisodesCount;
-  //     final episodeCount = extraThere
-  //         ? currentEpisodesCount + 1
-  //         : currentEpisodesCount;
-
-  //     return SliverList.separated(
-  //       itemCount: episodeCount,
-  //       itemBuilder: (context, index) {
-  //         if (index == episodeCount - 4 && !episodesLoading && extraThere) {
-  //           loadMoreEpisodes();
-  //         }
-
-  //         if (index == episodeCount - 1 && extraThere) {
-  //           return const Skeletonizer(child: SkeletonEpisodeWidget());
-  //         }
-
-  //         final episode = episodes[index];
-  //         final dEpisode = downloads[episode.id];
-  //         final whEpisode = seasonWatchHistory
-  //             .where((wh) => wh.episodeNumber == episode.epNum)
-  //             .firstOrNull;
-  //         return builder(episode, dEpisode, whEpisode);
-  //       },
-  //       separatorBuilder: (context, index) {
-  //         return const Padding(
-  //           padding: EdgeInsets.symmetric(horizontal: 22),
-  //           child: Divider(color: Colors.white24, height: 1),
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
-
-  @override
   Widget episodesBuilder(
     Widget Function(Episode ep, MiniDownloadItem? dEp, WatchHistory? wh)
     builder,
