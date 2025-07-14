@@ -1,6 +1,5 @@
 // Movie Database Operations
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/db/tables.dart';

@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
+import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_rows.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_tabs.dart';
@@ -29,17 +27,16 @@ class NfMain extends StatelessWidget {
   }
 }
 
-class NfHomeScreen extends ConsumerStatefulWidget {
-  const NfHomeScreen(this.tab, {super.key});
-  final int tab;
+class NfHomeScreen extends Home {
+  const NfHomeScreen({required super.tab, super.key});
   @override
-  ConsumerState<NfHomeScreen> createState() => _NfHomeScreenState();
+  State<Home> createState() => _NfHomeScreenState();
 }
 
-class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
+class _NfHomeScreenState extends HomeState<NfHomeModel, NfHomeScreen>
     with SingleTickerProviderStateMixin {
-  // List<NfHomeModel?> dataList = [null, null, null];
-  NfHomeModel? data;
+  @override
+  OTT ott = OTT.netflix;
   final _controller = ScrollController();
 
   // Animation controller for the entrance animation
@@ -67,7 +64,6 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
 
-    loadData();
     _controller.addListener(_handleScroll);
 
     // Start the animation when the screen opens (from -50px to 0px)
@@ -90,15 +86,6 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
     super.dispose();
   }
 
-  String get currentTabName {
-    return switch (widget.tab) {
-      0 => "home",
-      1 => "tvshows",
-      2 => "movies",
-      _ => "home",
-    };
-  }
-
   void _handleScroll() {
     final int offset = (_controller.offset / 8).toInt();
     final scrollThreshold = 30;
@@ -106,26 +93,6 @@ class _NfHomeScreenState extends ConsumerState<NfHomeScreen>
     setState(() {
       scrollProgress = (offset / scrollThreshold).clamp(0.0, 1.0);
     });
-  }
-
-  void loadData() async {
-    final prvData = await DB.home.getNfHome(currentTabName);
-    if (prvData == null || prvData.isStale) {
-      loadDataFromOnline();
-    } else {
-      setState(() {
-        data = prvData;
-      });
-    }
-  }
-
-  Future<void> loadDataFromOnline() async {
-    final raw = await getNf(id: widget.tab, ott: OTT.netflix);
-    final temp = NfHomeModel.parse(raw);
-    setState(() {
-      data = temp;
-    });
-    DB.home.addNfHome(currentTabName, temp);
   }
 
   void goToNewTab() {

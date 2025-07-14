@@ -1,10 +1,6 @@
-import 'package:flutter/material.dart';
-
 class Tables {
   static const String movie = "movie";
   static const String home = "home";
-  static const String ottPvHome = "ott_pv_home";
-  static const String ottNfHome = "ott_nf_home";
   static const String watchHistory = "watch_history";
   static const String watchList = "watch_list";
 
@@ -21,8 +17,6 @@ class Tables {
             value TEXT,
             PRIMARY KEY (key, ott_id)
           )''',
-    ottPvHome: 'CREATE TABLE $ottPvHome (key TEXT PRIMARY KEY, value TEXT)',
-    ottNfHome: 'CREATE TABLE $ottNfHome (key TEXT PRIMARY KEY, value TEXT)',
     watchHistory: '''CREATE TABLE $watchHistory (
             video_id TEXT,
             id TEXT NOT NULL,
@@ -53,21 +47,12 @@ class Tables {
 
   static List<String> queriesList = [
     queries.movie,
-    queries.ottPvHome,
-    queries.ottNfHome,
     queries.watchHistory,
     queries.watchList,
     queries.home,
   ];
 
-  static const List<String> tableNames = [
-    movie,
-    ottPvHome,
-    ottNfHome,
-    watchHistory,
-    watchList,
-    home,
-  ];
+  static const List<String> tableNames = [movie, watchHistory, watchList, home];
 
   Tables._();
 }

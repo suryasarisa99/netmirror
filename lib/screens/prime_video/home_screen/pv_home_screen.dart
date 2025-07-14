@@ -9,6 +9,7 @@ import 'package:netmirror/api/get_initial.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
+import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
@@ -34,60 +35,20 @@ class PvMain extends StatelessWidget {
   }
 }
 
-class PvHomeScreen extends ConsumerStatefulWidget {
-  final int tab;
-  const PvHomeScreen({super.key, this.tab = 0});
+class PvHomeScreen extends Home {
+  const PvHomeScreen({super.key, required super.tab});
   @override
-  ConsumerState<PvHomeScreen> createState() => _PvHomeScreenState();
+  State<Home> createState() => _PvHomeScreenState();
 }
 
-class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
+class _PvHomeScreenState extends HomeState<PvHomeModel, PvHomeScreen>
     with SingleTickerProviderStateMixin {
+  @override
+  OTT ott = OTT.pv;
   int currentCarouselIndex = 0;
   int currentNavigationIndex = 0;
   var carouselController = CarouselSliderController();
   var scrollController = ScrollController();
-  PvHomeModel? data;
-  // to reset to top, when tab is changed
-
-  @override
-  void initState() {
-    super.initState();
-    log("current tab: ${widget.tab}");
-    loadData();
-    // loadDataFromOnline();
-  }
-
-  String get currentTabName {
-    return switch (widget.tab) {
-      0 => "home",
-      1 => "tvshows",
-      2 => "movies",
-      _ => "home",
-    };
-  }
-
-  void loadData() async {
-    final prvData = await DB.home.getPvHome(currentTabName);
-    if (prvData == null || prvData.isStale) {
-      loadDataFromOnline();
-    } else {
-      log("Load:: PV from db");
-      setState(() {
-        data = prvData;
-      });
-    }
-  }
-
-  Future<void> loadDataFromOnline() async {
-    log("Load:: PV from network");
-    final raw = await getPv(id: widget.tab, ott: OTT.pv);
-    final temp = PvHomeModel.parse(raw);
-    setState(() {
-      data = temp;
-    });
-    DB.home.addPvHome(currentTabName, temp);
-  }
 
   @override
   Widget build(BuildContext context) {

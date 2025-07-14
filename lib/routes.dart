@@ -124,7 +124,7 @@ final routes = GoRouter(
               pageBuilder: (context, state) {
                 final tab = state.extra == null ? 0 : state.extra as int;
                 // return NoTransitionPage(child: NfHomeScreen(tab));
-                return instantTransition(NfHomeScreen(tab), state);
+                return instantTransition(NfHomeScreen(tab: tab), state);
               },
             ),
           ],
