@@ -120,7 +120,6 @@ abstract class MovieScreenUiState extends MovieScreenState {
       child: Scaffold(
         backgroundColor: bg,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
-        // extendBody: true,
         appBar: appBar,
         body: RefreshIndicator(
           key: _refreshIndicatorKey,

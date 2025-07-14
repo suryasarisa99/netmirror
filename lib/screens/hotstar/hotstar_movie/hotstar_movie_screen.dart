@@ -1,28 +1,18 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
-import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/hotstar_movie_appbar.dart';
-import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
-import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
 import 'package:netmirror/utils/nav.dart';
-import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/widgets/sticky_header_delegate.dart';
-import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HotstarMovieScreen extends MovieScreenUi {
   const HotstarMovieScreen(super.id, {super.key});
@@ -149,48 +139,52 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
         textAlign: TextAlign.justify,
         style: TextStyle(color: Color(0xFFe0e4ed), fontSize: 14),
       ),
-
-      //
     ];
   }
 
   Widget _buildTabBar() {
+    // the extra padding, is for, we are using extendBodyBehindAppBar: true,
+    // so it causes it sticks at the top, behind the appbar to fix it added padding at top and increased the height of the sliver header.
     if (movie == null) return SizedBox();
+    const toolBarHeight = kToolbarHeight - 5;
     return SliverPersistentHeader(
       delegate: StickyHeaderDelegate(
-        minHeight: 60.0,
-        maxHeight: 60.0,
+        minHeight: 60 + toolBarHeight,
+        maxHeight: 60 + toolBarHeight,
         child: DecoratedBox(
           decoration: const BoxDecoration(color: Color(0xFF0F1014)),
-          child: TabBar(
-            controller: tabController,
-            indicatorWeight: 1.0,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorColor: Colors.white,
-            labelStyle: const TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelColor: Colors.grey,
-            labelColor: Colors.white,
-            onTap: handleTabChange,
-            tabs: [
-              if (movie!.isShow)
-                Tab(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "S$seasonNumber E${movie!.getSeason(seasonNumber).ep}",
-                      ),
-                      const SizedBox(width: 5),
-                      const Icon(Icons.expand_more_rounded),
-                    ],
+          child: Padding(
+            padding: const EdgeInsets.only(top: toolBarHeight),
+            child: TabBar(
+              controller: tabController,
+              indicatorWeight: 1.0,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorColor: Colors.white,
+              labelStyle: const TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.bold,
+              ),
+              unselectedLabelColor: Colors.grey,
+              labelColor: Colors.white,
+              onTap: handleTabChange,
+              tabs: [
+                if (movie!.isShow)
+                  Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "S$seasonNumber E${movie!.getSeason(seasonNumber).ep}",
+                        ),
+                        const SizedBox(width: 5),
+                        const Icon(Icons.expand_more_rounded),
+                      ],
+                    ),
                   ),
-                ),
-              if (movie!.suggest.isNotEmpty) const Tab(text: 'Related'),
-              const Tab(text: 'Details'),
-            ],
+                if (movie!.suggest.isNotEmpty) const Tab(text: 'Related'),
+                const Tab(text: 'Details'),
+              ],
+            ),
           ),
         ),
       ),
@@ -317,7 +311,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   Widget buildRelated() {
     if (movie == null) return SizedBox();
     return Padding(
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.symmetric(horizontal: 22),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

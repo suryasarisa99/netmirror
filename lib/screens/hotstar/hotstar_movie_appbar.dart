@@ -72,10 +72,11 @@ class _HotstarMovieAppbarState extends State<HotstarMovieAppbar> {
   }
 
   @override
-  PreferredSizeWidget build(BuildContext context) {
+  Widget build(BuildContext context) {
     final opacity = _calculateOpacity();
     return AppBar(
       backgroundColor: widget.color.withValues(alpha: opacity),
+      // backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       automaticallyImplyLeading: false,
       titleSpacing: 18,
@@ -84,7 +85,10 @@ class _HotstarMovieAppbarState extends State<HotstarMovieAppbar> {
           Expanded(
             child: Text(
               widget.title,
-              style: TextStyle(color: Colors.white.withValues(alpha: opacity)),
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: opacity),
+                fontSize: 18,
+              ),
             ),
           ),
           IconButton(
@@ -96,4 +100,53 @@ class _HotstarMovieAppbarState extends State<HotstarMovieAppbar> {
       ),
     );
   }
+  // final paddingTop = MediaQuery.paddingOf(context).top;
+  // return Container(
+  //   height: widget.height + paddingTop,
+  //   color: widget.color.withValues(alpha: opacity),
+  //   padding: EdgeInsets.only(left: 18, right: 18, top: paddingTop),
+  //   child: Row(
+  //     children: [
+  //       Expanded(
+  //         child: Text(
+  //           widget.title,
+  //           style: TextStyle(
+  //             color: Colors.white.withValues(alpha: opacity),
+  //             fontSize: 20,
+  //           ),
+  //         ),
+  //       ),
+  //       IconButton(
+  //         icon: Icon(Icons.close, color: Colors.white),
+  //         iconSize: 22,
+  //         onPressed: () => Navigator.of(context).pop(),
+  //       ),
+  //     ],
+  //   ),
+  // );
+
+  //   return SliverAppBar(
+  //     backgroundColor: widget.color.withValues(alpha: opacity),
+  //     surfaceTintColor: Colors.transparent,
+  //     automaticallyImplyLeading: false,
+  //     titleSpacing: 18,
+  //     pinned: true,
+  //     title: Row(
+  //       children: [
+  //         Expanded(
+  //           child: Text(
+  //             widget.title,
+  //             style: TextStyle(color: Colors.white.withValues(alpha: opacity)),
+  //           ),
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.close, color: Colors.white),
+  //           iconSize: 22,
+  //           onPressed: () => Navigator.of(context).pop(),
+  //         ),
+  //       ],
+  //     ),
+  //     expandedHeight: widget.height + MediaQuery.paddingOf(context).top,
+  //   );
+  // }
 }
