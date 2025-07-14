@@ -129,10 +129,13 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
       SizedBox(height: 16),
 
       // Movie Description
-      Text(
-        movie!.desc,
-        textAlign: TextAlign.justify,
-        style: TextStyle(color: Color(0xFFe0e4ed), fontSize: 14),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Text(
+          movie!.desc,
+          textAlign: TextAlign.justify,
+          style: TextStyle(color: Color(0xFFe0e4ed), fontSize: 14),
+        ),
       ),
     ];
   }
@@ -149,7 +152,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
         child: DecoratedBox(
           decoration: const BoxDecoration(color: Color(0xFF0F1014)),
           child: Padding(
-            padding: const EdgeInsets.only(top: toolBarHeight),
+            padding: const EdgeInsets.only(top: toolBarHeight + 20),
             child: TabBar(
               controller: tabController,
               indicatorWeight: 1.0,
@@ -230,7 +233,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
 
   Widget _buildActions() {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(left: 12.0),
       child: Row(
         spacing: 36,
         children: [
@@ -341,6 +344,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
     return ScrollPercentBuilder(
       maxScroll: 80,
       minScroll: 30,
+      height: kToolbarHeight - 10,
       scrollController: scrollController,
       builder: (opacity) {
         return AppBar(
