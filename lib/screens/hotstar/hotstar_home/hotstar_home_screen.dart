@@ -8,6 +8,7 @@ import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/hotstar_navbar.dart';
+import 'package:netmirror/screens/hotstar/opacity_builder.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -65,14 +66,30 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
   @override
   final OTT ott = OTT.hotstar;
 
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return DesktopWrapper(
       child: Scaffold(
         backgroundColor: Color(0xFF0f1014),
+        extendBodyBehindAppBar: true,
+        appBar: OpacityBuilder(
+          minScroll: 180,
+          maxScroll: 200.0,
+          scrollController: scrollController,
+          height: MediaQuery.paddingOf(context).top,
+          builder: (opacity) {
+            return Container(
+              height: MediaQuery.paddingOf(context).top,
+              color: Color(0xFF0f1014).withValues(alpha: opacity),
+            );
+          },
+        ),
         body: data == null
             ? Center(child: CircularProgressIndicator())
             : CustomScrollView(
+                controller: scrollController,
                 slivers: [
                   SliverToBoxAdapter(child: buildHome()),
                   HotstarRows(trays: data!.trays),
@@ -112,7 +129,7 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
         ? data!.titleImg
         : "https://netfree2.cc/${data!.titleImg}";
     return SizedBox(
-      height: size.width / 1.778 + 50,
+      height: size.width / 1.778 + 80,
       child: Stack(
         children: [
           Positioned(
@@ -121,7 +138,7 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
               fit: BoxFit.cover,
               cacheManager: PvSmallCacheManager.instance,
               width: size.width,
-              height: size.width / 1.778 + 40,
+              height: size.width / 1.778 + 60,
               alignment: Alignment(0, -1),
             ),
           ),
