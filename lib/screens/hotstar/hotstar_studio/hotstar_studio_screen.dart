@@ -1,14 +1,11 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
-import 'package:netmirror/screens/hotstar/hotstar_appbar.dart';
-import 'package:netmirror/screens/hotstar/hotstar_bg.dart';
 import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
 import 'package:netmirror/screens/hotstar/hotstar_raise.dart';
+import 'package:netmirror/screens/hotstar/opacity_builder.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:shared_code/models/ott.dart';
 
@@ -38,8 +35,25 @@ class HotstarStudioScreenState
   final scrollController = ScrollController();
   late final studio = studios.firstWhere((s) => s.studio == widget.studioName);
 
+  buildAppBar(double maxScroll, Color bg) {
+    return OpacityBuilder(
+      maxScroll: maxScroll,
+      scrollController: scrollController,
+      height: kToolbarHeight - 5,
+      builder: (opacity) {
+        return AppBar(
+          backgroundColor: bg.withValues(alpha: opacity),
+          surfaceTintColor: Colors.transparent,
+          titleSpacing: 0.0,
+          toolbarHeight: kToolbarHeight - 5,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    l.debug("--- rebuilding");
     final maxScrollRange = 170.0;
     final size = MediaQuery.sizeOf(context);
     final bg = Color(0xFF0f1014);
@@ -47,22 +61,7 @@ class HotstarStudioScreenState
       child: Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: bg,
-        appBar: HotstarAppbar(
-          scrollController: scrollController,
-          maxScroll: maxScrollRange,
-          // color: Colors.red,
-          color: bg,
-          // title: Text("Hello"),
-        ),
-        // appBar: !isDesk
-        //     ? HotstarAppbar(
-        //         scrollController: scrollController,
-        //         maxScroll: maxScrollRange,
-        //         // color: Colors.red,
-        //         color: bg,
-        //         // title: Text("Hello"),
-        //       )
-        //     : null,
+        appBar: buildAppBar(maxScrollRange, bg),
         body: SizedBox(
           height: size.height,
           width: size.width,
@@ -74,23 +73,18 @@ class HotstarStudioScreenState
                 scrollController: scrollController,
                 child: buildStudioPoster(),
               ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: HotstarBg(
+              Positioned.fill(
+                child: OpacityBuilder(
                   maxScroll: maxScrollRange,
-                  color: bg,
                   scrollController: scrollController,
+                  height: size.height,
+                  builder: (opacity) =>
+                      Container(color: bg.withValues(alpha: opacity)),
                 ),
               ),
               CustomScrollView(
                 controller: scrollController,
                 slivers: [
-                  // SliverToBoxAdapter(
-                  //   child:
-                  // ),
                   SliverToBoxAdapter(child: SizedBox(height: size.width - 90)),
                   SliverToBoxAdapter(
                     child: HotstarStudioList(curr: studioName),

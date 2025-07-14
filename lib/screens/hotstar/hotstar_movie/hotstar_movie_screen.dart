@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
-import 'package:netmirror/screens/hotstar/hotstar_movie_appbar.dart';
+import 'package:netmirror/screens/hotstar/opacity_builder.dart';
 import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
 import 'package:netmirror/utils/nav.dart';
@@ -64,12 +64,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
         buildRelated(),
         buildCast(),
       ],
-      appBar: HotstarMovieAppbar(
-        scrollController: scrollController,
-        maxScroll: 80,
-        color: bg,
-        title: movie?.title ?? '',
-      ),
+      appBar: buildAppBar(movie?.title ?? ""),
       bg: bg,
       extendBodyBehindAppBar: true,
       poster: _buildMoviePoster(),
@@ -339,6 +334,41 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
           );
         },
       ),
+    );
+  }
+
+  PreferredSizeWidget buildAppBar(final String title) {
+    return OpacityBuilder(
+      maxScroll: 80,
+      minScroll: 30,
+      scrollController: scrollController,
+      builder: (opacity) {
+        return AppBar(
+          backgroundColor: bg.withValues(alpha: opacity),
+          // backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          titleSpacing: 18,
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: opacity),
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: Colors.white),
+                iconSize: 22,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
