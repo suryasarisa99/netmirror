@@ -107,7 +107,10 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                 buildAppBar(),
                 if (data == null)
                   const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
+                    child: SizedBox(
+                      height: 500,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
                   )
                 else ...[
                   SliverToBoxAdapter(child: buildCarousel()),
@@ -189,8 +192,6 @@ class _PvHomeScreenState extends ConsumerState<PvHomeScreen>
                   currentCarouselIndex = index;
                 });
               },
-              // showIndicator: true,
-              // slideIndicator: CircularSlideIndicator(),
             ),
             items: data!.carouselImages.map((item) {
               return Builder(
