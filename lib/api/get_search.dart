@@ -7,7 +7,10 @@ import 'package:netmirror/data/cookies_manager.dart';
 import 'package:netmirror/models/search_results_model.dart';
 import 'package:shared_code/models/ott.dart';
 
-Future<SearchResults> getNmSearch(String query, {OTT ott = OTT.netflix}) async {
+Future<SearchResults> getSearchResults(
+  String query, {
+  OTT ott = OTT.netflix,
+}) async {
   // final tHashT = await CookiesManager.validTHashT;
   final tHashT = CookiesManager.tHashT;
   final headers = {

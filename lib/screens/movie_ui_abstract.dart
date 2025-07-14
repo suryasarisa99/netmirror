@@ -22,7 +22,7 @@ abstract class MovieScreenUiState extends MovieScreenState {
   bool _wasAtTop = true;
   bool _hasTriggeredRefresh = false;
   double _accumulatedOverscroll = 0.0;
-  static const double _refreshThreshold = 80.0;
+  static const double _refreshThreshold = 100.0;
 
   bool _handleScrollNotification(ScrollNotification notification) {
     // Handle ScrollStartNotification

@@ -74,9 +74,10 @@ class _NmSearchState extends ConsumerState<Search>
       if (searchResults[newTabIndex] == null ||
           searchResults[newTabIndex]!.query != _searchController.text) {
         searchResults[newTabIndex] = null;
-      }
-      if (newTabIndex <= 2) {
-        handleSearch();
+        log("inside if condition");
+        if (newTabIndex <= 2) {
+          handleSearch();
+        }
       }
     });
   }
@@ -88,12 +89,12 @@ class _NmSearchState extends ConsumerState<Search>
     });
   }
 
-  void handleSearch() async {
+  Future<void> handleSearch() async {
     if (_searchController.text.isNotEmpty) {
-      log("message: ${_searchController.text}");
+      log("searching tab: $_tabIndex, query: ${_searchController.text}");
       int backupTabIndex = _tabIndex;
 
-      final x = await getNmSearch(
+      final x = await getSearchResults(
         _searchController.text,
         ott: OTT.values[backupTabIndex],
       );
@@ -193,37 +194,23 @@ class _NmSearchState extends ConsumerState<Search>
                       ),
                     ];
                   },
-                  body: RefreshIndicator(
-                    onRefresh: () async {
-                      if (_searchController.text.isNotEmpty) {
-                        final backupTabIndex = _tabIndex;
-                        final x = await getNmSearch(
-                          _searchController.text,
-                          ott: OTT.values[backupTabIndex],
-                        );
-                        setState(() {
-                          searchResults[backupTabIndex] = x;
-                        });
-                      }
-                    },
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        buildGridSearchResults(
-                          size: size,
-                          ott: OTT.netflix,
-                          count: getNetflixCrossAxisCount(size.width),
-                        ),
-                        buildPrimeVideoSearchResults(),
-                        buildGridSearchResults(
-                          size: size,
-                          ott: OTT.hotstar,
-                          count: getNetflixCrossAxisCount(size.width) + 1,
-                        ),
-                        const Center(child: Text('Not Implemented Yet')),
-                        const Center(child: Text('Not Implemented Yet')),
-                      ],
-                    ),
+                  body: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      buildGridSearchResults(
+                        size: size,
+                        ott: OTT.netflix,
+                        count: getNetflixCrossAxisCount(size.width),
+                      ),
+                      buildPrimeVideoSearchResults(),
+                      buildGridSearchResults(
+                        size: size,
+                        ott: OTT.hotstar,
+                        count: getNetflixCrossAxisCount(size.width) + 1,
+                      ),
+                      const Center(child: Text('Not Implemented Yet')),
+                      const Center(child: Text('Not Implemented Yet')),
+                    ],
                   ),
                 ),
               ),
@@ -257,32 +244,35 @@ class _NmSearchState extends ConsumerState<Search>
       );
     }
 
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
-      itemCount: searchResult.results.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: isDesk ? count : 3,
-        // childAspectRatio: OTT.none.vImgRatio,
-        childAspectRatio: ott.aspectRatio,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemBuilder: (context, index) {
-        final result = searchResult.results[index];
-        return GestureDetector(
-          onTap: () {
-            goToMovie(context, ott.index, result.id);
-          },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              searchResult.ott.getImg(result.id),
-              // width: 80,
-              fit: BoxFit.cover,
+    return RefreshIndicator(
+      onRefresh: handleSearch,
+      child: GridView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+        itemCount: searchResult.results.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isDesk ? count : 3,
+          // childAspectRatio: OTT.none.vImgRatio,
+          childAspectRatio: ott.aspectRatio,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemBuilder: (context, index) {
+          final result = searchResult.results[index];
+          return GestureDetector(
+            onTap: () {
+              goToMovie(context, ott.index, result.id);
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                searchResult.ott.getImg(result.id),
+                // width: 80,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -293,7 +283,9 @@ class _NmSearchState extends ConsumerState<Search>
 
     final searchResult = searchResults[1]; // Remove the force unwrap
     if (searchResult == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(color: Colors.white),
+      );
     }
 
     if (searchResult.error.isNotEmpty) {
@@ -305,51 +297,54 @@ class _NmSearchState extends ConsumerState<Search>
       );
     }
 
-    return ListView.builder(
-      itemCount: searchResult.results.length,
-      itemBuilder: (context, index) {
-        final result = searchResult.results[index];
-        return InkWell(
-          onTap: () {
-            goToMovie(context, 1, result.id);
-          },
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: searchResult.ott.getImg(result.id),
-                    cacheManager: PvSmallCacheManager.instance,
-                    width: 150,
+    return RefreshIndicator(
+      onRefresh: handleSearch,
+      child: ListView.builder(
+        itemCount: searchResult.results.length,
+        itemBuilder: (context, index) {
+          final result = searchResult.results[index];
+          return InkWell(
+            onTap: () {
+              goToMovie(context, 1, result.id);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: searchResult.ott.getImg(result.id),
+                      cacheManager: PvSmallCacheManager.instance,
+                      width: 150,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        result.t,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          result.t,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "${result.y ?? ''} ${result.r ?? ''}",
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
+                        Text(
+                          "${result.y ?? ''} ${result.r ?? ''}",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
