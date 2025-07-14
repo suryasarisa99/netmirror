@@ -19,10 +19,9 @@ void checkSeasonAndEpisodeNumbers() async {
     if (val.isMovie) continue;
     for (final season in val.seasons.values) {
       if (season.episodes != null && season.episodes!.isNotEmpty) {
-        final sortedEpisodes = season.episodes!.values.toList()
-          ..sort((a, b) => a.epNum.compareTo(b.epNum));
-        for (int i = 0; i < sortedEpisodes.length; i++) {
-          final episode = sortedEpisodes[i];
+        final episodes = season.episodes!.values.toList();
+        for (int i = 0; i < episodes.length; i++) {
+          final episode = episodes[i];
           if (int.parse(episode.ep.substring(1)) != i + 1) {
             log(
               "error in ${val.title}, at season ${season.s}, episode ${episode.ep}",

@@ -67,14 +67,14 @@ class PlayerData extends MinifyMovie {
     if (currentSeason?.episodes == null) return false;
 
     // Check if there's a next episode in current season
-    final episodeNumbers = currentSeason!.episodes!.keys.toList()..sort();
+    final episodeNumbers = currentSeason!.episodes!.keys.toList();
     final currentEpIndex = episodeNumbers.indexOf(currentEpisodeNumber!);
 
     return (currentEpIndex < episodeNumbers.length - 1) || _hasNextSeason();
   }
 
   bool _hasNextSeason() {
-    final seasonNumbers = seasons.keys.toList()..sort();
+    final seasonNumbers = seasons.keys.toList();
     final currentSeasonIndex = seasonNumbers.indexOf(currentSeasonNumber);
     return currentSeasonIndex < seasonNumbers.length - 1;
   }
@@ -85,7 +85,7 @@ class PlayerData extends MinifyMovie {
     if (currentSeason?.episodes == null) return null;
 
     // Get sorted episode numbers for current season
-    final episodeNumbers = currentSeason!.episodes!.keys.toList()..sort();
+    final episodeNumbers = currentSeason!.episodes!.keys.toList();
     final currentEpIndex = episodeNumbers.indexOf(currentEpisodeNumber!);
 
     // Check if there's a next episode in current season
@@ -96,14 +96,13 @@ class PlayerData extends MinifyMovie {
 
     // Check next season
     if (_hasNextSeason()) {
-      final seasonNumbers = seasons.keys.toList()..sort();
+      final seasonNumbers = seasons.keys.toList();
       final currentSeasonIndex = seasonNumbers.indexOf(currentSeasonNumber);
       final nextSeasonNumber = seasonNumbers[currentSeasonIndex + 1];
       final nextSeason = seasons[nextSeasonNumber];
 
       if (nextSeason?.episodes?.isNotEmpty == true) {
-        final firstEpisodeNumber =
-            (nextSeason!.episodes!.keys.toList()..sort()).first;
+        final firstEpisodeNumber = (nextSeason!.episodes!.keys.toList()).first;
         return nextSeason.episodes![firstEpisodeNumber];
       }
     }
@@ -181,11 +180,6 @@ class Season {
     List<Map<String, dynamic>>? episodesList;
     if (episodes != null) {
       episodesList = episodes!.values.map((e) => e.toJson()).toList();
-      // Sort episodes by episode number for consistent serialization
-      episodesList.sort(
-        (a, b) =>
-            Episode.fromJson(a).epNum.compareTo(Episode.fromJson(b).epNum),
-      );
     }
 
     return {'s': s, 'ep': ep, 'id': id, 'episodes': episodesList};

@@ -545,7 +545,7 @@ Future<(int, List<int>, String)?> seasonConfigure(
     return null;
   }
 
-  final firstEpisodeNumber = (season.episodes!.keys.toList()..sort()).first;
+  final firstEpisodeNumber = (season.episodes!.keys.toList()).first;
   final id = season.episodes![firstEpisodeNumber]!.id;
 
   // final x = await DatabaseHelper.instance.getHslPlaylist(movie.id);

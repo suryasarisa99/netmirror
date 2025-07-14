@@ -17,7 +17,7 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get sorted season numbers for consistent display
-    final seasonNumbers = seasons.keys.toList()..sort();
+    final seasonNumbers = seasons.keys.toList();
 
     //  dragableScrollableSheet
     return DraggableScrollableSheet(
