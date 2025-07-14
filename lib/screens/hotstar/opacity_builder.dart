@@ -2,13 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class OpacityBuilder extends StatefulWidget implements PreferredSizeWidget {
+class ScrollPercentBuilder extends StatefulWidget
+    implements PreferredSizeWidget {
   final ScrollController? scrollController;
   final double maxScroll;
   final double minScroll;
   final double height;
   final Widget Function(double opacity) builder;
-  const OpacityBuilder({
+  const ScrollPercentBuilder({
     required this.maxScroll,
     required this.builder,
     this.minScroll = 0.0,
@@ -18,12 +19,12 @@ class OpacityBuilder extends StatefulWidget implements PreferredSizeWidget {
   });
 
   @override
-  State<OpacityBuilder> createState() => _OpacityBuilderState();
+  State<ScrollPercentBuilder> createState() => _ScrollPercentBuilderState();
   @override
   Size get preferredSize => Size.fromHeight(height);
 }
 
-class _OpacityBuilderState extends State<OpacityBuilder> {
+class _ScrollPercentBuilderState extends State<ScrollPercentBuilder> {
   double _scrollPosition = 0.0;
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _OpacityBuilderState extends State<OpacityBuilder> {
   }
 
   @override
-  void didUpdateWidget(covariant OpacityBuilder oldWidget) {
+  void didUpdateWidget(covariant ScrollPercentBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.scrollController != widget.scrollController) {
       oldWidget.scrollController?.removeListener(_onScroll);

@@ -338,7 +338,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   }
 
   PreferredSizeWidget buildAppBar(final String title) {
-    return OpacityBuilder(
+    return ScrollPercentBuilder(
       maxScroll: 80,
       minScroll: 30,
       scrollController: scrollController,

@@ -4,7 +4,6 @@ import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
 import 'package:netmirror/screens/hotstar/hotstar_widgets.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
-import 'package:netmirror/screens/hotstar/hotstar_raise.dart';
 import 'package:netmirror/screens/hotstar/opacity_builder.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:shared_code/models/ott.dart';
@@ -36,7 +35,7 @@ class HotstarStudioScreenState
   late final studio = studios.firstWhere((s) => s.studio == widget.studioName);
 
   buildAppBar(double maxScroll, Color bg) {
-    return OpacityBuilder(
+    return ScrollPercentBuilder(
       maxScroll: maxScroll,
       scrollController: scrollController,
       height: kToolbarHeight - 5,
@@ -67,14 +66,19 @@ class HotstarStudioScreenState
           width: size.width,
           child: Stack(
             children: [
-              RaiseWidget(
+              ScrollPercentBuilder(
                 maxScroll: maxScrollRange,
-                maxRaisePixels: 20.0,
                 scrollController: scrollController,
-                child: buildStudioPoster(),
+                height: size.height,
+                builder: (per) {
+                  return Transform.translate(
+                    offset: Offset(0, -(per * 25)),
+                    child: buildStudioPoster(),
+                  );
+                },
               ),
               Positioned.fill(
-                child: OpacityBuilder(
+                child: ScrollPercentBuilder(
                   maxScroll: maxScrollRange,
                   scrollController: scrollController,
                   height: size.height,

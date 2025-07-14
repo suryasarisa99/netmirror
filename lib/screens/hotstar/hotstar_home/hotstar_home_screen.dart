@@ -74,7 +74,7 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
       child: Scaffold(
         backgroundColor: Color(0xFF0f1014),
         extendBodyBehindAppBar: true,
-        appBar: OpacityBuilder(
+        appBar: ScrollPercentBuilder(
           minScroll: 180,
           maxScroll: 200.0,
           scrollController: scrollController,
