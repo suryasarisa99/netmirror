@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -192,7 +194,9 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
 
   Widget _buildMoviePoster() {
     final size = MediaQuery.sizeOf(context);
-    final paddingTop = MediaQuery.paddingOf(context).top;
+    final double paddingTop = Platform.isMacOS
+        ? 24
+        : MediaQuery.paddingOf(context).top;
     return SizedBox(
       width: size.width,
       child: Padding(

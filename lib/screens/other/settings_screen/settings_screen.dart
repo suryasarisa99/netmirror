@@ -1,30 +1,27 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/data/options.dart';
-import 'package:netmirror/db/db.dart';
-import 'package:netmirror/db/tables.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/log.dart';
-import 'package:netmirror/models/movie_model.dart';
+import 'package:netmirror/provider/AudioTrackProvider.dart';
+import 'package:netmirror/screens/other/settings_screen/audios_preview_widget.dart';
 import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 const l = L("Settings_Screen");
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   final _resolutionController = TextEditingController();
   final _maxDownloadLimitController = TextEditingController(
     text: Downloader.maxDownloadLimit.toString(),
@@ -69,6 +66,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "Fast Mode, by filtering Audio",
                 SettingsOptions.fastModeByAudio,
                 (value) {
+                  if (!SettingsOptions.fastModeByAudio &&
+                      ref.read(audioTrackProvider).isEmpty) {
+                    showMssg("Please select an Audio Track first.");
+                    return;
+                  }
                   SettingsOptions.fastModeByAudio = value;
                   setState(() {});
                 },
@@ -77,6 +79,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 "Fast Mode, by filtering Video",
                 SettingsOptions.fastModeByVideo,
                 (value) {
+                  if (!SettingsOptions.fastModeByVideo &&
+                      SettingsOptions.defaultResolution == "") {
+                    showMssg("Please select a default Quality first.");
+                    return;
+                  }
                   SettingsOptions.fastModeByVideo = value;
                   setState(() {});
                 },
@@ -117,8 +124,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       initialSelection: SettingsOptions.defaultResolution,
                       onSelected: (value) {
                         if (value != null) {
+                          if (value.isEmpty) {
+                            SettingsOptions.fastModeByVideo = false;
+                          }
                           _resolutionController.text = value;
                           SettingsOptions.defaultResolution = value;
+                          setState(() {});
                         }
                       },
                       dropdownMenuEntries: const [
@@ -135,6 +146,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         DropdownMenuEntry(
                           value: "480p",
                           label: "480p",
+                          trailingIcon: Icon(Icons.brightness_3),
+                        ),
+                        DropdownMenuEntry(
+                          value: "",
+                          label: "none",
                           trailingIcon: Icon(Icons.brightness_3),
                         ),
                       ],
@@ -169,6 +185,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
+              InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  GoRouter.of(context).push('/settings-audio-tracks');
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 4,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Audio Tracks", style: labelStyle),
+                        AudiosPreviewWidget(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               FilledButton(
                 onPressed: () async {
                   PermissionStatus status = await Permission
@@ -177,43 +215,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   if (status.isGranted) {}
                 },
                 child: Text("permission"),
-              ),
-              FilledButton(
-                onPressed: () async {
-                  GoRouter.of(context).push('/settings-audio-tracks');
-                },
-                child: Text("Audio Tracks"),
-              ),
-              FilledButton(
-                onPressed: () async {
-                  final db = await DB.instance.database;
-                  final result = await db.query(Tables.movie);
-                  log("result length: ${result.length}");
-                  for (var item in result) {
-                    final key = item['key'] as String;
-                    final val = Movie.fromJson(
-                      jsonDecode(item['value']! as String),
-                      key,
-                      null,
-                    );
-                    if (val.isMovie) continue;
-                    for (final season in val.seasons.values) {
-                      if (season.episodes != null &&
-                          season.episodes!.isNotEmpty &&
-                          season.ep < 6) {
-                        final episodes = season.episodes!.values.toList();
-                        for (final episode in episodes) {
-                          if (int.parse(episode.time.substring(0, 2)) < 20) {
-                            log(
-                              "title: ${val.title}, ott: ${val.ott},ep:${season.ep} time: ${episode.time}",
-                            );
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                child: Text("Audio Tracks"),
               ),
             ],
           ),
@@ -229,7 +230,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     bool isEnabled = true,
   }) {
     return SwitchListTile(
-      activeColor: Theme.of(context).colorScheme.primary,
       title: Text(title),
       value: value,
       onChanged: isEnabled
@@ -276,6 +276,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         );
       },
+    );
+  }
+
+  void showMssg(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text, style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+      ),
     );
   }
 }

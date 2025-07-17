@@ -103,6 +103,20 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
       centerTitle: false,
       titleTextStyle: TextStyle(fontSize: isDesk ? 14 : 20),
     ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white;
+        }
+        return Colors.grey;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return Colors.white.withValues(alpha: 0.6);
+        }
+        return Colors.grey.withValues(alpha: 0.5);
+      }),
+    ),
   );
 
   @override
