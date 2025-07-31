@@ -31,7 +31,8 @@ Future<Movie> getMovie(String id, OTT ott) async {
 
   final params = {'id': id, 't': '1734872811'};
 
-  final prefixUrl = ott.index <= 1 ? newApiUrl : apiUrl;
+  // final prefixUrl = ott.index <= 1 ? newApiUrl : apiUrl;
+  final prefixUrl = apiUrl;
 
   final url = Uri.parse(
     '$prefixUrl/${ott.url}post.php',

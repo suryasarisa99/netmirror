@@ -72,7 +72,7 @@ void goToPlayerNew({
     await file.writeAsString(simplifiedPlaylist);
     url = file.path;
   } else {
-    url = '$newApiUrl/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
+    url = '$apiUrl/${movie.ott.url}hls/$videoId.m3u8?in=$resourceKey';
   }
   GoRouter.of(context).push(
     "/player",

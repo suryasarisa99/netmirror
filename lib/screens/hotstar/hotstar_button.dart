@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 
 class HotstarButton extends StatelessWidget {
-  final String text;
+  final String? text;
+  final Widget? child;
   final VoidCallback? onPressed;
-  const HotstarButton({required this.text, required this.onPressed, super.key});
+  final double height;
+  const HotstarButton({
+    this.child,
+    this.text,
+    this.height = 40,
+    required this.onPressed,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      text != null || child != null,
+      "Either text or child must be provided",
+    );
+    assert(text == null || child == null, "Cannot provide both text and child");
+
     return Container(
       width: 170,
       decoration: BoxDecoration(
@@ -28,16 +42,18 @@ class HotstarButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           onTap: onPressed,
           child: Container(
-            height: 40,
+            height: height,
             alignment: Alignment.center,
-            child: Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: text != null
+                ? Text(
+                    text!,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                : child!,
           ),
         ),
       ),

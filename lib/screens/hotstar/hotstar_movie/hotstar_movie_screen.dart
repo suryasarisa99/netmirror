@@ -214,7 +214,6 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
                 width: size.width,
               ),
             ),
-
             const SizedBox(height: 16),
 
             // Movie Title Image

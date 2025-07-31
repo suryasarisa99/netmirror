@@ -34,30 +34,40 @@ Future<String> getHome({int id = 0, required OTT ott, String? studio}) async {
     // 'cookie': 't_hash_t=${Uri.encodeComponent(tHashT)}; ott=${ott.cookie};',
     'cookie': cookies.entries.map((e) => '${e.key}=${e.value}').join('; '),
     // 'cookie': cookie,
+    // 'cookie':
+    //     't_hash_t=2b66aa69f84c5baaf670d0d861a8478e%3A%3A52feffc5ff3749cbf39f66aa513945e8%3A%3A1754000358%3A%3Ani',
     'pragma': 'no-cache',
     'priority': 'u=0, i',
-    'referer': '$apiUrl/',
+    // 'referer': '$apiUrl/',
+    'referer': 'https://net50.cc/mobile/home?app=1',
     'sec-ch-ua':
-        '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Linux"',
+        '"Not)A;Brand";v="8", "Chromium";v="138", "Android WebView";v="138"',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-platform': '"Android"',
     'sec-fetch-dest': 'document',
+    'x-requested-with': 'app.netmirror.netmirrornew',
     'sec-fetch-mode': 'navigate',
     'sec-fetch-site': 'same-origin',
     'sec-fetch-user': '?1',
     'upgrade-insecure-requests': '1',
     'user-agent':
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Linux; Android 11; AC2001 Build/RP1A.201005.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/138.0.7204.168 Mobile Safari/537.36 /OS.Gatu v3.0',
   };
   log("headers: $headers");
 
   final params = {'app': "1"};
   final url = Uri.parse('$apiUrl/$path').replace(queryParameters: params);
+  log("url: $url");
+  try {
+    final res = await http.get(url, headers: headers);
+    final status = res.statusCode;
+    if (status != 200) throw Exception('http.get error: statusCode= $status');
 
-  final res = await http.get(url, headers: headers);
-  final status = res.statusCode;
-  if (status != 200) throw Exception('http.get error: statusCode= $status');
-
-  // log(res.body);
-  return res.body;
+    // log(res.body);
+    return res.body;
+  } catch (e, s) {
+    log("Error in getHome: $url $e");
+    log("Stack trace: $s");
+    throw Exception('Error fetching home data: $e');
+  }
 }

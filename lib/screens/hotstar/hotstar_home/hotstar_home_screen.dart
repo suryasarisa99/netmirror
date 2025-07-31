@@ -107,7 +107,18 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            HotstarButton(text: "Watch Now", onPressed: () {}),
+            HotstarButton(
+              height: 44,
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.play_arrow, color: Colors.white),
+                  SizedBox(width: 6),
+                  Text("Watch Now"),
+                ],
+              ),
+            ),
             SizedBox(width: 12),
             buildWatchList(),
           ],
@@ -129,7 +140,7 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
         ? data!.titleImg
         : "https://netfree2.cc/${data!.titleImg}";
     return SizedBox(
-      height: size.width / 1.778 + 80,
+      height: size.width / 1.778 + 120,
       child: Stack(
         children: [
           Positioned(
@@ -138,7 +149,7 @@ class HotstarHomeState extends HomeState<HotstarModel, HotstarHomeScreen> {
               fit: BoxFit.cover,
               cacheManager: PvSmallCacheManager.instance,
               width: size.width,
-              height: size.width / 1.778 + 60,
+              height: size.width / 1.778 + 100,
               alignment: Alignment(0, -1),
             ),
           ),
