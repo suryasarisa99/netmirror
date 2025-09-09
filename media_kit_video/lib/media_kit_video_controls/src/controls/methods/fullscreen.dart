@@ -100,8 +100,6 @@ Future<void> exitFullscreen(BuildContext context) {
       }
       // [exitNativeFullscreen] is moved to [WillPopScope] in [FullscreenInheritedWidget].
       // This is because [exitNativeFullscreen] needs to be called when the user presses the back button.
-    } else {
-      Navigator.of(context).maybePop();
     }
   });
 }
