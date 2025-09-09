@@ -5,6 +5,7 @@
 /// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 // ignore_for_file: non_constant_identifier_names
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -383,6 +384,10 @@ class _MaterialDesktopVideoControlsState
 
   Timer? _timer;
 
+  // custom states
+  bool showSpeedIndicator = false;
+  Timer? _speedIndicatorTimer;
+
   late /* private */ var playlist = controller(context).player.state.playlist;
   late bool buffering = controller(context).player.state.buffering;
 
@@ -515,6 +520,20 @@ class _MaterialDesktopVideoControlsState
     _timer?.cancel();
   }
 
+  void speedIndicator() {
+    setState(() {
+      showSpeedIndicator = true;
+    });
+    _speedIndicatorTimer?.cancel();
+    _speedIndicatorTimer = Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          showSpeedIndicator = false;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -569,6 +588,21 @@ class _MaterialDesktopVideoControlsState
                 final volume = controller(context).player.state.volume - 5.0;
                 controller(context).player.setVolume(volume.clamp(0.0, 100.0));
               },
+              const SingleActivator(LogicalKeyboardKey.bracketRight): () {
+                final speed = controller(context).player.state.rate;
+                final incSpeed =
+                    min(6.0, double.parse((speed + 0.1).toStringAsFixed(2)));
+                debugPrint("setting speed to $speed");
+                controller(context).player.setRate(incSpeed);
+                speedIndicator();
+              },
+              const SingleActivator(LogicalKeyboardKey.bracketLeft): () {
+                final speed = controller(context).player.state.rate;
+                final decSpeed =
+                    max(0.2, double.parse((speed - 0.1).toStringAsFixed(2)));
+                controller(context).player.setRate(decSpeed);
+                speedIndicator();
+              },
               const SingleActivator(LogicalKeyboardKey.keyF): () =>
                   toggleFullscreen(context),
               const SingleActivator(LogicalKeyboardKey.escape): () =>
@@ -605,6 +639,24 @@ class _MaterialDesktopVideoControlsState
                     }
                   : null,
               child: GestureDetector(
+                onLongPressStart: (details) {
+                  debugPrint("long press down");
+                  // set playback speed double the current
+                  final speed = controller(context).player.state.rate;
+                  controller(context).player.setRate((speed * 2));
+                  speedIndicator();
+                },
+                onLongPressEnd: (details) {
+                  debugPrint("long press end");
+                  // set playback speed to normal
+                  final speed = controller(context).player.state.rate;
+                  controller(context).player.setRate((speed / 2));
+                  // cancel timer
+                  _speedIndicatorTimer?.cancel();
+                  setState(() {
+                    showSpeedIndicator = false;
+                  });
+                },
                 onTapDown: !_theme(context).playAndPauseOnTap
                     ? null
                     : (TapDownDetails details) {
@@ -660,6 +712,39 @@ class _MaterialDesktopVideoControlsState
                   onExit: (_) => onExit(),
                   child: Stack(
                     children: [
+                      Positioned(
+                        top: 32.0,
+                        left: 0,
+                        right: 0,
+                        child: AnimatedOpacity(
+                          curve: Curves.easeInOut,
+                          opacity: showSpeedIndicator ? 1.0 : 0.0,
+                          duration: _theme(context).controlsTransitionDuration,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                      "${controller(context).player.state.rate}"),
+                                  const SizedBox(width: 4.0),
+                                  const Icon(
+                                    Icons.speed,
+                                    color: Colors.white,
+                                    size: 16.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       AnimatedOpacity(
                         curve: Curves.easeInOut,
                         opacity: visible ? 1.0 : 0.0,
