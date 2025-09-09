@@ -639,24 +639,24 @@ class _MaterialDesktopVideoControlsState
                     }
                   : null,
               child: GestureDetector(
-                onLongPressStart: (details) {
-                  debugPrint("long press down");
-                  // set playback speed double the current
-                  final speed = controller(context).player.state.rate;
-                  controller(context).player.setRate((speed * 2));
-                  speedIndicator();
-                },
-                onLongPressEnd: (details) {
-                  debugPrint("long press end");
-                  // set playback speed to normal
-                  final speed = controller(context).player.state.rate;
-                  controller(context).player.setRate((speed / 2));
-                  // cancel timer
-                  _speedIndicatorTimer?.cancel();
-                  setState(() {
-                    showSpeedIndicator = false;
-                  });
-                },
+                // onLongPressStart: (details) {
+                //   debugPrint("long press down");
+                //   // set playback speed double the current
+                //   final speed = controller(context).player.state.rate;
+                //   controller(context).player.setRate((speed * 2));
+                //   speedIndicator();
+                // },
+                // onLongPressEnd: (details) {
+                //   debugPrint("long press end");
+                //   // set playback speed to normal
+                //   final speed = controller(context).player.state.rate;
+                //   controller(context).player.setRate((speed / 2));
+                //   // cancel timer
+                //   _speedIndicatorTimer?.cancel();
+                //   setState(() {
+                //     showSpeedIndicator = false;
+                //   });
+                // },
                 onTapDown: !_theme(context).playAndPauseOnTap
                     ? null
                     : (TapDownDetails details) {
