@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netmirror/global_shorcuts.dart';
 import 'package:netmirror/models/movie_model.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_home/hotstar_home_screen.dart';
@@ -36,139 +37,150 @@ final routes = GoRouter(
   navigatorKey: GlobalKey(),
   initialLocation: "/initial-screen",
   routes: [
-    GoRoute(
-      path: "/initial-screen",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: InitialScreen());
+    ShellRoute(
+      builder: (context, state, child) {
+        // This builder's context is a descendant of MaterialApp
+        return GlobalShortcuts(child: child);
       },
-    ),
-    GoRoute(
-      path: '/search/:ottId',
-      pageBuilder: (context, state) {
-        final ottId = int.parse(state.pathParameters['ottId']!);
-        return MaterialPage(child: Search(ottId));
-      },
-    ),
-    GoRoute(
-      path: "/downloads",
-      pageBuilder: (context, state) {
-        return MaterialPage(
-          child: DownloadsScreen(seriesId: state.extra as String?),
-        );
-      },
-    ),
-    GoRoute(
-      path: "/settings",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: SettingsScreen());
-      },
-    ),
-    GoRoute(
-      path: "/settings-audio-tracks",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: AudioTrackSelectionScreen());
-      },
-    ),
-    GoRoute(
-      path: "/profile",
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: ProfileScreen());
-      },
-    ),
-    GoRoute(
-      path: "/player",
-      pageBuilder: (context, state) {
-        final data = state.extra as PlayerScreenData;
-        return MaterialPage(
-          child: MediaKitPlayer(
-            url: data.url,
-            data: data.movie,
-            wh: data.watchHistory,
-            seasonNumber: data.seasonNumber,
-            episodeNumber: data.episodeNumber,
-          ),
-        );
-      },
-    ),
+      routes: [
+        GoRoute(
+          path: "/initial-screen",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: InitialScreen());
+          },
+        ),
+        GoRoute(
+          path: '/search/:ottId',
+          pageBuilder: (context, state) {
+            final ottId = int.parse(state.pathParameters['ottId']!);
+            return MaterialPage(child: Search(ottId));
+          },
+        ),
+        GoRoute(
+          path: "/downloads",
+          pageBuilder: (context, state) {
+            return MaterialPage(
+              child: DownloadsScreen(seriesId: state.extra as String?),
+            );
+          },
+        ),
+        GoRoute(
+          path: "/settings",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: SettingsScreen());
+          },
+        ),
+        GoRoute(
+          path: "/settings-audio-tracks",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: AudioTrackSelectionScreen());
+          },
+        ),
+        GoRoute(
+          path: "/profile",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: ProfileScreen());
+          },
+        ),
+        GoRoute(
+          path: "/player",
+          pageBuilder: (context, state) {
+            final data = state.extra as PlayerScreenData;
+            return MaterialPage(
+              child: MediaKitPlayer(
+                url: data.url,
+                data: data.movie,
+                wh: data.watchHistory,
+                seasonNumber: data.seasonNumber,
+                episodeNumber: data.episodeNumber,
+              ),
+            );
+          },
+        ),
 
-    GoRoute(
-      path: "/movie/:ottId/:movieId",
-      pageBuilder: (context, state) {
-        final ottId = int.parse(state.pathParameters['ottId']!);
-        final movieId = state.pathParameters['movieId']!;
-        // return slideFromRightTransition(switch (ottId) {
-        //   0 => NfMovieScreen(movieId),
-        //   1 => PVMovieScreen(movieId),
-        //   2 => HotstarMovieScreen(movieId),
-        //   _ => NfMovieScreen(movieId), // Default to Netflix if ottId is unknown
-        // }, state);
-        return switch (ottId) {
-          0 => slideFromRightTransition(NfMovieScreen(movieId), state),
-          1 => slideFromRightTransition(PVMovieScreen(movieId), state),
-          2 => slideFromBottomTransition(HotstarMovieScreen(movieId), state),
-          _ => slideFromRightTransition(NfMovieScreen(movieId), state),
-        };
-      },
-    ),
+        GoRoute(
+          path: "/movie/:ottId/:movieId",
+          pageBuilder: (context, state) {
+            final ottId = int.parse(state.pathParameters['ottId']!);
+            final movieId = state.pathParameters['movieId']!;
+            // return slideFromRightTransition(switch (ottId) {
+            //   0 => NfMovieScreen(movieId),
+            //   1 => PVMovieScreen(movieId),
+            //   2 => HotstarMovieScreen(movieId),
+            //   _ => NfMovieScreen(movieId), // Default to Netflix if ottId is unknown
+            // }, state);
+            return switch (ottId) {
+              0 => slideFromRightTransition(NfMovieScreen(movieId), state),
+              1 => slideFromRightTransition(PVMovieScreen(movieId), state),
+              2 => slideFromBottomTransition(
+                HotstarMovieScreen(movieId),
+                state,
+              ),
+              _ => slideFromRightTransition(NfMovieScreen(movieId), state),
+            };
+          },
+        ),
 
-    // <================== Home Screens ==================>
-    // Netflix Home
-    StatefulShellRoute.indexedStack(
-      key: nfMainHomeKey,
-      builder: (context, state, shell) => NfMain(shell),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/nf-home',
-              pageBuilder: (context, state) {
-                final tab = state.extra == null ? 0 : state.extra as int;
-                // return NoTransitionPage(child: NfHomeScreen(tab));
-                return instantTransition(NfHomeScreen(tab: tab), state);
-              },
+        // <================== Home Screens ==================>
+        // Netflix Home
+        StatefulShellRoute.indexedStack(
+          key: nfMainHomeKey,
+          builder: (context, state, shell) => NfMain(shell),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/nf-home',
+                  pageBuilder: (context, state) {
+                    final tab = state.extra == null ? 0 : state.extra as int;
+                    // return NoTransitionPage(child: NfHomeScreen(tab));
+                    return instantTransition(NfHomeScreen(tab: tab), state);
+                  },
+                ),
+              ],
             ),
           ],
         ),
-      ],
-    ),
 
-    /// PrimeVideo Home
-    StatefulShellRoute.indexedStack(
-      key: pvMainHomeKey,
-      builder: (context, state, shell) => PvMain(shell),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/pv-home',
-              pageBuilder: (context, state) {
-                final tab = state.extra == null ? 0 : state.extra as int;
-                return instantTransition(PvHomeScreen(tab: tab), state);
-              },
+        /// PrimeVideo Home
+        StatefulShellRoute.indexedStack(
+          key: pvMainHomeKey,
+          builder: (context, state, shell) => PvMain(shell),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/pv-home',
+                  pageBuilder: (context, state) {
+                    final tab = state.extra == null ? 0 : state.extra as int;
+                    return instantTransition(PvHomeScreen(tab: tab), state);
+                  },
+                ),
+              ],
             ),
           ],
         ),
-      ],
-    ),
 
-    StatefulShellRoute.indexedStack(
-      key: hotstarMainHomeKey,
-      builder: (context, state, shell) => HotstarMain(shell),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/hotstar-home',
-              pageBuilder: (context, state) {
-                final tab = state.extra == null ? 0 : state.extra as int;
-                final studio = state.uri.queryParameters['studio'];
-                return instantTransition(
-                  studio != null
-                      ? HotstarStudioScreen(studioName: studio, tab: tab)
-                      : HotstarHomeScreen(tab: tab),
-                  state,
-                );
-              },
+        StatefulShellRoute.indexedStack(
+          key: hotstarMainHomeKey,
+          builder: (context, state, shell) => HotstarMain(shell),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/hotstar-home',
+                  pageBuilder: (context, state) {
+                    final tab = state.extra == null ? 0 : state.extra as int;
+                    final studio = state.uri.queryParameters['studio'];
+                    return instantTransition(
+                      studio != null
+                          ? HotstarStudioScreen(studioName: studio, tab: tab)
+                          : HotstarHomeScreen(tab: tab),
+                      state,
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

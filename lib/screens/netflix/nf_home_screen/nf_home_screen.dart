@@ -9,7 +9,6 @@ import 'package:netmirror/screens/netflix/nf_home_screen/nf_navbar.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_home_rows.dart';
 import 'package:netmirror/screens/netflix/nf_home_screen/nf_tabs.dart';
 import 'package:netmirror/utils/nav.dart';
-import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
@@ -127,104 +126,101 @@ class _NfHomeScreenState extends HomeState<NfHomeModel, NfHomeScreen>
 
     l.debug("rebuild nf hom screen, tab: ${widget.tab}");
 
-    return DesktopWrapper(
-      child: RefreshIndicator(
-        onRefresh: loadDataFromOnline,
-        child: Scaffold(
-          // backgroundColor: Colors.black,
-          backgroundColor: backgroundColor,
-          // bottomNavigationBar: const NfNavBar(current: 0),
-          extendBodyBehindAppBar: true,
-          body: CustomScrollView(
-            controller: _controller,
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Colors.black.withValues(alpha: appBarOpacity),
-                surfaceTintColor: Colors.transparent,
-                automaticallyImplyLeading: !isDesk,
-                pinned: true,
-                toolbarHeight: toolbarHeight,
-                floating: true,
-                expandedHeight: 108,
-                title: windowDragAreaWithChild(
-                  [
-                    widget.tab == 0
-                        ? Image.asset(
-                            "assets/logos/netflix.png",
-                            height: isDesk ? 25 : 45,
-                            width: isDesk ? 22 : 37,
-                          )
-                        : Text(
-                            ["Tv Shows", "Movies", "Categories"][widget.tab -
-                                1],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                  ],
-                  actions: [
-                    TopbarButtons.settingsBtn(context),
-                    TopbarButtons.downloadsBtn(context),
-                    TopbarButtons.searchBtn(context, 0),
-                  ],
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    // padding: EdgeInsets.only(top: isDesk ? 55 : 105),
-                    padding: EdgeInsets.only(top: toolbarHeight + paddingTop),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          // these color is showing on expanded mode of appbar only
-                          // so : it shows initialy, and when scroll up
-                          if (scrollProgress == 0) ...[
-                            Color.lerp(
-                              baseColor?.lighten(0.2) ?? Colors.black,
-                              Colors.black,
-                              scrollProgress,
-                            )!,
-                            // Base gradient color transitioning to black
-                            Color.lerp(
-                              baseColor?.withOpacity(0.5) ?? Colors.black,
-                              Colors.black.withAlpha(200),
-                              scrollProgress,
-                            )!,
-                          ] else ...[
-                            Colors.transparent,
-                            Colors.transparent,
-                          ],
+    return RefreshIndicator(
+      onRefresh: loadDataFromOnline,
+      child: Scaffold(
+        // backgroundColor: Colors.black,
+        backgroundColor: backgroundColor,
+        // bottomNavigationBar: const NfNavBar(current: 0),
+        extendBodyBehindAppBar: true,
+        body: CustomScrollView(
+          controller: _controller,
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.black.withValues(alpha: appBarOpacity),
+              surfaceTintColor: Colors.transparent,
+              automaticallyImplyLeading: !isDesk,
+              pinned: true,
+              toolbarHeight: toolbarHeight,
+              floating: true,
+              expandedHeight: 108,
+              title: windowDragAreaWithChild(
+                [
+                  widget.tab == 0
+                      ? Image.asset(
+                          "assets/logos/netflix.png",
+                          height: isDesk ? 25 : 45,
+                          width: isDesk ? 22 : 37,
+                        )
+                      : Text(
+                          ["Tv Shows", "Movies", "Categories"][widget.tab - 1],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                ],
+                actions: [
+                  TopbarButtons.settingsBtn(context),
+                  TopbarButtons.downloadsBtn(context),
+                  TopbarButtons.searchBtn(context, 0),
+                ],
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  // padding: EdgeInsets.only(top: isDesk ? 55 : 105),
+                  padding: EdgeInsets.only(top: toolbarHeight + paddingTop),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        // these color is showing on expanded mode of appbar only
+                        // so : it shows initialy, and when scroll up
+                        if (scrollProgress == 0) ...[
+                          Color.lerp(
+                            baseColor?.lighten(0.2) ?? Colors.black,
+                            Colors.black,
+                            scrollProgress,
+                          )!,
+                          // Base gradient color transitioning to black
+                          Color.lerp(
+                            baseColor?.withOpacity(0.5) ?? Colors.black,
+                            Colors.black.withAlpha(200),
+                            scrollProgress,
+                          )!,
+                        ] else ...[
+                          Colors.transparent,
+                          Colors.transparent,
                         ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
-                    child: NfHeaderTabs(widget.tab, goToNewTab),
                   ),
+                  child: NfHeaderTabs(widget.tab, goToNewTab),
                 ),
               ),
-              data == null
-                  ? const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 600,
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    )
-                  : SliverToBoxAdapter(
-                      child: AnimatedBuilder(
-                        animation: _slideAnimation,
-                        builder: (context, child) {
-                          return Transform.translate(
-                            offset: Offset(0, _slideAnimation.value),
-                            child: Column(
-                              children: [
-                                buildSpotlight(backgroundColor, baseColor),
-                                ...data!.trays.map((e) => NfHomeRow(tray: e)),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+            ),
+            data == null
+                ? const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 600,
+                      child: Center(child: CircularProgressIndicator()),
                     ),
-            ],
-          ),
+                  )
+                : SliverToBoxAdapter(
+                    child: AnimatedBuilder(
+                      animation: _slideAnimation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, _slideAnimation.value),
+                          child: Column(
+                            children: [
+                              buildSpotlight(backgroundColor, baseColor),
+                              ...data!.trays.map((e) => NfHomeRow(tray: e)),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+          ],
         ),
       ),
     );

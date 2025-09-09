@@ -1,12 +1,7 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netmirror/api/get_initial.dart';
-import 'package:netmirror/db/db.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/models/home_models.dart';
 import 'package:netmirror/screens/home_abstract.dart';
@@ -14,7 +9,6 @@ import 'package:netmirror/screens/prime_video/home_screen/pv_header_tab.dart';
 import 'package:netmirror/screens/prime_video/home_screen/pv_home_row.dart';
 import 'package:netmirror/screens/prime_video/pv_navbar.dart';
 import 'package:netmirror/utils/nav.dart';
-import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:netmirror/widgets/top_buttons.dart';
 import 'package:netmirror/widgets/windows_titlebar_widgets.dart';
 import 'package:shared_code/models/ott.dart';
@@ -52,42 +46,40 @@ class _PvHomeScreenState extends HomeState<PvHomeModel, PvHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DesktopWrapper(
-      child: RefreshIndicator(
-        onRefresh: loadDataFromOnline,
-        displacement: 50,
-        edgeOffset: 120,
-        color: Colors.white,
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          body: SafeArea(
-            top: true,
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                buildAppBar(),
-                if (data == null)
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 500,
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                  )
-                else ...[
-                  SliverToBoxAdapter(child: buildCarousel()),
-                  SliverList.builder(
-                    itemCount: data!.trays.length,
-                    itemBuilder: (context, i) {
-                      final tray = data!.trays[i];
-                      return tray.isTop10
-                          ? PvHomeTop10Row(tray: tray)
-                          : PvHomeRow(tray: tray);
-                    },
+    return RefreshIndicator(
+      onRefresh: loadDataFromOnline,
+      displacement: 50,
+      edgeOffset: 120,
+      color: Colors.white,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          top: true,
+          child: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              buildAppBar(),
+              if (data == null)
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 500,
+                    child: Center(child: CircularProgressIndicator()),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                ],
+                )
+              else ...[
+                SliverToBoxAdapter(child: buildCarousel()),
+                SliverList.builder(
+                  itemCount: data!.trays.length,
+                  itemBuilder: (context, i) {
+                    final tray = data!.trays[i];
+                    return tray.isTop10
+                        ? PvHomeTop10Row(tray: tray)
+                        : PvHomeRow(tray: tray);
+                  },
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
               ],
-            ),
+            ],
           ),
         ),
       ),

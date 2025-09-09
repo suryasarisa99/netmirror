@@ -5,7 +5,6 @@ import 'package:netmirror/downloader/download_models.dart';
 import 'package:netmirror/models/watch_history_model.dart';
 import 'package:netmirror/screens/movie_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_skeletons.dart';
-import 'package:netmirror/widgets/desktop_wrapper.dart';
 import 'package:shared_code/models/movie_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -116,42 +115,40 @@ abstract class MovieScreenUiState extends MovieScreenState {
     Function(ScrollController)? getController,
     bool extendBodyBehindAppBar = false,
   }) {
-    return DesktopWrapper(
-      child: Scaffold(
-        backgroundColor: bg,
-        extendBodyBehindAppBar: extendBodyBehindAppBar,
-        appBar: appBar,
-        body: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: _handleRefresh,
-          child: NotificationListener(
-            onNotification: _handleScrollNotification,
-            child: DefaultTabController(
-              length: 2,
-              child: NestedScrollView(
-                headerSliverBuilder: (context, f) {
-                  if (getController != null) {
-                    final controller = PrimaryScrollController.of(context);
-                    getController(controller);
-                  }
-                  return [
-                    ?sliverAppbar,
-                    SliverToBoxAdapter(child: poster),
-                    if (movie != null)
-                      ...headers
-                    else
-                      const SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 400,
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+    return Scaffold(
+      backgroundColor: bg,
+      extendBodyBehindAppBar: extendBodyBehindAppBar,
+      appBar: appBar,
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _handleRefresh,
+        child: NotificationListener(
+          onNotification: _handleScrollNotification,
+          child: DefaultTabController(
+            length: 2,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, f) {
+                if (getController != null) {
+                  final controller = PrimaryScrollController.of(context);
+                  getController(controller);
+                }
+                return [
+                  ?sliverAppbar,
+                  SliverToBoxAdapter(child: poster),
+                  if (movie != null)
+                    ...headers
+                  else
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 400,
+                        child: Center(child: CircularProgressIndicator()),
                       ),
-                  ];
-                },
-                body: movie != null
-                    ? TabBarView(controller: tabController, children: tabs)
-                    : SizedBox(),
-              ),
+                    ),
+                ];
+              },
+              body: movie != null
+                  ? TabBarView(controller: tabController, children: tabs)
+                  : SizedBox(),
             ),
           ),
         ),

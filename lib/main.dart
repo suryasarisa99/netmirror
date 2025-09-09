@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:netmirror/constants.dart';
@@ -66,13 +67,38 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    HardwareKeyboard.instance.addHandler(handleKeyEvent);
     // WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     // WidgetsBinding.instance.removeObserver(this);
+    HardwareKeyboard.instance.removeHandler(handleKeyEvent);
     super.dispose();
+  }
+
+  bool handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
+        routes.pop();
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
+          HardwareKeyboard.instance.isMetaPressed) {
+        routes.pop();
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.comma &&
+          HardwareKeyboard.instance.isMetaPressed) {
+        routes.push("/settings");
+        return true;
+      } else if (event.logicalKey == LogicalKeyboardKey.keyJ &&
+          HardwareKeyboard.instance.isMetaPressed) {
+        routes.push("/downloads");
+        return true;
+      }
+      return false;
+    }
+    return false;
   }
 
   // @override
