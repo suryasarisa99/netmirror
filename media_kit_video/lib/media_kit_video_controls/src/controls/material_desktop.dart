@@ -5,10 +5,12 @@
 /// Use of this source code is governed by MIT license that can be found in the LICENSE file.
 // ignore_for_file: non_constant_identifier_names
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 import 'package:media_kit_video/media_kit_video_controls/src/controls/methods/video_state.dart';
@@ -209,7 +211,6 @@ class MaterialDesktopVideoControlsThemeData {
       MaterialDesktopVolumeButton(),
       MaterialDesktopPositionIndicator(),
       Spacer(),
-      MaterialDesktopFullscreenButton(),
     ],
     this.bottomButtonBarMargin = const EdgeInsets.symmetric(horizontal: 16.0),
     this.buttonBarHeight = 56.0,
@@ -387,6 +388,11 @@ class _MaterialDesktopVideoControlsState
   // custom states
   bool showSpeedIndicator = false;
   Timer? _speedIndicatorTimer;
+  bool _showAudioControl = false;
+  bool _showVideoControl = false;
+  // BoxFit _videoFit = BoxFit.contain;
+  bool _showSpeedControl = false;
+  bool _showFitControl = false;
 
   late /* private */ var playlist = controller(context).player.state.playlist;
   late bool buffering = controller(context).player.state.buffering;
@@ -506,6 +512,10 @@ class _MaterialDesktopVideoControlsState
       if (mounted) {
         setState(() {
           visible = false;
+          _showSpeedControl = false;
+          _showFitControl = false;
+          _showAudioControl = false;
+          _showVideoControl = false;
         });
         unshiftSubtitle();
       }
@@ -515,6 +525,10 @@ class _MaterialDesktopVideoControlsState
   void onExit() {
     setState(() {
       visible = false;
+      _showSpeedControl = false;
+      _showFitControl = false;
+      _showAudioControl = false;
+      _showVideoControl = false;
     });
     unshiftSubtitle();
     _timer?.cancel();
@@ -532,6 +546,471 @@ class _MaterialDesktopVideoControlsState
         });
       }
     });
+  }
+
+  void restartTimer() {
+    _timer?.cancel();
+    _timer = Timer(_theme(context).controlsHoverDuration, () {
+      if (mounted) {
+        setState(() {
+          visible = true;
+        });
+      }
+    });
+  }
+
+  void _changePlaybackSpeed(double speed) {
+    setState(() {});
+    restartTimer();
+    final fixed = double.parse(speed.toStringAsFixed(2));
+    debugPrint("setting speed: $fixed");
+    controller(context).player.setRate(fixed);
+  }
+
+  void _selectVideoTrack(VideoTrack track) {
+    controller(context).player.setVideoTrack(track);
+  }
+
+  void _selectAudioTrack(AudioTrack track) {
+    controller(context).player.setAudioTrack(track);
+  }
+
+  Widget _buildControlsBackground(
+      {required Widget child, double? width, EdgeInsetsGeometry? padding}) {
+    return Positioned(
+      right: 10,
+      bottom: 70,
+      child: Container(
+          width: width,
+          padding: padding ?? const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.8),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white.withOpacity(0.2)),
+          ),
+          child: child),
+    );
+  }
+
+  Widget _buildAudioControl() {
+    if (!_showAudioControl || !visible) {
+      return const SizedBox.shrink();
+    }
+    final audios = controller(context)
+        .player
+        .state
+        .tracks
+        .audio
+        .where((a) => a.channels != null)
+        .toList();
+    // log("tracks len: ${audios.length}");
+    // log("first track ${audios.length > 0 ? audios.first.channels : "0len"}",
+    //     name: "first audio track");
+    // final currTrack = controller(context).player.state.track.audio;
+    // log("curr track: ${currTrack.id} ${currTrack.title}, ${currTrack.language}, ${currTrack.channels}");
+    if (audios.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final selectedAudioTrackId =
+        controller(context).player.state.track.audio.id;
+    return _buildControlsBackground(
+      width: 250,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Audio Track (${audios.length})',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => _showAudioControl = false),
+                child: const Icon(Icons.close, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (audios.isNotEmpty)
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: audios.length,
+                itemBuilder: (context, index) {
+                  final track = audios[index];
+                  final isSelected = selectedAudioTrackId == track.id;
+
+                  debugPrint(
+                      "title: ${track.title}, language: ${track.language}, id: ${track.id}, ${track.channels}");
+
+                  return GestureDetector(
+                    onTap: () {
+                      _selectAudioTrack(track);
+                      setState(() => _showAudioControl = false);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.red.withOpacity(0.3)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.red.withOpacity(0.5)
+                              : Colors.transparent,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_unchecked,
+                            color: isSelected ? Colors.red : Colors.grey,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              track.title ??
+                                  track.language ??
+                                  'Track ${index + 1}',
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.grey[300],
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          if (track.channels != null)
+                            Text(
+                              '${track.channels}ch',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 12,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          else
+            const Text(
+              'No audio tracks available',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVideoControl() {
+    if (!_showVideoControl || !visible) {
+      return const SizedBox.shrink();
+    }
+    final videos = controller(context)
+        .player
+        .state
+        .tracks
+        .video
+        .where((v) => v.w != null && v.h != null)
+        .toList();
+
+    if (videos.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final selectedVideoTrackId =
+        controller(context).player.state.track.video.id;
+
+    return _buildControlsBackground(
+      width: 250,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Video Quality (${videos.length})',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                GestureDetector(
+                  onTap: () => setState(() => _showVideoControl = false),
+                  child: const Icon(Icons.close, color: Colors.white, size: 20),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (videos.isNotEmpty)
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: videos.length,
+                  itemBuilder: (context, index) {
+                    final track = videos[index];
+                    debugPrint(
+                        "video tracks: ${track.id}, ${track.w}x${track.h}, bitrate: ${track.bitrate}");
+                    final isSelected = selectedVideoTrackId == track.id;
+
+                    return GestureDetector(
+                      onTap: () {
+                        _selectVideoTrack(track);
+                        setState(() => _showVideoControl = false);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
+                        margin: const EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? Colors.red.withOpacity(0.3)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isSelected
+                                ? Colors.red.withOpacity(0.5)
+                                : Colors.transparent,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              isSelected
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_unchecked,
+                              color: isSelected ? Colors.red : Colors.grey,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${track.w ?? 'Unknown'}x${track.h ?? 'Unknown'}',
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.grey[300],
+                                      fontSize: 14,
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                  if (track.bitrate != null)
+                                    Text(
+                                      '${track.bitrate} kbps',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            else
+              const Text(
+                'No video tracks available',
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSpeedControl() {
+    if (!_showSpeedControl || !visible) return const SizedBox.shrink();
+    final playbackSpeed = controller(context).player.state.rate;
+
+    return _buildControlsBackground(
+      width: 340,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Playback Speed',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                GestureDetector(
+                  onTap: () => setState(() => _showSpeedControl = false),
+                  child: const Icon(Icons.close, color: Colors.white, size: 20),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${playbackSpeed.toStringAsFixed(2)}x',
+            // '${_playbackSpeed.toStringAsFixed(1)}x',
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+          ),
+          Slider(
+            value: playbackSpeed,
+            min: 0.2,
+            max: 6.0,
+            divisions: 58,
+            activeColor: Colors.red,
+            inactiveColor: Colors.grey,
+            onChanged: _changePlaybackSpeed,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildSpeedButton(0.5),
+              _buildSpeedButton(0.75),
+              _buildSpeedButton(1.0),
+              _buildSpeedButton(1.25),
+              _buildSpeedButton(1.5),
+              _buildSpeedButton(2.0),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSpeedButton(double speed) {
+    final playbackSpeed = controller(context).player.state.rate;
+    return GestureDetector(
+      onTap: () => _changePlaybackSpeed(speed),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: playbackSpeed == speed
+              ? Colors.red
+              : Colors.grey.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          '${speed}x',
+          style: const TextStyle(color: Colors.white, fontSize: 10),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildCustomControls() {
+    // Only show in fullscreen mode and when controls are visible
+    if (!visible) return [];
+    final audioTracks = controller(context).player.state.tracks.audio;
+    final videoTracks = controller(context).player.state.tracks.video;
+
+    return [
+      // PiP Button
+      // if (Platform.isAndroid || Platform.isMacOS) ...[
+      //   MaterialCustomButton(
+      //     icon: Icon(Icons.picture_in_picture_alt),
+      //     onPressed: _enterPipMode,
+      //     iconSize: 20,
+      //     iconColor: Colors.white,
+      //     // tooltip: 'Picture in Picture',
+      //   ),
+      //   const SizedBox(width: 8),
+      // ],
+
+      // Video Fit Button
+      MaterialCustomButton(
+          icon: Icon(Icons.crop),
+          iconSize: 20,
+          onPressed: () {
+            setState(() {
+              _showFitControl = !_showFitControl;
+              // Close other panels
+              _showSpeedControl = false;
+              _showAudioControl = false;
+              _showVideoControl = false;
+            });
+          }),
+
+      const SizedBox(width: 8),
+
+      // Playback Speed Button
+
+      MaterialCustomButton(
+        icon: Icon(Icons.speed),
+        iconSize: 20,
+        onPressed: () {
+          setState(() {
+            _showSpeedControl = !_showSpeedControl;
+            // Close other panels
+            _showFitControl = false;
+            _showAudioControl = false;
+            _showVideoControl = false;
+            // restartTimer();
+          });
+        },
+      ),
+      const SizedBox(width: 8),
+
+      // Audio Track Button
+      if (audioTracks.isNotEmpty)
+        MaterialCustomButton(
+          icon: Icon(Icons.audiotrack),
+          onPressed: () {
+            setState(() {
+              _showAudioControl = !_showAudioControl;
+              // Close other panels
+              _showFitControl = false;
+              _showSpeedControl = false;
+              _showVideoControl = false;
+            });
+          },
+          // tooltip: 'Audio Track (${_audioTracks.length})',
+        ),
+      if (audioTracks.isNotEmpty) const SizedBox(width: 8),
+
+      // Video Quality Button
+      if (videoTracks.isNotEmpty)
+        MaterialCustomButton(
+          icon: Icon(Icons.high_quality),
+          onPressed: () {
+            setState(() {
+              _showVideoControl = !_showVideoControl;
+              // Close other panels
+              _showFitControl = false;
+              _showSpeedControl = false;
+              _showAudioControl = false;
+            });
+          },
+          // tooltip: 'Video Quality (${_videoTracks.length})',
+        ),
+    ];
   }
 
   @override
@@ -638,33 +1117,60 @@ class _MaterialDesktopVideoControlsState
                       }
                     }
                   : null,
-              child: GestureDetector(
-                // onLongPressStart: (details) {
-                //   debugPrint("long press down");
-                //   // set playback speed double the current
-                //   final speed = controller(context).player.state.rate;
-                //   controller(context).player.setRate((speed * 2));
-                //   speedIndicator();
-                // },
-                // onLongPressEnd: (details) {
-                //   debugPrint("long press end");
-                //   // set playback speed to normal
-                //   final speed = controller(context).player.state.rate;
-                //   controller(context).player.setRate((speed / 2));
-                //   // cancel timer
-                //   _speedIndicatorTimer?.cancel();
-                //   setState(() {
-                //     showSpeedIndicator = false;
-                //   });
-                // },
-                onTapDown: !_theme(context).playAndPauseOnTap
-                    ? null
-                    : (TapDownDetails details) {
+              child: MouseRegion(
+                cursor: (_theme(context).hideMouseOnControlsRemoval && !mount)
+                    ? SystemMouseCursors.none
+                    : SystemMouseCursors.basic,
+                onHover: (_) => onHover(),
+                onEnter: (_) => onEnter(),
+                onExit: (_) => onExit(),
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onLongPressStart: (details) {
+                        debugPrint("long press down");
+                        // set playback speed double the current
+                        final speed = controller(context).player.state.rate;
+                        controller(context).player.setRate((speed * 2));
+                        speedIndicator();
+                      },
+                      onLongPressEnd: (details) {
+                        debugPrint("long press end");
+                        // set playback speed to normal
+                        final speed = controller(context).player.state.rate;
+                        controller(context).player.setRate((speed / 2));
+                        // cancel timer
+                        _speedIndicatorTimer?.cancel();
+                        setState(() {
+                          showSpeedIndicator = false;
+                        });
+                      },
+                      onTapDown: (TapDownDetails details) {
                         final RenderBox box =
                             context.findRenderObject() as RenderBox;
                         final Offset localPosition =
                             box.globalToLocal(details.globalPosition);
                         const double tapPadding = 10.0;
+
+                        final buttonAreaHeight =
+                            _theme(context).buttonBarHeight +
+                                _theme(context).bottomButtonBarMargin.vertical;
+                        final isInButtonArea = localPosition.dy >
+                            box.size.height - buttonAreaHeight;
+                        if (!isInButtonArea &&
+                            (_showAudioControl ||
+                                _showVideoControl ||
+                                _showSpeedControl ||
+                                _showFitControl)) {
+                          debugPrint("onTapDown: hide all panels");
+                          setState(() {
+                            _showAudioControl = false;
+                            _showVideoControl = false;
+                            _showSpeedControl = false;
+                            _showFitControl = false;
+                          });
+                        }
+
                         if (!mount ||
                             localPosition.dy <
                                 box.size.height -
@@ -672,282 +1178,297 @@ class _MaterialDesktopVideoControlsState
                                     tapPadding) {
                           // Only play and pause when the bottom seek bar is visible
                           // and when clicking outside of the bottom seek bar region
-                          controller(context).player.playOrPause();
+                          if (_theme(context).playAndPauseOnTap) {
+                            controller(context).player.playOrPause();
+                          }
                         }
                       },
-                onTapUp: !_theme(context).toggleFullscreenOnDoublePress
-                    ? null
-                    : (e) {
-                        final now = DateTime.now();
-                        final difference = now.difference(last);
-                        last = now;
-                        if (difference < const Duration(milliseconds: 400)) {
-                          toggleFullscreen(context);
-                        }
-                      },
-                onPanUpdate: _theme(context).modifyVolumeOnScroll
-                    ? (e) {
-                        if (e.delta.dy > 0) {
-                          final volume =
-                              controller(context).player.state.volume - 5.0;
-                          controller(context)
-                              .player
-                              .setVolume(volume.clamp(0.0, 100.0));
-                        }
-                        if (e.delta.dy < 0) {
-                          final volume =
-                              controller(context).player.state.volume + 5.0;
-                          controller(context)
-                              .player
-                              .setVolume(volume.clamp(0.0, 100.0));
-                        }
-                      }
-                    : null,
-                child: MouseRegion(
-                  cursor: (_theme(context).hideMouseOnControlsRemoval && !mount)
-                      ? SystemMouseCursors.none
-                      : SystemMouseCursors.basic,
-                  onHover: (_) => onHover(),
-                  onEnter: (_) => onEnter(),
-                  onExit: (_) => onExit(),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 32.0,
-                        left: 0,
-                        right: 0,
-                        child: AnimatedOpacity(
-                          curve: Curves.easeInOut,
-                          opacity: showSpeedIndicator ? 1.0 : 0.0,
-                          duration: _theme(context).controlsTransitionDuration,
-                          child: Center(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.circular(8.0),
+                      onTapUp: !_theme(context).toggleFullscreenOnDoublePress
+                          ? null
+                          : (e) {
+                              final now = DateTime.now();
+                              final difference = now.difference(last);
+                              last = now;
+                              if (difference <
+                                  const Duration(milliseconds: 400)) {
+                                toggleFullscreen(context);
+                              }
+                            },
+                      onPanUpdate: _theme(context).modifyVolumeOnScroll
+                          ? (e) {
+                              if (e.delta.dy > 0) {
+                                final volume =
+                                    controller(context).player.state.volume -
+                                        5.0;
+                                controller(context)
+                                    .player
+                                    .setVolume(volume.clamp(0.0, 100.0));
+                              }
+                              if (e.delta.dy < 0) {
+                                final volume =
+                                    controller(context).player.state.volume +
+                                        5.0;
+                                controller(context)
+                                    .player
+                                    .setVolume(volume.clamp(0.0, 100.0));
+                              }
+                            }
+                          : null,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 32.0,
+                            left: 0,
+                            right: 0,
+                            child: AnimatedOpacity(
+                              curve: Curves.easeInOut,
+                              opacity: showSpeedIndicator ? 1.0 : 0.0,
+                              duration:
+                                  _theme(context).controlsTransitionDuration,
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                          "${controller(context).player.state.rate.toStringAsFixed(1)}"),
+                                      const SizedBox(width: 4.0),
+                                      const Icon(
+                                        Icons.speed,
+                                        color: Colors.white,
+                                        size: 16.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
+                            ),
+                          ),
+                          AnimatedOpacity(
+                            curve: Curves.easeInOut,
+                            opacity: visible ? 1.0 : 0.0,
+                            duration:
+                                _theme(context).controlsTransitionDuration,
+                            onEnd: () {
+                              if (!visible) {
+                                setState(() {
+                                  mount = false;
+                                });
+                              }
+                            },
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                // Top gradient.
+                                if (_theme(context).topButtonBar.isNotEmpty)
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        stops: [
+                                          0.0,
+                                          0.2,
+                                        ],
+                                        colors: [
+                                          Color(0x61000000),
+                                          Color(0x00000000),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                // Bottom gradient.
+                                if (_theme(context).bottomButtonBar.isNotEmpty)
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        stops: [
+                                          0.5,
+                                          1.0,
+                                        ],
+                                        colors: [
+                                          Color(0x00000000),
+                                          Color(0x61000000),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                if (mount)
+                                  Padding(
+                                    padding: _theme(context).padding ??
+                                        (
+                                            // Add padding in fullscreen!
+                                            isFullscreen(context)
+                                                ? MediaQuery.of(context).padding
+                                                : EdgeInsets.zero),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          height:
+                                              _theme(context).buttonBarHeight,
+                                          margin: _theme(context)
+                                              .topButtonBarMargin,
+                                          child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children:
+                                                  _theme(context).topButtonBar),
+                                        ),
+                                        // Only display [primaryButtonBar] if [buffering] is false.
+                                        Expanded(
+                                          child: AnimatedOpacity(
+                                            curve: Curves.easeInOut,
+                                            opacity: buffering ? 0.0 : 1.0,
+                                            duration: _theme(context)
+                                                .controlsTransitionDuration,
+                                            child: Center(
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: _theme(context)
+                                                    .primaryButtonBar,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        if (_theme(context).displaySeekBar)
+                                          Transform.translate(
+                                            offset: _theme(context)
+                                                    .bottomButtonBar
+                                                    .isNotEmpty
+                                                ? const Offset(0.0, 16.0)
+                                                : Offset.zero,
+                                            child: MaterialDesktopSeekBar(
+                                              onSeekStart: () {
+                                                _timer?.cancel();
+                                              },
+                                              onSeekEnd: () {
+                                                _timer = Timer(
+                                                  _theme(context)
+                                                      .controlsHoverDuration,
+                                                  () {
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        visible = false;
+                                                      });
+                                                      unshiftSubtitle();
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        if (_theme(context)
+                                            .bottomButtonBar
+                                            .isNotEmpty)
+                                          Container(
+                                            height:
+                                                _theme(context).buttonBarHeight,
+                                            margin: _theme(context)
+                                                .bottomButtonBarMargin,
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                ..._theme(context)
+                                                    .bottomButtonBar,
+                                                ..._buildCustomControls(),
+                                                MaterialDesktopFullscreenButton(),
+                                              ],
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          // Buffering Indicator.
+                          IgnorePointer(
+                            child: Padding(
+                              padding: _theme(context).padding ??
+                                  (
+                                      // Add padding in fullscreen!
+                                      isFullscreen(context)
+                                          ? MediaQuery.of(context).padding
+                                          : EdgeInsets.zero),
+                              child: Column(
                                 children: [
-                                  Text(
-                                      "${controller(context).player.state.rate}"),
-                                  const SizedBox(width: 4.0),
-                                  const Icon(
-                                    Icons.speed,
-                                    color: Colors.white,
-                                    size: 16.0,
+                                  Container(
+                                    height: _theme(context).buttonBarHeight,
+                                    margin: _theme(context).topButtonBarMargin,
+                                  ),
+                                  Expanded(
+                                    child: Center(
+                                      child: Center(
+                                        child: TweenAnimationBuilder<double>(
+                                          tween: Tween<double>(
+                                            begin: 0.0,
+                                            end: buffering ? 1.0 : 0.0,
+                                          ),
+                                          duration: _theme(context)
+                                              .controlsTransitionDuration,
+                                          builder: (context, value, child) {
+                                            // Only mount the buffering indicator if the opacity is greater than 0.0.
+                                            // This has been done to prevent redundant resource usage in [CircularProgressIndicator].
+                                            if (value > 0.0) {
+                                              return Opacity(
+                                                opacity: value,
+                                                child: _theme(context)
+                                                        .bufferingIndicatorBuilder
+                                                        ?.call(context) ??
+                                                    child!,
+                                              );
+                                            }
+                                            return const SizedBox.shrink();
+                                          },
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Color(0xFFFFFFFF),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: _theme(context).buttonBarHeight,
+                                    margin:
+                                        _theme(context).bottomButtonBarMargin,
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      AnimatedOpacity(
-                        curve: Curves.easeInOut,
-                        opacity: visible ? 1.0 : 0.0,
-                        duration: _theme(context).controlsTransitionDuration,
-                        onEnd: () {
-                          if (!visible) {
-                            setState(() {
-                              mount = false;
-                            });
-                          }
-                        },
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            // Top gradient.
-                            if (_theme(context).topButtonBar.isNotEmpty)
-                              Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    stops: [
-                                      0.0,
-                                      0.2,
-                                    ],
-                                    colors: [
-                                      Color(0x61000000),
-                                      Color(0x00000000),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            // Bottom gradient.
-                            if (_theme(context).bottomButtonBar.isNotEmpty)
-                              Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    stops: [
-                                      0.5,
-                                      1.0,
-                                    ],
-                                    colors: [
-                                      Color(0x00000000),
-                                      Color(0x61000000),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            if (mount)
-                              Padding(
-                                padding: _theme(context).padding ??
-                                    (
-                                        // Add padding in fullscreen!
-                                        isFullscreen(context)
-                                            ? MediaQuery.of(context).padding
-                                            : EdgeInsets.zero),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      height: _theme(context).buttonBarHeight,
-                                      margin:
-                                          _theme(context).topButtonBarMargin,
-                                      child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children:
-                                              _theme(context).topButtonBar),
-                                    ),
-                                    // Only display [primaryButtonBar] if [buffering] is false.
-                                    Expanded(
-                                      child: AnimatedOpacity(
-                                        curve: Curves.easeInOut,
-                                        opacity: buffering ? 0.0 : 1.0,
-                                        duration: _theme(context)
-                                            .controlsTransitionDuration,
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: _theme(context)
-                                                .primaryButtonBar,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    if (_theme(context).displaySeekBar)
-                                      Transform.translate(
-                                        offset: _theme(context)
-                                                .bottomButtonBar
-                                                .isNotEmpty
-                                            ? const Offset(0.0, 16.0)
-                                            : Offset.zero,
-                                        child: MaterialDesktopSeekBar(
-                                          onSeekStart: () {
-                                            _timer?.cancel();
-                                          },
-                                          onSeekEnd: () {
-                                            _timer = Timer(
-                                              _theme(context)
-                                                  .controlsHoverDuration,
-                                              () {
-                                                if (mounted) {
-                                                  setState(() {
-                                                    visible = false;
-                                                  });
-                                                  unshiftSubtitle();
-                                                }
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    if (_theme(context)
-                                        .bottomButtonBar
-                                        .isNotEmpty)
-                                      Container(
-                                        height: _theme(context).buttonBarHeight,
-                                        margin: _theme(context)
-                                            .bottomButtonBarMargin,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children:
-                                              _theme(context).bottomButtonBar,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      // Buffering Indicator.
-                      IgnorePointer(
-                        child: Padding(
-                          padding: _theme(context).padding ??
-                              (
-                                  // Add padding in fullscreen!
-                                  isFullscreen(context)
-                                      ? MediaQuery.of(context).padding
-                                      : EdgeInsets.zero),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: _theme(context).buttonBarHeight,
-                                margin: _theme(context).topButtonBarMargin,
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Center(
-                                    child: TweenAnimationBuilder<double>(
-                                      tween: Tween<double>(
-                                        begin: 0.0,
-                                        end: buffering ? 1.0 : 0.0,
-                                      ),
-                                      duration: _theme(context)
-                                          .controlsTransitionDuration,
-                                      builder: (context, value, child) {
-                                        // Only mount the buffering indicator if the opacity is greater than 0.0.
-                                        // This has been done to prevent redundant resource usage in [CircularProgressIndicator].
-                                        if (value > 0.0) {
-                                          return Opacity(
-                                            opacity: value,
-                                            child: _theme(context)
-                                                    .bufferingIndicatorBuilder
-                                                    ?.call(context) ??
-                                                child!,
-                                          );
-                                        }
-                                        return const SizedBox.shrink();
-                                      },
-                                      child: const CircularProgressIndicator(
-                                        color: Color(0xFFFFFFFF),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: _theme(context).buttonBarHeight,
-                                margin: _theme(context).bottomButtonBarMargin,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    _buildSpeedControl(),
+                    _buildAudioControl(),
+                    _buildVideoControl(),
+                  ],
                 ),
               ),
             ),
