@@ -5,12 +5,20 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
   final Map<int, Season> seasons;
   final int selectedSeason;
   final Function(int seasonNumber) onTap;
+  final Color bgClr;
+  final Color fontClr;
+  final Color selectedBgClr;
+  final Color selectedFontClr;
 
   SeasonSelectorBottomSheet({
     required this.seasons,
     required this.selectedSeason,
     required this.onTap,
     super.key,
+    this.bgClr = const Color(0xFF191E25),
+    this.fontClr = Colors.white,
+    this.selectedBgClr = const Color(0xFF474B51),
+    this.selectedFontClr = Colors.white,
   });
 
   final controller = ScrollController();
@@ -24,7 +32,7 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
       expand: false,
       builder: (context, x) {
         return Container(
-          color: const Color.fromRGBO(25, 30, 37, 1),
+          color: bgClr,
           padding: const EdgeInsets.only(left: 20, right: 20, top: 35),
           child: NotificationListener(
             child: ListView.builder(
@@ -47,11 +55,14 @@ class SeasonSelectorBottomSheet extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       // borderRadius: BorderRadius.circular(8),
-                      color: isSelected
-                          ? const Color.fromRGBO(71, 75, 81, 1)
-                          : null,
+                      color: isSelected ? selectedBgClr : null,
                     ),
-                    child: Text("Season ${season.s}"),
+                    child: Text(
+                      "Season ${season.s}",
+                      style: TextStyle(
+                        color: isSelected ? selectedFontClr : fontClr,
+                      ),
+                    ),
                   ),
                 );
               },

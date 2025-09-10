@@ -203,7 +203,7 @@ class _PVMovieScreenState extends MovieScreenUiState {
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: () async {
-                    downloadMovie();
+                    downloadMovieOrSeason();
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(

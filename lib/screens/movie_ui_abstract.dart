@@ -184,7 +184,7 @@ abstract class MovieScreenUiState extends MovieScreenState {
     );
   }
 
-  Widget? buildProgressBar(Color color) {
+  (double progress, int inMinutes)? progressValue() {
     WatchHistory? currWatchHistory;
 
     if (movie!.isMovie) {
@@ -197,10 +197,22 @@ abstract class MovieScreenUiState extends MovieScreenState {
     }
     final double progress =
         currWatchHistory.current / currWatchHistory.duration;
+    if (progress <= 0 || progress >= 1) return null;
+    // return progress;
     int inMinutes =
         ((currWatchHistory.duration - currWatchHistory.current) / 1000 / 60)
             .toInt();
     if (inMinutes <= 0) return null;
+    return (progress, inMinutes);
+  }
+
+  Widget? buildProgressBar(
+    Color color, {
+    Color backgroundClr = const Color(0xFF424242),
+  }) {
+    final progressData = progressValue();
+    if (progressData == null) return null;
+    final (progress, inMinutes) = progressData;
 
     return Padding(
       padding: const EdgeInsets.only(top: 4),
@@ -209,7 +221,7 @@ abstract class MovieScreenUiState extends MovieScreenState {
           Expanded(
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: Colors.grey[800],
+              backgroundColor: backgroundClr,
               color: color,
             ),
           ),

@@ -440,7 +440,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     );
   }
 
-  void downloadMovie() async {
+  void downloadMovieOrSeason() async {
     if (movie!.isShow) {
       // download season
       downloadSeason();

@@ -226,7 +226,7 @@ class NfMovieScreenState extends MovieScreenUiState {
           // Download Button
           FilledButton(
             onPressed: () async {
-              downloadMovie();
+              downloadMovieOrSeason();
             },
             style: const ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(

@@ -5,15 +5,18 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:netmirror/constants.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/models/cache_model.dart';
 import 'package:netmirror/screens/hotstar/hotstar_button.dart';
 import 'package:netmirror/screens/hotstar/opacity_builder.dart';
 import 'package:netmirror/screens/movie_ui_abstract.dart';
 import 'package:netmirror/screens/prime_video/movie_screen/pv_cast_section.dart';
+import 'package:netmirror/screens/prime_video/movie_screen/pv_season_selector_bottom_sheet.dart';
 import 'package:netmirror/utils/nav.dart';
 import 'package:netmirror/widgets/pv_episode_widget.dart';
 import 'package:netmirror/widgets/sticky_header_delegate.dart';
+import 'package:netmirror/widgets/widget_join.dart';
 import 'package:shared_code/models/ott.dart';
 
 class HotstarMovieScreen extends MovieScreenUi {
@@ -31,30 +34,37 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   @override
   bool extraTabForCast = true;
 
+  int tabIndex = 0;
+
   ScrollController? scrollController;
 
   // static vars
   static final bg = Color(0xFF0F1014);
 
   void handleTabChange(int index) {
-    // if (movie!.isShow && tabIndex == 0 && index == 0) {
-    // showModalBottomSheet(
-    //   context: context,
-    //   builder: (x) {
-    //     return SeasonSelectorBottomSheet(
-    //       seasons: movie!.seasons,
-    //       selectedSeason: seasonNumber,
-    //       onTap: (seasonNum) {
-    //         handleSeasonChange(seasonNum);
-    //       },
-    //     );
-    //   },
-    // );
-    // } else {
-    //   setState(() {
-    //     tabIndex = index;
-    //   });
-    // }
+    if (movie!.isShow && tabIndex == 0 && index == 0) {
+      showModalBottomSheet(
+        context: context,
+        builder: (x) {
+          return SeasonSelectorBottomSheet(
+            seasons: movie!.seasons,
+            selectedSeason: seasonNumber,
+            bgClr: const Color(0xFF121212),
+            fontClr: Color(0xFFE2E5F1),
+            selectedBgClr: const Color(0xFFE2E6F1),
+            // selectedBgClr: const Color(0xFF474B51),
+            selectedFontClr: Color.fromARGB(255, 0, 13, 62),
+            onTap: (seasonNum) {
+              handleSeasonChange(seasonNum);
+            },
+          );
+        },
+      );
+    } else {
+      setState(() {
+        tabIndex = index;
+      });
+    }
   }
 
   @override
@@ -68,7 +78,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
       ],
       appBar: buildAppBar(movie?.title ?? ""),
       bg: bg,
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       poster: _buildMoviePoster(),
       headers: [toSlivers(buildMovieDetails(size)), _buildTabBar()],
       getController: (controller) {
@@ -85,60 +95,171 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
     );
   }
 
+  List<Widget> movieInfoItems() {
+    if (movie == null) return [];
+    const fontClr = Color(0xFFE2E5F1);
+    const textStyle = TextStyle(color: fontClr, fontSize: 12);
+    const textStyle2 = TextStyle(
+      color: fontClr,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+    );
+
+    return [
+      Text(movie!.year, style: textStyle2),
+
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+        decoration: BoxDecoration(
+          color: Color(0xFF3A3F55),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(movie!.ua, style: textStyle),
+      ),
+
+      if (movie!.runtime != null) Text(movie!.runtime!, style: textStyle2),
+
+      if (movie!.hdsd != null)
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: Colors.grey),
+          ),
+          child: Text(
+            movie!.hdsd!,
+            style: TextStyle(color: fontClr, fontSize: 10),
+          ),
+        ),
+    ];
+  }
+
   List<Widget> buildMovieDetails(Size size) {
     if (movie == null) return [];
     return [
-      HotstarButton(text: "Watch Now", onPressed: playMovieOrEpisode),
-      SizedBox(height: 16),
-      _buildActions(),
+      // SizedBox(
+      //   width: 250,
+      //   child: HotstarButton(text: "Watch Now", onPressed: playMovieOrEpisode),
+      // ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: joinWidgets(
+          movieInfoItems(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.0),
+            child: Text(Dot, style: TextStyle(color: Color(0xFF8D8D8D))),
+          ),
+        ),
+      ),
       SizedBox(height: 16),
 
+      buildMainPlayBtn((text) {
+        final progressData = progressValue();
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+
+          child: InkWell(
+            // splashColor: Colors.red,
+            onTap: playMovieOrEpisode,
+            borderRadius: BorderRadius.circular(8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              clipBehavior: Clip.hardEdge,
+              child: Ink(
+                decoration: BoxDecoration(
+                  color: Color(0xFFE2E6F1),
+                  // color: Color.fromARGB(154, 226, 230, 241),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.play_arrow_rounded, color: Colors.black),
+                        SizedBox(width: 5),
+                        Text(
+                          text,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Roboto",
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: progressData == null ? 10 : 7.5),
+                    if (progressData != null)
+                      LinearProgressIndicator(
+                        minHeight: 2.5,
+                        value: progressData.$1,
+                        backgroundColor: Color(0xFFBDC1CA),
+                        color: Color(0xFF1492FF),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
+      SizedBox(height: 30),
+
       // Genre Tags
-      SizedBox(
-        width: size.width,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: movie!.genre.mapIndexed((index, genre) {
-              return Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      genre,
-                      style: TextStyle(
-                        color: Color(0xFFe0e4ed),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: SizedBox(
+          width: size.width,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: movie!.genre.mapIndexed((index, genre) {
+                return Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        genre,
+                        style: TextStyle(
+                          color: Color(0xFFe0e4ed),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                  ),
-                  // Add gray line separator, but not after the last item
-                  if (index < movie!.genre.length - 1)
-                    Container(
-                      width: 1,
-                      height: 12,
-                      color: Colors.grey.withValues(alpha: 0.7),
-                    ),
-                ],
-              );
-            }).toList(),
+                    // Add gray line separator, but not after the last item
+                    if (index < movie!.genre.length - 1)
+                      Container(
+                        width: 1,
+                        height: 12,
+                        color: Colors.grey.withValues(alpha: 0.7),
+                      ),
+                  ],
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),
 
-      SizedBox(height: 16),
+      SizedBox(height: 8),
 
       // Movie Description
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Text(
           movie!.desc,
           textAlign: TextAlign.justify,
-          style: TextStyle(color: Color(0xFFe0e4ed), fontSize: 14),
+          style: TextStyle(color: Color(0xFFA5A5A5), fontSize: 12),
         ),
       ),
+
+      SizedBox(height: 30),
+      _buildActions(),
+      SizedBox(height: 20),
     ];
   }
 
@@ -146,15 +267,19 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
     // the extra padding, is for, we are using extendBodyBehindAppBar: true,
     // so it causes it sticks at the top, behind the appbar to fix it added padding at top and increased the height of the sliver header.
     if (movie == null) return SizedBox();
-    const toolBarHeight = kToolbarHeight - 5;
+    // const toolBarHeight = kToolbarHeight - 5;
     return SliverPersistentHeader(
       delegate: StickyHeaderDelegate(
-        minHeight: 60 + toolBarHeight,
-        maxHeight: 60 + toolBarHeight,
+        minHeight: 40,
+        maxHeight: 60,
         child: DecoratedBox(
+          // decoration: const BoxDecoration(
+          //   color: Color.fromARGB(255, 132, 153, 238),
+          // ),
           decoration: const BoxDecoration(color: Color(0xFF0F1014)),
           child: Padding(
-            padding: const EdgeInsets.only(top: toolBarHeight + 20),
+            padding: const EdgeInsets.only(top: 0),
+            // padding: const EdgeInsets.only(top: toolBarHeight + 20),
             child: TabBar(
               controller: tabController,
               indicatorWeight: 1.0,
@@ -194,9 +319,12 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
 
   Widget _buildMoviePoster() {
     final size = MediaQuery.sizeOf(context);
-    final double paddingTop = Platform.isMacOS
-        ? 24
-        : MediaQuery.paddingOf(context).top;
+    // final double paddingTop = Platform.isMacOS
+    //     ? 24
+    //     : MediaQuery.paddingOf(context).top;
+    final double paddingTop = 0;
+    final imgWidth = size.width - 20; // 20 for left and right padding
+    final imgHeight = imgWidth / 1.7766;
     return SizedBox(
       width: size.width,
       child: Padding(
@@ -211,23 +339,23 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
                 imageUrl: "https://imgcdn.media/hs/h/700/${widget.id}.jpg",
                 cacheManager: NfLargeCacheManager.instance,
                 fit: BoxFit.cover,
-                width: size.width,
+                width: imgWidth,
+                height: imgHeight,
               ),
             ),
             const SizedBox(height: 16),
 
             // Movie Title Image
-            // w=1.788 of height
-            CachedNetworkImage(
-              imageUrl: "https://imgcdn.media/hs/n/${widget.id}.png",
-              cacheManager: NfLargeCacheManager.instance,
-              height: 80,
-              width: 80 * 1.788,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: CachedNetworkImage(
+                imageUrl: "https://imgcdn.media/hs/n/${widget.id}.png",
+                cacheManager: NfLargeCacheManager.instance,
+                height: 70,
+              ),
             ),
 
-            const SizedBox(height: 16),
-
-            // Movie Description
+            const SizedBox(height: 6),
           ],
         ),
       ),
@@ -236,7 +364,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
 
   Widget _buildActions() {
     return Padding(
-      padding: const EdgeInsets.only(left: 12.0),
+      padding: const EdgeInsets.only(left: 28.0),
       child: Row(
         spacing: 36,
         children: [
@@ -261,7 +389,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
           _actionBtn(
             _icon(HugeIcons.strokeRoundedDownload05),
             "Download",
-            downloadMovie,
+            downloadMovieOrSeason,
           ),
           _actionBtn(
             _icon(HugeIcons.strokeRoundedShare08),
@@ -270,8 +398,8 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
           ),
           _actionBtn(
             _icon(HugeIcons.strokeRoundedFavourite, size: 19),
-            "Share",
-            shareDeepLinkUrl,
+            "Like",
+            () {},
           ),
         ],
       ),
@@ -312,15 +440,16 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
   Widget buildRelated() {
     if (movie == null) return SizedBox();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 22),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.7,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisCount: 3,
+          childAspectRatio: 0.741,
+          // childAspectRatio: 1.7,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
         ),
         itemCount: movie!.suggest.length,
         itemBuilder: (context, index) {
@@ -347,7 +476,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
     return ScrollPercentBuilder(
       maxScroll: 80,
       minScroll: 30,
-      height: kToolbarHeight - 10,
+      height: kToolbarHeight - 20,
       scrollController: scrollController,
       builder: (opacity) {
         return AppBar(
@@ -364,6 +493,7 @@ class _HoststarMovieScreenState extends MovieScreenUiState {
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: opacity),
                     fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
