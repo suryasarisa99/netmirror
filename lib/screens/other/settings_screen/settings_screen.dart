@@ -134,22 +134,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       DropdownMenuEntry(
                         value: "1080p",
                         label: "1080p",
-                        trailingIcon: Icon(Icons.brightness_auto),
+                        trailingIcon: Icon(Icons.high_quality),
                       ),
                       DropdownMenuEntry(
                         value: "720p",
                         label: "720p",
-                        trailingIcon: Icon(Icons.sunny),
+                        trailingIcon: Icon(Icons.hd),
                       ),
                       DropdownMenuEntry(
                         value: "480p",
                         label: "480p",
-                        trailingIcon: Icon(Icons.brightness_3),
+                        trailingIcon: Icon(Icons.sd),
                       ),
                       DropdownMenuEntry(
                         value: "",
                         label: "none",
-                        trailingIcon: Icon(Icons.brightness_3),
+                        trailingIcon: Icon(Icons.do_not_disturb),
                       ),
                     ],
                   ),

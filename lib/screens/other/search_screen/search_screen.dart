@@ -43,10 +43,11 @@ class _NmSearchState extends ConsumerState<Search>
     super.initState();
     focusNode.requestFocus();
     if (_tabIndex != 0) {
-      _tabController.animateTo(
-        _tabIndex,
-        duration: const Duration(milliseconds: 50),
-      );
+      _tabController.index = _tabIndex;
+      // _tabController.animateTo(
+      //   _tabIndex,
+      //   duration: const Duration(milliseconds: 50),
+      // );
     }
     // listen for tab changes
     _tabController.addListener(_onTabChange);

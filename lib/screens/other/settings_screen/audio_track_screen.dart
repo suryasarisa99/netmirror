@@ -404,7 +404,7 @@ class _AudioTrackSelectionScreenState
               children: [
                 SizedBox(
                   width: 120,
-                  height: 32,
+                  // height: 32,
                   child: OutlinedButton(
                     onPressed: () {
                       GoRouter.of(context).pop();
@@ -417,7 +417,6 @@ class _AudioTrackSelectionScreenState
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: const Text(
                       "Cancel",
@@ -432,7 +431,7 @@ class _AudioTrackSelectionScreenState
                 const SizedBox(width: 12),
                 SizedBox(
                   width: 120,
-                  height: 32,
+                  // height: 32,
                   child: ElevatedButton(
                     onPressed: () {
                       ref
@@ -451,7 +450,6 @@ class _AudioTrackSelectionScreenState
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: const Text(
                       "Save",
