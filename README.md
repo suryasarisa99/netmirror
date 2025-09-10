@@ -9,6 +9,4 @@
   - Download movies
   - watch list
 
-![Netflix](images/netflix-preview.png)
-![Prime Video](images/prime-video-preview.png)
-![hotstar](images/hotstar-preview.png)
+![Netmirror](images/netmirror.png)
