@@ -31,6 +31,15 @@ const ottList = [
   ),
 ];
 
+int getOttIndexFromRoute(String route) {
+  for (int i = 0; i < ottList.length; i++) {
+    if (ottList[i].route == route) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 class OttDrawer extends StatelessWidget {
   final selectedOtt;
   OttDrawer({super.key, this.selectedOtt = 0});

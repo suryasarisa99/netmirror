@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:netmirror/constants.dart';
+import 'package:netmirror/data/options.dart';
 import 'package:netmirror/db/db.dart';
 import 'package:netmirror/downloader/downloader.dart';
 import 'package:netmirror/log.dart';
 import 'package:netmirror/routes.dart';
+import 'package:netmirror/widgets/ott_drawer.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -78,25 +83,36 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  bool handleKeyEvent(KeyEvent event) {
-    if (event is KeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.escape) {
-        routes.pop();
-        return true;
-      } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
-          HardwareKeyboard.instance.isMetaPressed) {
-        routes.pop();
-        return true;
-      } else if (event.logicalKey == LogicalKeyboardKey.comma &&
-          HardwareKeyboard.instance.isMetaPressed) {
-        routes.push("/settings");
-        return true;
-      } else if (event.logicalKey == LogicalKeyboardKey.keyJ &&
-          HardwareKeyboard.instance.isMetaPressed) {
-        routes.push("/downloads");
-        return true;
-      }
-      return false;
+  bool handleKeyEvent(KeyEvent e) {
+    if (e is! KeyDownEvent) return false;
+    final hk = HardwareKeyboard.instance;
+    final lk = e.logicalKey;
+    final isMeta = Platform.isMacOS ? hk.isMetaPressed : hk.isControlPressed;
+    final ottIndex = getOttIndexFromRoute(SettingsOptions.currentScreen);
+
+    if (lk == LogicalKeyboardKey.escape) {
+      routes.pop();
+      return true;
+    } else if (lk == LogicalKeyboardKey.arrowLeft &&
+        isMeta &&
+        !hk.isAltPressed) {
+      routes.pop();
+      return true;
+    } else if (lk == LogicalKeyboardKey.comma && isMeta) {
+      routes.push("/settings");
+      return true;
+    } else if (lk == LogicalKeyboardKey.keyJ && isMeta) {
+      routes.push("/downloads");
+      return true;
+    } else if (lk == LogicalKeyboardKey.keyF && isMeta) {
+      routes.push("/search/$ottIndex");
+      return true;
+    } else if (lk == LogicalKeyboardKey.keyH && isMeta) {
+      routes.push("/history");
+      return true;
+    } else if (lk == LogicalKeyboardKey.keyU && isMeta) {
+      routes.push("/profile");
+      return true;
     }
     return false;
   }

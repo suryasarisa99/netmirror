@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netmirror/api/get_search.dart';
 import 'package:netmirror/constants.dart';
 import 'package:netmirror/models/cache_model.dart';
@@ -50,16 +51,52 @@ class _NmSearchState extends ConsumerState<Search>
     // listen for tab changes
     _tabController.addListener(_onTabChange);
     _searchController.addListener(_onSearchChanged);
+    HardwareKeyboard.instance.addHandler(handleEvents);
+  }
+
+  bool handleEvents(KeyEvent e) {
+    if (e is! KeyDownEvent) return false;
+    if (!isOnTop(context)) return false;
+    final currentLocation = GoRouter.of(context).state.matchedLocation;
+    debugPrint("Current Location: $currentLocation");
+
+    final hk = HardwareKeyboard.instance;
+    final lk = e.logicalKey;
+    final isMeta = Platform.isMacOS ? hk.isMetaPressed : hk.isControlPressed;
+    if (lk == LogicalKeyboardKey.arrowRight && isMeta && hk.isAltPressed) {
+      // move tab right
+      if (_tabIndex < 4) {
+        _tabIndex++;
+        _tabController.animateTo(_tabIndex);
+      }
+      return true;
+    } else if (lk == LogicalKeyboardKey.arrowLeft &&
+        isMeta &&
+        hk.isAltPressed) {
+      // move tab left
+      if (_tabIndex > 0) {
+        _tabIndex--;
+        _tabController.animateTo(_tabIndex);
+      }
+      return true;
+    }
+    return false;
   }
 
   @override
   void dispose() {
     _tabController.removeListener(_onTabChange);
     _searchController.removeListener(_onSearchChanged);
+    HardwareKeyboard.instance.removeHandler(handleEvents);
     _tabController.dispose();
     _searchController.dispose();
     _debounce?.cancel();
     super.dispose();
+  }
+
+  bool isOnTop(BuildContext context) {
+    final route = ModalRoute.of(context);
+    return route?.isCurrent ?? false;
   }
 
   _onTabChange() {

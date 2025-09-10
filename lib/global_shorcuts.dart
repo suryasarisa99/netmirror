@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netmirror/data/options.dart';
 import 'package:netmirror/widgets/ott_drawer.dart';
 
 class GlobalShortcuts extends StatefulWidget {
@@ -31,22 +34,26 @@ class _GlobalShortcutsState extends State<GlobalShortcuts> {
     super.dispose();
   }
 
-  bool handleKeyEvent(KeyEvent event) {
+  bool handleKeyEvent(KeyEvent e) {
+    if (e is! KeyDownEvent) return false;
     // final r = widget.router;
-    if (event is KeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.arrowUp &&
-          HardwareKeyboard.instance.isMetaPressed) {
-        debugPrint("Show OTT Drawer");
-        showModalBottomSheet(
-          context: _navigatorContext,
-          isScrollControlled: true,
-          builder: (BuildContext context) {
-            return OttDrawer(selectedOtt: -1);
-          },
-        );
-        return true;
-      }
-      return false;
+    final isMeta = Platform.isMacOS
+        ? HardwareKeyboard.instance.isMetaPressed
+        : HardwareKeyboard.instance.isControlPressed;
+    final lk = e.logicalKey;
+    final ottIndex = getOttIndexFromRoute(SettingsOptions.currentScreen);
+
+    if ((lk == LogicalKeyboardKey.arrowUp || lk == LogicalKeyboardKey.keyO) &&
+        isMeta) {
+      debugPrint("Show OTT Drawer");
+      showModalBottomSheet(
+        context: _navigatorContext,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return OttDrawer(selectedOtt: ottIndex);
+        },
+      );
+      return true;
     }
     return false;
   }
