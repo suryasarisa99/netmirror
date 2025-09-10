@@ -304,13 +304,13 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
   void playMovie() async {
     // if (!CookiesManager.isValidResourceKey) {
     l.error("Invalid resource key, ${CookiesManager.resourceKey}");
-    await getSource(id: movie!.id, ott: movie!.ott);
+    final sources = await getSource(id: movie!.id, ott: movie!.ott);
     // }
     if (!CookiesManager.isValidResourceKey) {
       l.error("Resource key is still invalid after fetching source");
       return;
     }
-    goToPlayer(movie: movie!);
+    goToPlayer(movie: movie!, subtitleUrl: sources.subtitles.firstOrNull?.file);
     // if (!isDesk) {
     //   // log("resource id: ${x.resourceKey}");
     //   if (SettingsOptions.externalPlayer) {
@@ -328,15 +328,19 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     final episode = movie!.getEpisode(seasonNumber, episodeNumber);
     final videoId = episode.id;
     l.info("play episode: episode number $episodeNumber, videoId: $videoId");
-    if (!CookiesManager.isValidResourceKey) {
-      l.error("Invalid resource key, ${CookiesManager.resourceKey}");
-      await getSource(id: movie!.id, ott: movie!.ott);
-    }
+    final sources = await getSource(id: videoId, ott: movie!.ott);
+    // if (!CookiesManager.isValidResourceKey) {
+    //   l.error("Invalid resource key, ${CookiesManager.resourceKey}");
+    // }
     if (!CookiesManager.isValidResourceKey) {
       l.error("Resource key is still invalid after fetching source");
       return;
     }
-    goToPlayer(movie: movie!, eNum: episodeNumber);
+    goToPlayer(
+      movie: movie!,
+      eNum: episodeNumber,
+      subtitleUrl: sources.subtitles.firstOrNull?.file,
+    );
     // if (SettingsOptions.externalPlayer || isDesk) {
     //   launchExternalPlayer(videoId, CookiesManager.resourceKey!);
     // } else {
@@ -423,6 +427,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
     WatchHistory? wh,
     int? sNum,
     int? eNum,
+    String? subtitleUrl,
   }) {
     goToPlayerNew(
       context: context,
@@ -431,6 +436,7 @@ abstract class MovieScreenState extends ConsumerState<MovieScreen>
       wh: wh,
       sNum: sNum ?? seasonNumber,
       eNum: eNum,
+      subtitleUrl: subtitleUrl,
     );
   }
 

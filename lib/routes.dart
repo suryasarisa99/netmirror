@@ -31,6 +31,7 @@ typedef PlayerScreenData = ({
   String url,
   int? seasonNumber,
   int? episodeNumber,
+  String? subtitleUrl,
 });
 
 final routes = GoRouter(
@@ -93,6 +94,7 @@ final routes = GoRouter(
                 wh: data.watchHistory,
                 seasonNumber: data.seasonNumber,
                 episodeNumber: data.episodeNumber,
+                subtitleUrl: data.subtitleUrl,
               ),
             );
           },

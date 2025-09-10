@@ -26,6 +26,7 @@ void goToPlayerNew({
   WatchHistory? wh,
   int? sNum,
   int? eNum,
+  String? subtitleUrl,
 }) async {
   if (movie.isShow && sNum == null) {
     // l.error("Episode index is null for show");
@@ -82,6 +83,7 @@ void goToPlayerNew({
       seasonNumber: sNum,
       episodeNumber: eNum,
       url: url,
+      subtitleUrl: subtitleUrl,
     ),
   );
   // .then((val) {

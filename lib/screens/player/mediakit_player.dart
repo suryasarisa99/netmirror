@@ -21,12 +21,14 @@ class MediaKitPlayer extends ConsumerStatefulWidget {
     this.seasonNumber,
     this.episodeNumber,
     required this.url,
+    this.subtitleUrl,
   });
   final Movie data;
   final WatchHistory? wh;
   final int? seasonNumber;
   final int? episodeNumber;
   final String url;
+  final String? subtitleUrl;
 
   @override
   ConsumerState<MediaKitPlayer> createState() => _MediaKitPlayerState();
@@ -87,9 +89,9 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         ),
       );
 
-      // _player?.stream.log.listen((log) {
-      //   // l.info('MediaKit: [${log.level}] ${log.text}');
-      // });
+      _player?.stream.log.listen((log) {
+        // l.info('MediaKit: [${log.level}] ${log.text}');
+      });
 
       // Create VideoController
       _controller = VideoController(
@@ -130,9 +132,18 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         final audioTracks = tracks.audio
             .where((track) => track.channels != null)
             .toList();
+        final subtitles = tracks.subtitle;
         l.info("tracks length: ${tracks.audio.length}");
         if (audioTracks.isNotEmpty) {
           _selectPreferredAudioTrack(audioTracks);
+        }
+        if (subtitles.isNotEmpty) {
+          l.info("Available subtitles:");
+          for (var subtitle in subtitles) {
+            l.info(
+              "Subtitle: ${subtitle.id} - ${subtitle.title} (${subtitle.language})",
+            );
+          }
         }
       });
 
@@ -159,6 +170,12 @@ class _MediaKitPlayerState extends ConsumerState<MediaKitPlayer>
         _savePlaybackProgress();
       });
 
+      if (widget.subtitleUrl != null) {
+        final x = "https:${widget.subtitleUrl!}";
+        l.success("Loading subtitle: $x");
+        final t = SubtitleTrack.uri(x, language: "en", title: "English");
+        await _player!.setSubtitleTrack(t);
+      }
       // Open media with headers
       await _player!.open(
         Media(

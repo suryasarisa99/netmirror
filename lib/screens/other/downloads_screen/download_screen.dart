@@ -247,6 +247,7 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
             watchHistory: null,
             seasonNumber: item.seasonNumber,
             episodeNumber: item.episodeNumber,
+            subtitleUrl: null,
           ),
         );
       },

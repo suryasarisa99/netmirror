@@ -46,7 +46,7 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
 
   if (status != 200) throw Exception('http.get error: statusCode= $status');
   // log("Source: ${res.body.substring(0, 10)}");
-  // log("Source: ${res.body}");
+  log("Source: ${res.body}");
   final result = Sources.parse(res.body);
   // log("sources: ${result.sources.length}");
   // log("subtitles: ${result.subtitles.length}");
@@ -56,6 +56,8 @@ Future<Sources> getSource({required String id, required OTT ott}) async {
   //     log("subtitle: ${subtitle.file}");
   //   }
   // }
+
+  log("subtitle: ${result.subtitles}");
   CookiesManager.resourceKey = result.resourceKey;
   return result;
 }

@@ -393,6 +393,7 @@ class _MaterialDesktopVideoControlsState
   // BoxFit _videoFit = BoxFit.contain;
   bool _showSpeedControl = false;
   bool _showFitControl = false;
+  bool _showSubtitleControl = false;
 
   late /* private */ var playlist = controller(context).player.state.playlist;
   late bool buffering = controller(context).player.state.buffering;
@@ -516,6 +517,7 @@ class _MaterialDesktopVideoControlsState
           _showFitControl = false;
           _showAudioControl = false;
           _showVideoControl = false;
+          _showSubtitleControl = false;
         });
         unshiftSubtitle();
       }
@@ -529,6 +531,7 @@ class _MaterialDesktopVideoControlsState
       _showFitControl = false;
       _showAudioControl = false;
       _showVideoControl = false;
+      _showSubtitleControl = false;
     });
     unshiftSubtitle();
     _timer?.cancel();
@@ -575,6 +578,10 @@ class _MaterialDesktopVideoControlsState
     controller(context).player.setAudioTrack(track);
   }
 
+  void _selectSubtitleTrack(SubtitleTrack track) {
+    controller(context).player.setSubtitleTrack(track);
+  }
+
   Widget _buildControlsBackground(
       {required Widget child, double? width, EdgeInsetsGeometry? padding}) {
     return Positioned(
@@ -611,6 +618,11 @@ class _MaterialDesktopVideoControlsState
     if (audios.isEmpty) {
       return const SizedBox.shrink();
     }
+    final subtitleTrack = controller(context).player.state.track.subtitle;
+    debugPrint(
+        "selected subtitle track id: ${subtitleTrack.id}-${subtitleTrack.title}-${subtitleTrack.language}");
+    debugPrint(
+        "all subtitle tracks: ${controller(context).player.state.tracks.subtitle.map((e) => e.id).toList()}");
     final selectedAudioTrackId =
         controller(context).player.state.track.audio.id;
     return _buildControlsBackground(
@@ -682,6 +694,138 @@ class _MaterialDesktopVideoControlsState
                               track.title ??
                                   track.language ??
                                   'Track ${index + 1}',
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.grey[300],
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          if (track.channels != null)
+                            Text(
+                              '${track.channels}ch',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 12,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          else
+            const Text(
+              'No audio tracks available',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubtitlesControl() {
+    if (!_showSubtitleControl || !visible) {
+      return const SizedBox.shrink();
+    }
+    final subtitles = controller(context)
+        .player
+        .state
+        .tracks
+        .subtitle
+        // .where((a) => a.channels != null)
+        .toList();
+    // log("tracks len: ${audios.length}");
+    // log("first track ${audios.length > 0 ? audios.first.channels : "0len"}",
+    //     name: "first audio track");
+    // final currTrack = controller(context).player.state.track.audio;
+    // log("curr track: ${currTrack.id} ${currTrack.title}, ${currTrack.language}, ${currTrack.channels}");
+    if (subtitles.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    // final subtitleTrack = controller(context).player.state.track.subtitle;
+    // debugPrint(
+    //     "selected subtitle track id: ${subtitleTrack.id}-${subtitleTrack.title}-${subtitleTrack.language}");
+    // debugPrint(
+    //     "all subtitle tracks: ${controller(context).player.state.tracks.subtitle.map((e) => e.id).toList()}");
+    final selectedSubtitleTrackId =
+        controller(context).player.state.track.subtitle.id;
+    return _buildControlsBackground(
+      width: 250,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Audio Track (${subtitles.length})',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => _showSubtitleControl = false),
+                child: const Icon(Icons.close, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (subtitles.isNotEmpty)
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: subtitles.length,
+                itemBuilder: (context, index) {
+                  final track = subtitles[index];
+                  final isSelected = selectedSubtitleTrackId == track.id;
+
+                  debugPrint(
+                      "title: ${track.title}, language: ${track.language}, id: ${track.id}, ${track.channels}");
+
+                  return GestureDetector(
+                    onTap: () {
+                      debugPrint(track.codec);
+                      _selectSubtitleTrack(track);
+                      setState(() => _showSubtitleControl = false);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.red.withOpacity(0.3)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.red.withOpacity(0.5)
+                              : Colors.transparent,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_unchecked,
+                            color: isSelected ? Colors.red : Colors.grey,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              track.title ??
+                                  track.language ??
+                                  'Track ${index + 1} | ${track.id}',
                               style: TextStyle(
                                 color: isSelected
                                     ? Colors.white
@@ -955,6 +1099,7 @@ class _MaterialDesktopVideoControlsState
               _showSpeedControl = false;
               _showAudioControl = false;
               _showVideoControl = false;
+              _showSubtitleControl = false;
             });
           }),
 
@@ -972,10 +1117,27 @@ class _MaterialDesktopVideoControlsState
             _showFitControl = false;
             _showAudioControl = false;
             _showVideoControl = false;
+            _showSubtitleControl = false;
             // restartTimer();
           });
         },
       ),
+      const SizedBox(width: 8),
+
+      MaterialCustomButton(
+          icon: Icon(Icons.subtitles),
+          iconSize: 20,
+          onPressed: () {
+            setState(() {
+              _showSubtitleControl = !_showSubtitleControl;
+              // Close other panels
+              _showFitControl = false;
+              _showSpeedControl = false;
+              _showAudioControl = false;
+              _showVideoControl = false;
+            });
+          }),
+
       const SizedBox(width: 8),
 
       // Audio Track Button
@@ -989,6 +1151,7 @@ class _MaterialDesktopVideoControlsState
               _showFitControl = false;
               _showSpeedControl = false;
               _showVideoControl = false;
+              _showSubtitleControl = false;
             });
           },
           // tooltip: 'Audio Track (${_audioTracks.length})',
@@ -1006,6 +1169,7 @@ class _MaterialDesktopVideoControlsState
               _showFitControl = false;
               _showSpeedControl = false;
               _showAudioControl = false;
+              _showSubtitleControl = false;
             });
           },
           // tooltip: 'Video Quality (${_videoTracks.length})',
@@ -1159,6 +1323,7 @@ class _MaterialDesktopVideoControlsState
                             box.size.height - buttonAreaHeight;
                         if (!isInButtonArea &&
                             (_showAudioControl ||
+                                _showSubtitleControl ||
                                 _showVideoControl ||
                                 _showSpeedControl ||
                                 _showFitControl)) {
@@ -1168,6 +1333,7 @@ class _MaterialDesktopVideoControlsState
                             _showVideoControl = false;
                             _showSpeedControl = false;
                             _showFitControl = false;
+                            _showSubtitleControl = false;
                           });
                         }
 
@@ -1465,6 +1631,7 @@ class _MaterialDesktopVideoControlsState
                         ],
                       ),
                     ),
+                    _buildSubtitlesControl(),
                     _buildSpeedControl(),
                     _buildAudioControl(),
                     _buildVideoControl(),
